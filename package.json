@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
+    "dev:convex": "convex dev",
     "start": "next start --hostname 0.0.0.0",
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
@@ -11,6 +12,7 @@
     "test:browser": "node scripts/browser-check.mjs"
   },
   "dependencies": {
+    "convex": "^1.49.0",
     "next": "^16.0.0",
     "posthog-js": "^1.447.12",
     "react": "^19.2.0",

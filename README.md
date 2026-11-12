@@ -14,6 +14,12 @@ For production, set the hosting environment variables, then run `npm run build` 
 
 Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. Email credentials are server-only and must be entered through the host's secret settings. Never commit `.env.local` or put a delivery key in a public variable.
 
+## Convex development setup
+
+Convex is installed with an empty schema in `convex/schema.ts`. Run `npm run dev:convex` to start the Convex development CLI alongside the existing Next.js development server. The scaffold has no tables or application functions yet; no cloud deployment has been linked. Enquiries continue to use the existing Next.js endpoint until a Convex-backed flow is implemented.
+
+`npx convex ai-files install` installs the generated guidance at `convex/_generated/ai/guidelines.md` and project skills under `.agents/skills`. The generated `AGENTS.md` and `CLAUDE.md` direct coding agents to that guidance. Rerun the installer when updating Convex's AI instructions.
+
 ## Pages and conversion paths
 
 - `/`: benefit-led animated hero, three services, working-example link, scoped pilot, founder background, FAQ and shared enquiry form.
