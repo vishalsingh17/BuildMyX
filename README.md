@@ -14,6 +14,12 @@ For production, set the hosting environment variables, then run `npm run build` 
 
 Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. Email credentials belong in the chosen Convex deployment’s environment settings. Never commit `.env.local` or put a delivery key in a public variable.
 
+## Development and production releases
+
+Work on `dev`; production stays on `main`. Development must pass the automated checks and its Vercel preview build before the owner reviews and manually merges a `dev` → `main` release PR. That merge is the green flag. The deployment build validates the environment’s Convex key, builds the website, deploys the matching backend, then lets Vercel publish the website. Both use the same source. After a successful production deployment, development fast-forwards to the released commit if it has no newer work.
+
+See [environment setup and release instructions](docs/environments-and-releases.md) for the required GitHub branch protection and separate Vercel deployment keys. Those account settings must be activated; adding workflow files alone does not enforce the gate. `npm run release:check` verifies branch protection. No release is auto-merged and database records or secrets are not synchronized between environments.
+
 ## Convex development setup
 
 BuildMyX is linked to the existing [Convex cloud development deployment `tacit-badger-38`](https://dashboard.convex.dev/t/vishal-singh-6dda1/buildmyx/tacit-badger-38). Its cloud URL is `https://tacit-badger-38.convex.cloud`; HTTP actions use `https://tacit-badger-38.convex.site`. The development settings are included in `.env.example` and selected locally in the ignored `.env.local`.
@@ -39,7 +45,7 @@ All enquiry CTAs preselect a single shared form. Deep links use `/?interest=ai#e
 
 ## Enquiry storage and owner notifications
 
-The built-in Next.js endpoint proxies submissions to the configured Convex HTTP actions URL. The live Vercel production site defaults to the [production deployment `kindhearted-hippopotamus-469`](https://dashboard.convex.dev/t/vishal-singh-6dda1/buildmyx/kindhearted-hippopotamus-469), using `https://kindhearted-hippopotamus-469.convex.site`. It also migrates the original development URL to this production endpoint when running on Vercel production. No Vercel email key is required. To select another backend, set `ENQUIRY_CONVEX_SITE_URL` to its `https://…convex.site` URL. Local development selects `tacit-badger-38`; previews need an explicit development/preview URL. Set `ENQUIRY_ENABLED=false` on the Next.js server to force the copy-only fallback during maintenance or browser tests.
+The built-in Next.js endpoint proxies submissions to the configured Convex HTTP actions URL. The live Vercel production site defaults to the [production deployment `kindhearted-hippopotamus-469`](https://dashboard.convex.dev/t/vishal-singh-6dda1/buildmyx/kindhearted-hippopotamus-469), using `https://kindhearted-hippopotamus-469.convex.site`. It also migrates the original development URL to this production endpoint when running on Vercel production. No Vercel email key is required. To select another backend, set `ENQUIRY_CONVEX_SITE_URL` to its `https://…convex.site` URL. Local development and Vercel previews default to `tacit-badger-38`; a development runtime refuses the known production URL. The deployment build supplies matching public URLs automatically. Set `ENQUIRY_ENABLED=false` on the Next.js server to force the copy-only fallback during maintenance or browser tests.
 
 `GET /api/enquiry` checks database availability independently of email settings. `POST /api/enquiry` validates origin, JSON media type, a streamed 12 KB limit and all fields before forwarding. The Convex HTTP action repeats validation and applies shared limits: five new enquiries per normalized email address per ten-minute window and 200 requests using new references per day across the deployment. Only email hashes are used as rate-limit keys. Adjust the named limits in `convex/enquiries.ts` as traffic grows.
 

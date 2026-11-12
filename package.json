@@ -7,10 +7,13 @@
     "dev:convex": "convex dev",
     "start": "next start --hostname 0.0.0.0",
     "build": "next build --webpack",
+    "build:deploy": "tsx scripts/vercel-build.ts",
+    "release:check": "tsx scripts/configure-release.ts --check",
+    "release:protect": "tsx scripts/configure-release.ts --apply",
     "typecheck": "tsc --noEmit",
     "test": "npm run test:unit && npm run test:convex",
     "test:browser": "node scripts/browser-check.mjs",
-    "test:unit": "tsx --test lib/*.test.ts lib/server/*.test.ts",
+    "test:unit": "tsx --test lib/*.test.ts lib/server/*.test.ts scripts/*.test.*",
     "test:convex": "vitest run"
   },
   "dependencies": {
