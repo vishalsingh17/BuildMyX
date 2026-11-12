@@ -54,6 +54,8 @@ npx convex deployment token create vercel-production --deployment vishal-singh-6
 
 Transfer only each file’s `CONVEX_DEPLOY_KEY` value to the matching **Vercel project → Settings → Environment Variables** scope, then remove those temporary files. Never put keys in public `NEXT_PUBLIC_*` variables, pull requests or chat. Use deployment keys, not project-wide keys. If these named keys already exist, manage or rotate them in Convex rather than generating untracked duplicates.
 
+The GitHub browser check uses the Playwright **Google Chrome** channel for the MP4 walkthrough’s media support. It reports progress and has an eight-minute step limit; media and HTTP waits also have explicit timeouts. Local checks can use an installed Chromium or `PLAYWRIGHT_CHANNEL=chrome` when Google Chrome is installed.
+
 `vercel.json` makes `npm run build:deploy` the Vercel build command and allows deployments from `dev` and `main`. The build validates the branch and exact key target before running Convex. It also supplies the matching backend URLs to the website build. Vercel’s Preview runtime defaults to development; Production defaults to production. A development runtime refuses the known production backend URL. Set `APP_ENV=production` explicitly when running a production server outside Vercel.
 
 Redeploy the `dev` preview after saving its key, then check its URL under **Vercel → Deployments → dev**. Its URL is assigned by Vercel; use the actual deployment link shown there.

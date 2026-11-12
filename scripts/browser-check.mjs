@@ -57,7 +57,7 @@ if (!ready) {
   throw new Error(`Production server did not start: ${serverLog}`);
 }
 let executablePath = process.env.CHROMIUM_EXECUTABLE_PATH;
-if (!executablePath) {
+if (!executablePath && !process.env.PLAYWRIGHT_CHANNEL) {
   try {
     await access("/usr/bin/chromium");
     executablePath = "/usr/bin/chromium";
@@ -65,6 +65,7 @@ if (!executablePath) {
 }
 const browser = await chromium.launch({
   executablePath,
+  channel: process.env.PLAYWRIGHT_CHANNEL || undefined,
   headless: true,
   args: ["--no-sandbox", "--disable-dev-shm-usage"],
 });
@@ -787,7 +788,7 @@ try {
           () =>
             reject(
               new Error(
-                "Walkthrough playback did not start within 10 seconds.",
+                `Walkthrough playback did not start within 10 seconds (readyState=${video.readyState}, networkState=${video.networkState}, mediaError=${video.error?.message ?? "none"}).`,
               ),
             ),
           10000,
