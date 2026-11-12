@@ -11,6 +11,7 @@ let initialized = false;
 /** Lazy-loaded only when the owner has supplied a public token and matching host. */
 export function capturePosthog(payload: ReturnType<typeof analyticsPayload>) {
   if (
+    !siteConfig.analyticsEnabled ||
     typeof window === "undefined" ||
     navigator.doNotTrack === "1" ||
     (navigator as Navigator & { globalPrivacyControl?: boolean })

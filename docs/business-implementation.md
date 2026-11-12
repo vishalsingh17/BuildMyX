@@ -17,11 +17,11 @@ The website now gives a small business team a specific starting offer: a scoped 
 
 ## Business setup still needed
 
-- Supply the public production domain, verified business contact email, booking URL and LinkedIn URL where wanted.
+- The production URL is configured as https://build-my-x.vercel.app. Supply a verified business contact email, booking URL and LinkedIn URL where wanted.
 - Configure server-side Resend credentials, verified sender and receiving inbox. Perform a controlled real delivery test before promoting the enquiry channel.
 - Choose actual commercial prices, availability and support terms during scoping. No invented claims are shown.
 - When a real workshop is scheduled, add its confirmed date, prerequisites, curriculum, format, fee and cancellation terms before accepting bookings.
 - With permission, add genuine project outcomes and customer feedback as they become available. Keep this sample clearly separate from client case studies.
-- Configure the PostHog public project token and matching region, then assess service interest, enquiries and actual qualified/won outcomes. Establish a baseline before claiming improvement.
+- The public PostHog US project is configured for the deployed site. Assess service interest, enquiries and actual qualified/won outcomes. Establish a baseline before claiming improvement.
 
 Use the private lead tracker to assign an owner and next action to each enquiry. Review qualified enquiries, response time, progression to scoped proposals and won work by service. The site does not pretend to provide a CRM or guaranteed business results.

@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     ...(canIndexSite(
       siteConfig.canonicalUrl,
       siteConfig.launchApproved,
-      process.env.VERCEL_ENV || process.env.CONTEXT,
+      process.env.VERCEL_ENV || process.env.CONTEXT || process.env.NODE_ENV,
     ) && siteConfig.canonicalUrl
       ? { sitemap: new URL("/sitemap.xml", siteConfig.canonicalUrl).toString() }
       : {}),

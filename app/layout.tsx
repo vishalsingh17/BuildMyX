@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     index: canIndexSite(
       siteConfig.canonicalUrl,
       siteConfig.launchApproved,
-      process.env.VERCEL_ENV || process.env.CONTEXT,
+      process.env.VERCEL_ENV || process.env.CONTEXT || process.env.NODE_ENV,
     ),
     follow: true,
   },

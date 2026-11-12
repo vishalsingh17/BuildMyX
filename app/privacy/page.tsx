@@ -104,7 +104,7 @@ export default function Privacy() {
             collection.
           </p>
           <p>
-            Analytics is inactive until configured. A separately configured
+            Analytics can be disabled for a deployment. A separately configured
             activity collector receives the same limited event labels without
             PostHog identifiers. Hosting and analytics providers can observe
             network addresses when handling requests; IP-based enrichment is

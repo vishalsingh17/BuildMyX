@@ -6,7 +6,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     !canIndexSite(
       siteConfig.canonicalUrl,
       siteConfig.launchApproved,
-      process.env.VERCEL_ENV || process.env.CONTEXT,
+      process.env.VERCEL_ENV || process.env.CONTEXT || process.env.NODE_ENV,
     )
   )
     return [];

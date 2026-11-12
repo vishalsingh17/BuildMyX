@@ -81,6 +81,7 @@ export function track(event: AnalyticsEvent, props: Props = {}) {
   window.dispatchEvent(
     new CustomEvent("buildmyx:analytics", { detail: payload }),
   );
+  if (!siteConfig.analyticsEnabled) return;
   if (siteConfig.posthogToken && siteConfig.posthogHost) {
     void import("./posthog-client")
       .then(({ capturePosthog }) => capturePosthog(payload))

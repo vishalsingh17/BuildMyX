@@ -50,7 +50,7 @@ An existing external backend can instead be supplied as `NEXT_PUBLIC_ENQUIRY_END
 
 The owner has confirmed naming clearance for BuildMyX, BuildMyAI, BuildMyCareer and BuildMyTeam. `NEXT_PUBLIC_LAUNCH_APPROVED` defaults to true. Search indexing is enabled only with a real HTTPS canonical URL; Vercel previews/development and Netlify deploy/branch previews stay `noindex`. To pause indexing, set `NEXT_PUBLIC_LAUNCH_APPROVED=false` and rebuild. Other hosting platforms should use that override for previews.
 
-The site includes route-specific metadata, canonical URLs, a generated social-share image, robots rules and a sitemap of real pages. Without a production URL, the sitemap is empty and the site stays `noindex`. Do not use a guessed domain.
+The site includes route-specific metadata, canonical URLs, a generated social-share image, robots rules and a sitemap of real pages. The owner-verified production URL, `https://build-my-x.vercel.app`, is configured in `lib/site-config.ts`; `NEXT_PUBLIC_SITE_URL` can override it when moving to a custom domain. Development and Vercel previews stay `noindex`.
 
 ## Working example
 
@@ -60,13 +60,13 @@ The walkthrough is a recording of this implementation, with captions and paralle
 
 ## PostHog analytics and sales follow-up
 
-PostHog is integrated through the official `posthog-js` SDK. Add `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` (the public browser token, usually `phc_…`) and `NEXT_PUBLIC_POSTHOG_HOST` (EU: `https://eu.i.posthog.com`; US: `https://us.i.posthog.com`) to the hosting environment and rebuild. A personal/private API key is never used in browser code. Missing values keep PostHog inactive. See [the PostHog setup guide](docs/posthog-setup.md) for activation and dashboard steps.
+PostHog is integrated through the official `posthog-js` SDK. The owner-supplied public browser token and US ingestion host are configured in `lib/site-config.ts`, so the Git-connected Vercel deployment does not depend on an untracked `.env.local`. These are public browser settings, not personal API keys or email credentials. Set `NEXT_PUBLIC_ANALYTICS_ENABLED=false` and rebuild to disable external analytics. Optional `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` and `NEXT_PUBLIC_POSTHOG_HOST` values override the defaults. See [the PostHog setup guide](docs/posthog-setup.md) for dashboard and deployment steps.
 
 The SDK loads only when configured and the visitor has not enabled Do Not Track or Global Privacy Control. The existing event hooks feed PostHog directly; no collector adapter is needed. Automatic interaction capture, replay, surveys, exception capture, feature flags and external extension loading are disabled. A final event guard strips SDK URL/referrer defaults, form data, person properties and unapproved events. Clean page views appear as `$pageview`. Service views, CTA clicks, enquiry starts/submissions/copies, bookings, demo runs and downloads retain their existing names.
 
 Anonymous identifiers are held in tab memory to connect actions within the open visit. Cookies, local storage, session storage, person profiles and IP enrichment are disabled. Refresh starts a new visit, so unique visitor and returning-user figures are deliberately limited. Do not enable extra collection without reviewing the configuration and updating the public privacy page.
 
-`NEXT_PUBLIC_ANALYTICS_ENDPOINT` remains an optional alternative collector when PostHog is unset. It accepts the documented JSON event/path/label payload without visitor identifiers. Do not put a PostHog ingestion URL into that setting: its protocol is different. PostHog takes precedence when both its settings are supplied, avoiding duplicate collection. With neither integration configured, no analytics events leave the browser. The local `buildmyx:analytics` CustomEvent remains available for inspection.
+`NEXT_PUBLIC_ANALYTICS_ENDPOINT` remains an optional alternative collector. Setting it suppresses the default PostHog project unless an explicit PostHog token override is also supplied. It accepts the documented JSON event/path/label payload without visitor identifiers. Do not put a PostHog ingestion URL into that setting: its protocol is different. PostHog takes precedence when both its settings are supplied, avoiding duplicate collection. Setting `NEXT_PUBLIC_ANALYTICS_ENABLED=false` prevents both integrations from sending events. The local `buildmyx:analytics` CustomEvent remains available for inspection.
 
 Use a private copy of `docs/lead-tracker-template.csv` to record qualified enquiries, follow-ups and actual won/lost outcomes. Do not put customer records in this public repository.
 

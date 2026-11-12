@@ -1,17 +1,29 @@
-/** Verified business destinations only. Null settings are never rendered as links. */
+/** Public, owner-verified website settings. Browser analytics tokens are public;
+ * email delivery credentials must stay in server environment variables.
+ * Environment values override these BuildMyX production defaults.
+ */
+const alternativeAnalyticsEndpoint =
+  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() || null;
 export const siteConfig = {
   brand: "BuildMyX",
   founder: "Vishal Singh",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL?.trim() || null,
   linkedInUrl: process.env.NEXT_PUBLIC_LINKEDIN_URL?.trim() || null,
-  canonicalUrl: process.env.NEXT_PUBLIC_SITE_URL?.trim() || null,
+  canonicalUrl:
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://build-my-x.vercel.app",
   launchApproved: process.env.NEXT_PUBLIC_LAUNCH_APPROVED !== "false",
   sourceCodeUrl: "https://github.com/vishalsingh17/BuildMyX",
   founderGithubUrl: "https://github.com/vishalsingh17",
-  posthogToken: process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim() || null,
-  posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim() || null,
-  analyticsEndpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() || null,
+  analyticsEnabled: process.env.NEXT_PUBLIC_ANALYTICS_ENABLED !== "false",
+  posthogToken:
+    process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim() ||
+    (alternativeAnalyticsEndpoint
+      ? null
+      : "phc_rAJYeeosEG8yMEcpEAPpjvKfaihci6SYFNk69YMzpJzq"),
+  posthogHost:
+    process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim() || "https://us.i.posthog.com",
+  analyticsEndpoint: alternativeAnalyticsEndpoint,
   /** An HTTPS endpoint that validates and delivers enquiries on the server. */
   enquiryEndpoint: process.env.NEXT_PUBLIC_ENQUIRY_ENDPOINT?.trim() || null,
 };

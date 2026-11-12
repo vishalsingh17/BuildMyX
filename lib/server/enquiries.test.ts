@@ -1,6 +1,8 @@
+import { siteConfig } from "../site-config";
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { handleEnquiry } from "./enquiries";
+const origin = new URL(siteConfig.canonicalUrl || "https://example.com").origin;
 const config = {
   apiKey: "test-key",
   from: "BuildMyX <site@example.com>",
@@ -16,10 +18,10 @@ const valid = {
 };
 const id = "11111111-1111-4111-8111-111111111111";
 const request = (body: unknown = valid, headers: Record<string, string> = {}) =>
-  new Request("https://example.com/api/enquiry", {
+  new Request(`${origin}/api/enquiry`, {
     method: "POST",
     headers: {
-      Origin: "https://example.com",
+      Origin: origin,
       "Content-Type": "application/json",
       "Idempotency-Key": id,
       ...headers,
@@ -71,10 +73,10 @@ test("origin, media type, rate and size are enforced before email", async () => 
   );
 });
 test("server rejects malformed JSON, types, invalid fields and honeypot", async () => {
-  const malformed = new Request("https://example.com/api/enquiry", {
+  const malformed = new Request(`${origin}/api/enquiry`, {
     method: "POST",
     headers: {
-      Origin: "https://example.com",
+      Origin: origin,
       "Content-Type": "application/json",
     },
     body: "{",
