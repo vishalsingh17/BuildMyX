@@ -1,15 +1,21 @@
 import { siteConfig } from "../site-config";
 import { enquiryHeaders, enquiryJson, readEnquiry } from "../enquiry-request";
 
-// Set only after the owner approves and creates the production Convex deployment.
-const productionSiteUrl: string | null = null;
+// Public HTTP actions URL. Credentials and notification settings stay in Convex.
+const productionSiteUrl = "https://kindhearted-hippopotamus-469.convex.site";
+const developmentSiteUrl = "https://tacit-badger-38.convex.site";
 export function intakeConfig(
   environment: Record<string, string | undefined> = process.env,
 ) {
   if (environment.ENQUIRY_ENABLED === "false") return null;
+  const override =
+    environment.ENQUIRY_CONVEX_SITE_URL?.trim().replace(/\/$/, "") || null;
+  // Migrate the original development URL on Vercel production; previews stay isolated.
   const value =
-    environment.ENQUIRY_CONVEX_SITE_URL?.trim() ||
-    (environment.VERCEL_ENV === "production" ? productionSiteUrl : null);
+    environment.VERCEL_ENV === "production" &&
+    (!override || override === developmentSiteUrl)
+      ? productionSiteUrl
+      : override;
   if (!value) return null;
   try {
     const url = new URL(value);

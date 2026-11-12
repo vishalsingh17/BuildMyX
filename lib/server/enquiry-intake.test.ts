@@ -54,6 +54,22 @@ test("storage discovery works without email settings and disabling intake forces
   );
   assert.equal(intakeConfig({ ENQUIRY_CONVEX_SITE_URL: siteUrl }), siteUrl);
   assert.equal(intakeConfig({ VERCEL_ENV: "preview" }), null);
+  const production = "https://kindhearted-hippopotamus-469.convex.site";
+  assert.equal(intakeConfig({ VERCEL_ENV: "production" }), production);
+  assert.equal(
+    intakeConfig({
+      VERCEL_ENV: "production",
+      ENQUIRY_CONVEX_SITE_URL: "https://tacit-badger-38.convex.site/",
+    }),
+    production,
+  );
+  assert.equal(
+    intakeConfig({
+      VERCEL_ENV: "production",
+      ENQUIRY_CONVEX_SITE_URL: siteUrl,
+    }),
+    siteUrl,
+  );
 });
 test("intake requires confirmed storage and forwards one stable submission reference", async () => {
   const calls: RequestInit[] = [];
