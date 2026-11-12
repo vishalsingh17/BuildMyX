@@ -16,7 +16,11 @@ Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. E
 
 ## Convex development setup
 
-Convex is installed with an empty schema in `convex/schema.ts`. Run `npm run dev:convex` to start the Convex development CLI alongside the existing Next.js development server. The scaffold has no tables or application functions yet; no cloud deployment has been linked. Enquiries continue to use the existing Next.js endpoint until a Convex-backed flow is implemented.
+BuildMyX is linked to the existing [Convex cloud development deployment `tacit-badger-38`](https://dashboard.convex.dev/t/vishal-singh-6dda1/buildmyx/tacit-badger-38). Its cloud URL is `https://tacit-badger-38.convex.cloud`; HTTP actions use `https://tacit-badger-38.convex.site`. The development settings are included in `.env.example` and selected locally in the ignored `.env.local`.
+
+Run `npm run dev:convex` alongside the Next.js development server. To sync once with Convex's TypeScript checks enabled, run `npx convex dev --once --typecheck enable --tail-logs disable`. The generated bindings under `convex/_generated/` and the backend TypeScript configuration in `convex/tsconfig.json` are committed.
+
+The schema in `convex/schema.ts` is empty, with no tables or application functions yet. Enquiries continue to use the existing Next.js endpoint until enquiry handling is implemented in Convex. For the live Vercel website, configure a production deployment's URLs; automated Convex deployments also need a private deployment key in Vercel's secret settings. Convex account credentials stay outside the repository.
 
 `npx convex ai-files install` installs the generated guidance at `convex/_generated/ai/guidelines.md` and project skills under `.agents/skills`. The generated `AGENTS.md` and `CLAUDE.md` direct coding agents to that guidance. Rerun the installer when updating Convex's AI instructions.
 
