@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer } from "react";
 import {
   heroModes,
   serviceNames,
@@ -13,47 +13,42 @@ import { track } from "@/lib/analytics";
 import { Arrow } from "./icons";
 import { useEnquiry } from "./enquiry-provider";
 
-const sequence = ["X", "AI", "Career", "Team"] as const;
+import {
+  heroSequence as sequence,
+  heroCanRotate,
+  heroReducer,
+  initialHeroState,
+} from "@/lib/hero-machine";
 export function Hero({
   onInterest,
 }: {
   onInterest: (value: Interest) => void;
 }) {
   const { heroPreference, setHeroPreference } = useEnquiry();
-  const initialPreference = useRef(heroPreference);
-  const [mode, setMode] = useState<"X" | Mode>(initialPreference.current.mode);
-  const [running, setRunning] = useState(false);
-  const [reduced, setReduced] = useState(true);
-  const [hovered, setHovered] = useState(false);
-  const [focused, setFocused] = useState(false);
+  const [state, dispatch] = useReducer(
+    heroReducer,
+    heroPreference,
+    initialHeroState,
+  );
+  const { mode } = state;
+  const running = state.intent === "running" && state.motion !== "unresolved";
+  const reduced = state.motion !== "standard";
+  const rotating = heroCanRotate(state);
   const content = heroModes[mode === "X" ? "AI" : mode];
-
   useEffect(() => {
     const media = matchMedia("(prefers-reduced-motion: reduce)");
-    setReduced(media.matches);
-    setRunning(!media.matches && !initialPreference.current.paused);
-    const change = () => {
-      setReduced(media.matches);
-      if (media.matches) setRunning(false);
-    };
+    const change = () => dispatch({ type: "MOTION", reduced: media.matches });
+    change();
     media.addEventListener("change", change);
     return () => media.removeEventListener("change", change);
   }, []);
-
   useEffect(() => {
-    if (!running || hovered || focused) return;
-    const timer = window.setInterval(() => {
-      setMode((current) => {
-        const next = sequence.indexOf(current) + 1;
-        return sequence[next >= sequence.length ? 1 : next];
-      });
-    }, 3900);
+    if (!rotating) return;
+    const timer = window.setInterval(() => dispatch({ type: "TICK" }), 3900);
     return () => clearInterval(timer);
-  }, [running, hovered, focused]);
-
+  }, [rotating]);
   const select = (next: Mode) => {
-    setMode(next);
-    setRunning(false);
+    dispatch({ type: "SELECT", mode: next });
     setHeroPreference({ mode: next, paused: true });
     onInterest(heroModes[next].interest as Interest);
   };
@@ -93,12 +88,12 @@ export function Hero({
       </div>
       <div
         className="hero-controls"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-        onFocus={() => setFocused(true)}
+        onMouseEnter={() => dispatch({ type: "HOVER", value: true })}
+        onMouseLeave={() => dispatch({ type: "HOVER", value: false })}
+        onFocus={() => dispatch({ type: "FOCUS", value: true })}
         onBlur={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget as Node))
-            setFocused(false);
+            dispatch({ type: "FOCUS", value: false });
         }}
       >
         <div
@@ -126,8 +121,9 @@ export function Hero({
           className="rotation-control"
           aria-label={running ? "Pause word rotation" : "Resume word rotation"}
           onClick={() => {
-            setRunning(!running);
-            setHeroPreference({ mode, paused: running });
+            const next = heroReducer(state, { type: "TOGGLE" });
+            dispatch({ type: "TOGGLE" });
+            setHeroPreference({ mode, paused: next.intent === "paused" });
           }}
         >
           <svg
@@ -152,12 +148,12 @@ export function Hero({
           <a
             className="button"
             href="#enquire"
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
+            onMouseEnter={() => dispatch({ type: "HOVER", value: true })}
+            onMouseLeave={() => dispatch({ type: "HOVER", value: false })}
+            onFocus={() => dispatch({ type: "FOCUS", value: true })}
+            onBlur={() => dispatch({ type: "FOCUS", value: false })}
             onClick={() => {
-              setRunning(false);
+              dispatch({ type: "PAUSE" });
               setHeroPreference({ mode, paused: true });
               onInterest(content.interest as Interest);
               track("cta_click", {
@@ -176,10 +172,10 @@ export function Hero({
                 ? "/projects/reporting-pipeline/"
                 : servicePaths[mode]
             }
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
+            onMouseEnter={() => dispatch({ type: "HOVER", value: true })}
+            onMouseLeave={() => dispatch({ type: "HOVER", value: false })}
+            onFocus={() => dispatch({ type: "FOCUS", value: true })}
+            onBlur={() => dispatch({ type: "FOCUS", value: false })}
           >
             {mode === "Career"
               ? "Explore future learning"

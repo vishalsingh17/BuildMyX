@@ -1,18 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, type FormEvent } from "react";
 import { interests, type Interest } from "@/lib/site-config";
-import {
-  deliverEnquiry,
-  prepareEnquiry,
-  validateEnquiry,
-  type Enquiry,
-  type EnquiryErrors,
-} from "@/lib/enquiry";
+import { enquiryBusy } from "@/lib/enquiry-machine";
+import type { Enquiry } from "@/lib/enquiry";
 import { Arrow, CopyIcon } from "./icons";
 import Link from "next/link";
 import { useEnquiry } from "./enquiry-provider";
-import { track } from "@/lib/analytics";
 
 const descriptions: Record<Interest, string> = {
   ai: "What’s the task, where does the information live, and what would a useful result look like?",
@@ -26,102 +20,54 @@ const descriptions: Record<Interest, string> = {
 
 export function EnquiryForm() {
   const {
-    interest,
-    setInterest: onInterest,
-    draft: fields,
-    setDraft: setFields,
+    state,
     deliveryEndpoint,
+    setInterest: onInterest,
+    updateField: update,
+    submitEnquiry,
+    startEnquiry,
+    retryDelivery,
   } = useEnquiry();
-  const values: Enquiry = { ...fields, interest };
-  const [errors, setErrors] = useState<EnquiryErrors>({});
-  const [busy, setBusy] = useState(false);
-  const [status, setStatus] = useState("");
-  const [failed, setFailed] = useState(false);
-  const [prepared, setPrepared] = useState("");
-  const [manualCopy, setManualCopy] = useState(false);
+  const { values, errors, phase } = state;
+  const interest = values.interest;
+  const busy = enquiryBusy(state);
+  const failed = phase.tag === "deliveryUnconfirmed";
+  const manualCopy = phase.tag === "manualCopy";
+  const prepared =
+    (phase.tag === "copying" ||
+      phase.tag === "copied" ||
+      phase.tag === "manualCopy") &&
+    phase.attempt.revision === state.revision
+      ? phase.message
+      : "";
+  const status =
+    phase.tag === "submitted"
+      ? `Your enquiry has been submitted to BuildMyX.${phase.result.confirmationSent ? " A confirmation email has also been sent." : " An email confirmation could not be confirmed; you don’t need to submit again."}${phase.result.reference ? ` Reference: ${phase.result.reference}.` : ""}`
+      : phase.tag === "deliveryUnconfirmed"
+        ? phase.message
+        : phase.tag === "copied"
+          ? "Enquiry copied to your clipboard. It hasn’t been sent. You can also select the message below."
+          : phase.tag === "manualCopy"
+            ? "Your enquiry is ready below. Automatic copying wasn’t available. Select the message and copy it manually; it hasn’t been sent."
+            : "";
   const form = useRef<HTMLFormElement>(null);
   const preparedField = useRef<HTMLTextAreaElement>(null);
-  const submission = useRef({ body: "", id: "" });
-  const started = useRef(false);
-  useEffect(() => {
-    setErrors((current) => ({ ...current, interest: undefined }));
-    setStatus("");
-    setPrepared("");
-  }, [interest]);
   useEffect(() => {
     if (manualCopy && prepared) {
       preparedField.current?.focus();
       preparedField.current?.select();
     }
   }, [manualCopy, prepared]);
-
-  const update = (field: keyof Omit<Enquiry, "interest">, value: string) => {
-    setFields((current) => ({ ...current, [field]: value }));
-    setErrors((current) => ({ ...current, [field]: undefined }));
-    setStatus("");
-    setPrepared("");
-    setFailed(false);
-  };
-
   const submit = async (
-    event: FormEvent<HTMLFormElement>,
+    event?: FormEvent<HTMLFormElement>,
     copyOnly = false,
   ) => {
-    event.preventDefault();
-    const nextErrors = validateEnquiry(values);
-    setErrors(nextErrors);
-    setStatus("");
-    setFailed(false);
-    setManualCopy(false);
-    if (Object.keys(nextErrors).length) {
+    event?.preventDefault();
+    const nextErrors = await submitEnquiry(copyOnly);
+    if (nextErrors && Object.keys(nextErrors).length)
       form.current
         ?.querySelector<HTMLElement>(`[name="${Object.keys(nextErrors)[0]}"]`)
         ?.focus();
-      return;
-    }
-    setBusy(true);
-    const message = prepareEnquiry(values);
-    try {
-      if (deliveryEndpoint && !copyOnly) {
-        const body = JSON.stringify(values);
-        if (submission.current.body !== body)
-          submission.current = { body, id: crypto.randomUUID() };
-        const result = await deliverEnquiry(
-          deliveryEndpoint,
-          values,
-          submission.current.id,
-        );
-        setStatus(
-          `Your enquiry has been submitted to BuildMyX.${result.confirmationSent ? " A confirmation email has also been sent." : " An email confirmation could not be confirmed; you don’t need to submit again."}${result.reference ? ` Reference: ${result.reference}.` : ""}`,
-        );
-        track("enquiry_submitted", { interest });
-      } else {
-        setPrepared(message);
-        try {
-          if (!navigator.clipboard?.writeText)
-            throw new Error("Clipboard unavailable");
-          await navigator.clipboard.writeText(message);
-          track("enquiry_copy", { interest });
-          setStatus(
-            "Enquiry copied to your clipboard. It hasn’t been sent. You can also select the message below.",
-          );
-        } catch {
-          setManualCopy(true);
-          setStatus(
-            "Your enquiry is ready below. Automatic copying wasn’t available. Select the message and copy it manually; it hasn’t been sent.",
-          );
-        }
-      }
-    } catch (error) {
-      setFailed(true);
-      setStatus(
-        error instanceof Error
-          ? error.message
-          : "Delivery couldn’t be confirmed. Your details are still here. Please try again or copy your enquiry.",
-      );
-    } finally {
-      setBusy(false);
-    }
   };
 
   const error = (field: keyof Enquiry) =>
@@ -137,12 +83,7 @@ export function EnquiryForm() {
       noValidate
       onSubmit={submit}
       aria-busy={busy}
-      onFocusCapture={() => {
-        if (!started.current) {
-          started.current = true;
-          track("enquiry_start", { interest });
-        }
-      }}
+      onFocusCapture={startEnquiry}
     >
       <p className="form-note">
         A few details are enough to start.{" "}
@@ -255,14 +196,20 @@ export function EnquiryForm() {
         </div>
       </div>
       <div className="form-submit">
-        <button className="button" type="submit" disabled={busy}>
-          {busy
-            ? deliveryEndpoint
-              ? "Sending…"
-              : "Preparing…"
-            : deliveryEndpoint
-              ? "Send enquiry"
-              : "Copy enquiry"}
+        <button
+          className="button"
+          type="submit"
+          disabled={busy || phase.tag === "submitted"}
+        >
+          {phase.tag === "sending"
+            ? "Sending…"
+            : phase.tag === "copying"
+              ? "Preparing…"
+              : phase.tag === "submitted"
+                ? "Enquiry submitted"
+                : deliveryEndpoint
+                  ? "Send enquiry"
+                  : "Copy enquiry"}
           {deliveryEndpoint ? <Arrow diagonal /> : <CopyIcon />}
         </button>
         <p>
@@ -271,6 +218,15 @@ export function EnquiryForm() {
             : "Copies a message for you to share. Your details stay in this tab; they aren’t sent to BuildMyX."}
         </p>
       </div>
+      {state.capability.tag === "error" && (
+        <p className="form-note">
+          Sending availability couldn’t be checked. You can copy your enquiry or{" "}
+          <button type="button" className="text-link" onClick={retryDelivery}>
+            check sending again
+          </button>
+          .
+        </p>
+      )}
       <p className="form-privacy">
         <Link href="/privacy/">
           How your enquiry details are handled <Arrow diagonal />
@@ -289,9 +245,7 @@ export function EnquiryForm() {
           className="text-link"
           type="button"
           disabled={busy}
-          onClick={(event) =>
-            void submit(event as unknown as FormEvent<HTMLFormElement>, true)
-          }
+          onClick={() => void submit(undefined, true)}
         >
           Copy enquiry instead <CopyIcon />
         </button>

@@ -1,4 +1,8 @@
 import { siteConfig, type Interest } from "./site-config";
+import {
+  collectorDestination,
+  posthogDestination,
+} from "./analytics-destination";
 
 export type AnalyticsEvent =
   | "page_view"
@@ -69,27 +73,17 @@ export function analyticsPayload(
   };
 }
 
-export function track(event: AnalyticsEvent, props: Props = {}) {
-  if (typeof window === "undefined" || !events.includes(event)) return;
-  if (
+function privacyBlocked() {
+  return (
     navigator.doNotTrack === "1" ||
-    (navigator as Navigator & { globalPrivacyControl?: boolean })
+    !!(navigator as Navigator & { globalPrivacyControl?: boolean })
       .globalPrivacyControl
-  )
-    return;
-  const payload = analyticsPayload(event, window.location.pathname, props);
-  window.dispatchEvent(
-    new CustomEvent("buildmyx:analytics", { detail: payload }),
   );
-  if (!siteConfig.analyticsEnabled) return;
-  if (siteConfig.posthogToken && siteConfig.posthogHost) {
-    void import("./posthog-client")
-      .then(({ capturePosthog }) => capturePosthog(payload))
-      .catch(() => {});
-    return;
-  }
-  if (!siteConfig.analyticsEndpoint) return;
-  void fetch(siteConfig.analyticsEndpoint, {
+}
+function collect(payload: ReturnType<typeof analyticsPayload>) {
+  const endpoint = collectorDestination(siteConfig.analyticsEndpoint);
+  if (!endpoint || !siteConfig.analyticsEnabled || privacyBlocked()) return;
+  void fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "omit",
@@ -97,4 +91,24 @@ export function track(event: AnalyticsEvent, props: Props = {}) {
     keepalive: true,
     body: JSON.stringify(payload),
   }).catch(() => {});
+}
+export function track(event: AnalyticsEvent, props: Props = {}) {
+  if (
+    typeof window === "undefined" ||
+    !events.includes(event) ||
+    privacyBlocked()
+  )
+    return;
+  const payload = analyticsPayload(event, window.location.pathname, props);
+  window.dispatchEvent(
+    new CustomEvent("buildmyx:analytics", { detail: payload }),
+  );
+  if (!siteConfig.analyticsEnabled) return;
+  if (posthogDestination(siteConfig.posthogToken, siteConfig.posthogHost)) {
+    void import("./posthog-client")
+      .then(({ capturePosthog }) => capturePosthog(payload))
+      .catch(() => collect(payload));
+    return;
+  }
+  collect(payload);
 }

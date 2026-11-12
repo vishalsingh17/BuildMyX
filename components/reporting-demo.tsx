@@ -1,45 +1,34 @@
 "use client";
 
-import { useRef, useState } from "react";
-import {
-  csv,
-  money,
-  runReport,
-  sampleRows,
-  type ReportingRow,
-} from "@/lib/reporting";
+import { useRef, useReducer } from "react";
+import { csv, money } from "@/lib/reporting";
 import { track } from "@/lib/analytics";
+import {
+  initialReportingState,
+  reportingReducer,
+} from "@/lib/reporting-machine";
 import { Arrow } from "./icons";
 
 export function ReportingDemo() {
-  const [rows, setRows] = useState<ReportingRow[]>(() =>
-    sampleRows.map((row) => ({ ...row })),
+  const [state, dispatch] = useReducer(
+    reportingReducer,
+    undefined,
+    initialReportingState,
   );
-  const [result, setResult] = useState<ReturnType<typeof runReport> | null>(
-    null,
-  );
-  const [dirty, setDirty] = useState(false);
-  const [question, setQuestion] = useState<"change" | "checks" | "sources">(
-    "change",
-  );
-  const [highlight, setHighlight] = useState<number[]>([]);
+  const { rows, result, question, highlight } = state;
+  const dirty =
+    state.tag === "staleResult" || state.tag === "editedWithoutResult";
   const report = useRef<HTMLDivElement>(null);
-  const edit = (index: number, amount: string) => {
-    setRows((current) =>
-      current.map((row, i) => (i === index ? { ...row, amount } : row)),
-    );
-    setDirty(true);
-    setHighlight([]);
-  };
+  const edit = (index: number, amount: string) =>
+    dispatch({ type: "EDIT", index, amount });
   const run = () => {
-    setResult(runReport(rows));
-    setDirty(false);
-    setHighlight([]);
+    dispatch({ type: "RUN" });
     track("example_run", { resource: "reporting_pipeline" });
     requestAnimationFrame(() => report.current?.focus());
   };
   const source = (indexes: number[]) => {
-    setHighlight(indexes);
+    if (state.tag !== "currentResult" || !indexes.length) return;
+    dispatch({ type: "SOURCES", indexes });
     document.getElementById(`source-${indexes[0]}`)?.focus();
   };
   const download = () => {
@@ -154,12 +143,7 @@ export function ReportingDemo() {
             </button>
             <button
               className="text-link"
-              onClick={() => {
-                setRows(sampleRows.map((row) => ({ ...row })));
-                setResult(null);
-                setDirty(false);
-                setHighlight([]);
-              }}
+              onClick={() => dispatch({ type: "RESET" })}
             >
               Reset sample
             </button>
@@ -223,7 +207,9 @@ export function ReportingDemo() {
                     key={key}
                     aria-pressed={question === key}
                     disabled={dirty}
-                    onClick={() => setQuestion(key)}
+                    onClick={() =>
+                      dispatch({ type: "QUESTION", question: key })
+                    }
                   >
                     {label}
                   </button>

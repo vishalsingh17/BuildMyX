@@ -40,9 +40,14 @@ export function Header() {
     if (previousPath.current !== pathname) {
       setOpen(false);
       previousPath.current = pathname;
-      const target = window.location.hash
-        ? decodeURIComponent(window.location.hash.slice(1))
-        : "main";
+      let target = "main";
+      try {
+        target = window.location.hash
+          ? decodeURIComponent(window.location.hash.slice(1))
+          : "main";
+      } catch {
+        /* Malformed fragments fall back to the page heading. */
+      }
       document.getElementById(target)?.focus({ preventScroll: true });
     }
   }, [pathname]);

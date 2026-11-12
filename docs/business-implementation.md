@@ -9,7 +9,7 @@ The website now gives a small business team a specific starting offer: a scoped 
 - A working fictional-data reporting example with editable inputs, actual validation, calculations, traceable sources, CSV export and a recorded walkthrough.
 - Verified founder GitHub and public source links without fabricated client proof.
 - Reporting-readiness and employer-brief pages plus editable downloads.
-- Server-side enquiry delivery with business notification, attempted visitor receipt, validation, origin/body limits, a per-instance rate-limit backstop and retry idempotency.
+- Server-side enquiry delivery with business notification, attempted visitor receipt, validation, origin/body limits, shared Convex rate limiting, durable delivery metadata and retry idempotency across client navigation.
 - Accurate submission/error/copy states and retained drafts across internal navigation.
 - PostHog integration for service-aware conversion events, with explicit capture, anonymous tab-memory IDs and no collection until a project is configured.
 - Descriptive metadata, canonical URLs, social image, robots and sitemap. Names cleared; indexing activates for a configured production URL.

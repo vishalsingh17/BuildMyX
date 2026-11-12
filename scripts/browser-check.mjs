@@ -4,6 +4,7 @@ import { createServer } from "node:http";
 import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { spawn } from "node:child_process";
+import { checkStateMachines } from "./state-machine-check.mjs";
 
 // Exercise the actual production Next.js server, including server endpoints.
 const artifacts = resolve(process.env.QA_OUTPUT ?? "work/browser-qa");
@@ -67,6 +68,12 @@ const browser = await chromium.launch({
   args: ["--no-sandbox", "--disable-dev-shm-usage"],
 });
 const failures = [];
+const expectedPosthog =
+  process.env.POSTHOG_EXPECT_ENABLED ??
+  (process.env.NEXT_PUBLIC_ANALYTICS_ENABLED === "false" ||
+  process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT
+    ? "0"
+    : "1");
 const report = [];
 function decodePosthog(body) {
   if (!body) return [];
@@ -816,7 +823,7 @@ try {
       get: () => undefined,
     });
   };
-  if (process.env.POSTHOG_EXPECT_ENABLED === "1") {
+  if (expectedPosthog === "1") {
     // PostHog intentionally filters HeadlessChrome; exercise a normal visitor.
     const analyticsPage = await browser.newPage({
       userAgent: humanUserAgent,
@@ -915,7 +922,7 @@ try {
       "PASS configured PostHog SDK: standard page views, required ingestion token, service/CTA funnel correlation, anonymous refresh reset, no form/query/referrer leakage, no cookies or browser storage, and both DNT/GPC opt-outs. All PostHog requests mocked; no test events sent remotely.",
     );
   }
-  if (process.env.POSTHOG_EXPECT_ENABLED === "0") {
+  if (expectedPosthog === "0") {
     const unconfigured = await browser.newPage({ userAgent: humanUserAgent });
     await unconfigured.addInitScript(simulateHumanVisitor);
     const captured = await watch(unconfigured);
@@ -937,6 +944,7 @@ try {
       "PASS unconfigured PostHog: no ingestion requests or browser storage for a normal visitor.",
     );
   }
+  await checkStateMachines(browser, url, report);
   const notFoundPage = await browser.newPage();
   const missing = await notFoundPage.goto(`${url}/a-page-that-does-not-exist/`);
   assert.equal(missing.status(), 404);

@@ -20,7 +20,7 @@ BuildMyX is linked to the existing [Convex cloud development deployment `tacit-b
 
 Run `npm run dev:convex` alongside the Next.js development server. To sync once with Convex's TypeScript checks enabled, run `npx convex dev --once --typecheck enable --tail-logs disable`. The generated bindings under `convex/_generated/` and the backend TypeScript configuration in `convex/tsconfig.json` are committed.
 
-The schema in `convex/schema.ts` is empty, with no tables or application functions yet. Enquiries continue to use the existing Next.js endpoint until enquiry handling is implemented in Convex. For the live Vercel website, configure a production deployment's URLs; automated Convex deployments also need a private deployment key in Vercel's secret settings. Convex account credentials stay outside the repository.
+Convex stores delivery metadata in `enquiryDeliveries` and protected rate-limit keys in `enquiryRateKeys`. Internal mutations implement the delivery ledger; an HMAC-authenticated HTTP action is the server entry point. The official rate-limiter component enforces shared limits. Enquiry text stays in the browser/request and email provider; it is not stored in these tables. The Next.js endpoint orchestrates email sending. Production uses a production Convex deployment and its own private service secret. Convex account credentials stay outside the repository.
 
 `npx convex ai-files install` installs the generated guidance at `convex/_generated/ai/guidelines.md` and project skills under `.agents/skills`. The generated `AGENTS.md` and `CLAUDE.md` direct coding agents to that guidance. Rerun the installer when updating Convex's AI instructions.
 
@@ -43,16 +43,19 @@ The site is honest when unconfigured: it validates and copies a message, explici
 
 To enable the included first-party endpoint:
 
-1. Verify a sender domain with Resend, create a scoped sending key, and configure `RESEND_API_KEY`, `ENQUIRY_FROM` and `ENQUIRY_TO` in the hosting secret settings. Example sender syntax: `BuildMyX <enquiries@your-verified-domain>`.
-2. Set `NEXT_PUBLIC_SITE_URL` to the actual HTTPS production origin. Add the verified public contact email, booking and LinkedIn destinations if available; rebuild.
-3. On a trusted reverse proxy, configure an edge rate limit for `POST /api/enquiry`. The included per-instance backstop permits five attempts per ten minutes per forwarded IP (maximum 1,000 active counters); it is not a distributed quota. Ensure the host overwrites forwarded-IP headers. For multiple replicas, use an edge/shared limit.
-4. Before advertising sending, submit one controlled test with addresses you own. Verify the business inbox, Reply-To, visitor receipt, failure message and provider delivery logs. Automated tests mock the provider and send no real email.
+1. Deploy the Convex functions to the intended backend. The existing `tacit-badger-38` deployment is for development. Use a production deployment for the live website.
+2. Generate a random service secret with at least 32 characters. Set `ENQUIRY_SERVICE_SECRET` in both that Convex deployment and Vercel's server environment. Set `ENQUIRY_CONVEX_SITE_URL` in Vercel to that deployment's `https://…convex.site` HTTP actions URL. Keep the secret out of public variables and Git.
+3. Verify a Resend sender domain and configure server-only `RESEND_API_KEY`, `ENQUIRY_FROM` and `ENQUIRY_TO`. Example sender: `BuildMyX <enquiries@your-verified-domain>`.
+4. Set `NEXT_PUBLIC_SITE_URL` to the actual production origin. Ensure the host overwrites forwarded-IP headers. An edge request limit remains useful before application processing; the Convex component supplies the shared application limit of five attempts per aligned ten-minute window, plus a cap on new rate keys.
+5. Rebuild and verify with addresses you own before advertising sending. Automated checks simulate email responses and do not send mail. If Vercel should also deploy the backend on builds, configure its build command as `npx convex deploy --cmd 'npm run build'` with the intended deployment's private `CONVEX_DEPLOY_KEY` in the host's secrets.
 
-`GET /api/enquiry` reveals only whether the three private delivery settings are present. The browser then changes to “Send enquiry”. Credentials and addresses never leave through that capability response. Presence does not prove a sender is verified; actual submission checks the provider response.
+`GET /api/enquiry` enables sending only when email settings and the signed metadata service are available. A backend outage returns 503 so the browser can retry discovery; absent configuration offers copying. Credentials and destinations are not exposed in the capability response. Configuration does not prove that the sender or inbox has been verified.
 
-`POST /api/enquiry` requires a same-origin JSON request and validates the six fields, their types, URL schemes and a 12 KB streamed body limit on the server. It sends the business notification first, then attempts the visitor receipt. A successful response is `{ delivered: true, reference, confirmationSent }` only after the provider accepts the business message. Acceptance is not final inbox delivery. A receipt failure still acknowledges the accepted enquiry and tells the visitor not to resubmit. Provider failure returns a non-2xx response without exposing provider details; the draft and copy fallback remain available. The client allows 30 seconds for the two provider calls.
+`POST /api/enquiry` enforces origin, media type, a 12 KB streamed limit, field validation and shared abuse controls. It claims the submission ID atomically, binding it to a keyed fingerprint of normalized fields. Concurrent claims cannot send another business message; an ID used with different content is rejected. Cached submissions return their original result. A 60-second lease lets an interrupted request resume; recorded owner acceptance skips the business send on retries. Uncertain owner sends are not automatically retried after 23 hours, before provider deduplication can expire. Delivery metadata is removed after 30 days by scheduled cleanup, so this is a bounded retention policy, not permanent duplicate detection.
 
-The client reuses an `Idempotency-Key` for retries of unchanged values while the form stays mounted. Distinct owner/receipt suffixes let Resend deduplicate those calls within its idempotency retention window. A refresh begins a new submission; this is not permanent duplicate detection. There is no enquiry database or CRM. Inbox/provider retention settings apply to submitted messages; update the public privacy page if changing providers or adding storage.
+Owner and receipt messages retain separate provider idempotency keys. A successful response is `{ delivered: true, reference, confirmationSent }` after provider acceptance of the business message. Receipt failure and metadata-update failure after known acceptance do not turn it into an unsuccessful enquiry. Store failures before sending fail closed. The client allows 45 seconds for bounded provider and ledger operations.
+
+The draft, current operation, normalized retry identity and first-focus analytics latch live in the root provider across client navigation. Each operation owns its snapshot and draft revision; old completions cannot mark edited values submitted or show a missing prepared message. Copy/send feedback is mutually exclusive. Discovery times out after five seconds and can retry; clipboard permission times out after fifteen seconds into manual copying. Refresh starts a new draft; no browser storage is used.
 
 An existing external backend can instead be supplied as `NEXT_PUBLIC_ENQUIRY_ENDPOINT`. It must implement the same JSON confirmation contract, validation and abuse controls. A cross-origin endpoint must allow the actual site origin, JSON content type and `Idempotency-Key` header via CORS. Do not point this setting at an untrusted service.
 
@@ -101,3 +104,9 @@ The browser check starts the actual Next production server, uses Chromium, then 
 - `app/globals.css`, `app/improvements.css`: warm ivory/forest visual system and responsive layouts.
 
 Fonts are self-hosted with licences in `public/fonts/`. The initial accessible hero remains stable while only the visible suffix animates. Manual selection pauses rotation, Resume is explicit, hover/focus pauses and reduced motion starts paused.
+
+## State transitions and verification
+
+`lib/enquiry-machine.ts`, `lib/hero-machine.ts` and `lib/reporting-machine.ts` define typed transitions. Report Reset restores the sample and default explanation; stale outputs remain blocked from export and provenance. Hero run intent is separate from hover/focus suspension and motion preference. Explicit Resume can override reduced-motion stopping while CSS transitions remain disabled. FAQ and media controls retain their native browser behavior.
+
+Run `npm test` for Node and Convex tests, `npm run build` for the production build, and `npm run test:browser` for the full browser journeys and delayed-response/navigation regressions. The original inventory and remediation mapping are in `docs/implicit-state-machines.md`.

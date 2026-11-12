@@ -5,27 +5,7 @@ import {
   type AnalyticsEvent,
 } from "./analytics";
 
-/** Only public cloud ingestion hosts are accepted; no credentials belong here. */
-export function posthogDestination(token: string | null, host: string | null) {
-  if (!token || !/^phc_[a-z0-9_-]+$/i.test(token) || !host) return null;
-  try {
-    const url = new URL(host);
-    if (
-      !["https://us.i.posthog.com", "https://eu.i.posthog.com"].includes(
-        url.origin,
-      ) ||
-      url.username ||
-      url.password ||
-      url.search ||
-      url.hash ||
-      url.pathname !== "/"
-    )
-      return null;
-    return { token, host: url.origin };
-  } catch {
-    return null;
-  }
-}
+export { posthogDestination } from "./analytics-destination";
 
 /** Strip SDK URL/referrer defaults, person properties and all unapproved events. */
 export function sanitizePosthogEvent(

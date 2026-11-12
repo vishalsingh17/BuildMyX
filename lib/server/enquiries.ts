@@ -1,14 +1,26 @@
 import { randomUUID } from "node:crypto";
-import { prepareEnquiry, validateEnquiry, type Enquiry } from "../enquiry";
+import {
+  normalizeEnquiry,
+  prepareEnquiry,
+  validateEnquiry,
+  type Enquiry,
+} from "../enquiry";
 import { siteConfig } from "../site-config";
+import {
+  convexDeliveryStore,
+  deliveryHash,
+  deliveryStoreConfig,
+} from "./delivery-store";
+import type { DeliveryStore } from "../delivery-protocol";
 
 type DeliveryConfig = { apiKey: string; from: string; to: string };
 type Dependencies = {
   config?: DeliveryConfig | null;
   fetch?: typeof fetch;
-  allowRequest?: (key: string) => boolean;
+  allowRequest?: (key: string) => boolean | Promise<boolean>;
+  store?: DeliveryStore | null;
+  secret?: string;
 };
-const requestWindows = new Map<string, { count: number; expires: number }>();
 const MAX_BODY = 12_000;
 
 export function deliveryConfig(): DeliveryConfig | null {
@@ -18,27 +30,10 @@ export function deliveryConfig(): DeliveryConfig | null {
   return apiKey && from && to ? { apiKey, from, to } : null;
 }
 
-/** A per-instance backstop; the deployment should also enforce an edge rate limit. */
-function allowRequest(key: string): boolean {
-  const now = Date.now();
-  for (const [entry, value] of requestWindows)
-    if (value.expires <= now) requestWindows.delete(entry);
-  const current = requestWindows.get(key);
-  if (current && current.count >= 5) return false;
-  if (!current && requestWindows.size >= 1000) return false;
-  if (!current) {
-    const expires = now + 10 * 60_000;
-    const cleanup = setTimeout(() => {
-      if (requestWindows.get(key)?.expires === expires)
-        requestWindows.delete(key);
-    }, expires - now);
-    cleanup.unref();
-  }
-  requestWindows.set(key, {
-    count: (current?.count ?? 0) + 1,
-    expires: current?.expires ?? now + 10 * 60_000,
-  });
-  return true;
+export async function deliveryAvailable(): Promise<boolean> {
+  if (!deliveryConfig()) return false;
+  const store = convexDeliveryStore();
+  return store ? store.ready() : false;
 }
 
 function json(data: object, status: number) {
@@ -59,6 +54,16 @@ export async function handleEnquiry(
       { error: "Sending is not configured. Please use the copy option." },
       503,
     );
+  const store =
+    dependencies.store === undefined
+      ? convexDeliveryStore()
+      : dependencies.store;
+  const secret = dependencies.secret ?? deliveryStoreConfig()?.secret;
+  if (!store || !secret)
+    return json(
+      { error: "Sending is unavailable. Please use the copy option." },
+      503,
+    );
   const origin = request.headers.get("origin");
   const expected = siteConfig.canonicalUrl
     ? new URL(siteConfig.canonicalUrl).origin
@@ -70,10 +75,23 @@ export async function handleEnquiry(
   const declaredSize = Number(request.headers.get("content-length") ?? 0);
   if (declaredSize > MAX_BODY)
     return json({ error: "Please keep your enquiry short." }, 413);
-  const key = (
+  const address = (
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown"
   ).slice(0, 100);
-  if (!(dependencies.allowRequest ?? allowRequest)(key))
+  const key = deliveryHash(`rate:${address}`, secret);
+  let allowed: boolean;
+  try {
+    allowed = await (dependencies.allowRequest ?? store.allow)(key);
+  } catch {
+    return json(
+      {
+        error:
+          "Sending is temporarily unavailable. Please retry or copy your enquiry.",
+      },
+      503,
+    );
+  }
+  if (!allowed)
     return json(
       {
         error:
@@ -134,6 +152,57 @@ export async function handleEnquiry(
     submittedId && /^[a-z0-9-]{16,80}$/i.test(submittedId)
       ? submittedId
       : randomUUID();
+  const token = randomUUID();
+  const payloadHash = deliveryHash(
+    JSON.stringify(normalizeEnquiry(values)),
+    secret,
+  );
+  let claim;
+  try {
+    claim = await store.claim(id, payloadHash, token);
+  } catch {
+    return json(
+      {
+        error:
+          "Sending is temporarily unavailable. Please retry or copy your enquiry.",
+      },
+      503,
+    );
+  }
+  if (claim.tag === "complete")
+    return json(
+      {
+        delivered: true,
+        reference: id,
+        confirmationSent: claim.confirmationSent,
+      },
+      200,
+    );
+  if (claim.tag === "conflict")
+    return json(
+      {
+        error:
+          "This reference belongs to a different enquiry. Please update the form and try again.",
+      },
+      409,
+    );
+  if (claim.tag === "pending")
+    return json(
+      {
+        error:
+          "This enquiry is already being processed. Please wait before retrying.",
+      },
+      409,
+    );
+  if (claim.tag === "expired")
+    return json(
+      {
+        error:
+          "This earlier submission needs review. Please copy the enquiry and include its reference.",
+        reference: id,
+      },
+      409,
+    );
   const send = async (message: object, suffix: string) => {
     const response = await (dependencies.fetch ?? fetch)(
       "https://api.resend.com/emails",
@@ -148,33 +217,58 @@ export async function handleEnquiry(
         signal: AbortSignal.timeout(12_000),
       },
     );
-    const result = (await response.json().catch(() => null)) as {
-      id?: string;
-    } | null;
-    if (!response.ok || !result?.id)
+    const result: unknown = await response.json().catch(() => null);
+    if (
+      !response.ok ||
+      !result ||
+      typeof result !== "object" ||
+      !("id" in result) ||
+      typeof result.id !== "string" ||
+      !result.id ||
+      result.id.length > 256
+    )
       throw new Error("Email service did not accept the message.");
     return result.id;
   };
-  try {
-    await send(
-      {
-        from: config.from,
-        to: [config.to],
-        reply_to: values.email,
-        subject: `BuildMyX enquiry: ${values.interest}`,
-        text: `${prepareEnquiry(values)}\n\nReference: ${id}`,
-      },
-      "owner",
-    );
-  } catch {
-    return json(
-      {
-        error:
-          "Sending could not be confirmed. Your details are still here; please retry or copy your enquiry.",
-      },
-      502,
-    );
-  }
+  if (!claim.ownerAccepted)
+    try {
+      const providerId = await send(
+        {
+          from: config.from,
+          to: [config.to],
+          reply_to: values.email,
+          subject: `BuildMyX enquiry: ${values.interest}`,
+          text: `${prepareEnquiry(values)}\n\nReference: ${id}`,
+        },
+        "owner",
+      );
+      // Provider acceptance is already a successful enquiry, even if the record update fails.
+      try {
+        if (!(await store.acceptOwner(id, token, providerId)))
+          return json(
+            { delivered: true, reference: id, confirmationSent: false },
+            200,
+          );
+      } catch {
+        return json(
+          { delivered: true, reference: id, confirmationSent: false },
+          200,
+        );
+      }
+    } catch {
+      try {
+        await store.uncertain(id, token);
+      } catch {
+        /* The durable lease expires; retries retain their provider key. */
+      }
+      return json(
+        {
+          error:
+            "Sending could not be confirmed. Your details are still here; please retry or copy your enquiry.",
+        },
+        502,
+      );
+    }
   let confirmationSent = false;
   try {
     await send(
@@ -190,6 +284,11 @@ export async function handleEnquiry(
     confirmationSent = true;
   } catch {
     /* The owner message succeeded. Do not invite a duplicate submission. */
+  }
+  try {
+    await store.complete(id, token, confirmationSent);
+  } catch {
+    /* Owner acceptance stays durable; a retry resumes without resending it. */
   }
   return json({ delivered: true, reference: id, confirmationSent }, 200);
 }

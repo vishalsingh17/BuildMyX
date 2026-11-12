@@ -10,6 +10,18 @@ export type Enquiry = {
 };
 export type EnquiryErrors = Partial<Record<keyof Enquiry, string>>;
 
+/** Match server normalization so retries of the same message keep one identity. */
+export function normalizeEnquiry(values: Enquiry): Enquiry {
+  return {
+    name: values.name.trim(),
+    email: values.email.trim(),
+    interest: values.interest,
+    description: values.description.trim(),
+    company: values.company.trim(),
+    links: values.links.trim(),
+  };
+}
+
 /** Reusable by a delivery endpoint: never rely on browser validation alone. */
 export function validateEnquiry(values: Enquiry): EnquiryErrors {
   const errors: EnquiryErrors = {};
@@ -73,6 +85,7 @@ export async function deliverEnquiry(
   endpoint: string,
   values: Enquiry,
   submissionId: string = crypto.randomUUID(),
+  signal?: AbortSignal,
 ): Promise<{ reference?: string; confirmationSent: boolean }> {
   let response: Response;
   try {
@@ -83,7 +96,9 @@ export async function deliverEnquiry(
         "Idempotency-Key": submissionId,
       },
       body: JSON.stringify(values),
-      signal: AbortSignal.timeout(30000),
+      signal: signal
+        ? AbortSignal.any([signal, AbortSignal.timeout(45000)])
+        : AbortSignal.timeout(45000),
     });
   } catch {
     throw new Error(

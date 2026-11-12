@@ -68,11 +68,14 @@ export default function Privacy() {
           <p>
             Enquiries are used to assess and respond to your request. Submitted
             messages are handled by the business inbox and its email providers
-            under their retention settings. The application keeps no enquiry
-            database. The first-party endpoint temporarily holds a request
-            counter associated with an IP address in server memory for up to ten
-            minutes to limit abuse. Hosting and email providers may retain
-            technical logs under their own settings.
+            under their retention settings. To prevent duplicate sends, Convex
+            keeps a random submission reference, a protected fingerprint of the
+            message, email-provider references and delivery status for 30 days.
+            Message contents are not stored in that database. Shared abuse
+            controls use a protected fingerprint of the network address; the raw
+            address is not stored there. Inactive abuse-control records are
+            removed by scheduled cleanup. Hosting, database and email providers
+            may retain technical logs under their own settings.
           </p>
         </section>
         <section aria-labelledby="privacy-controls">
