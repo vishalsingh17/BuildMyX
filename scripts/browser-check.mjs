@@ -45,7 +45,7 @@ let ready = false;
 for (let attempt = 0; attempt < 100; attempt++) {
   if (server.exitCode !== null) throw new Error(serverLog);
   try {
-    if ((await fetch(url)).ok) {
+    if ((await fetchWithinTimeout(url)).ok) {
       ready = true;
       break;
     }
@@ -76,6 +76,17 @@ const expectedPosthog =
     ? "0"
     : "1");
 const report = [];
+const record = (...messages) => {
+  report.push(...messages);
+  for (const message of messages) console.log(message);
+};
+function fetchWithinTimeout(target, init = {}) {
+  return fetch(target, {
+    ...init,
+    signal: init.signal ?? AbortSignal.timeout(15000),
+  });
+}
+
 function decodePosthog(body) {
   if (!body) return [];
   const text = body.toString("utf8");
@@ -272,11 +283,12 @@ try {
       path: resolve(artifacts, `viewport-${width}.png`),
     });
     await page.close();
-    report.push(
+    record(
       `PASS ${width}px: all variable names fit, BuildMy stays stationary, no horizontal overflow, reduced-motion transitions disabled.`,
     );
   }
 
+  console.log("Checking timed hero behavior, CTAs and enquiry fields...");
   const context = await browser.newContext({
     viewport: { width: 1440, height: 1000 },
     permissions: ["clipboard-read", "clipboard-write"],
@@ -324,7 +336,7 @@ try {
   await page.locator("#name").focus();
   await page.clock.runFor(8000);
   assert.equal(await activeWord(page), "Team.");
-  report.push(
+  record(
     "PASS hero: X initial state, automatic AI/Career/Team states, persistent manual selection, pause/resume, hover and focus pauses.",
   );
 
@@ -379,7 +391,7 @@ try {
       "person@example.com",
     );
   }
-  report.push(
+  record(
     "PASS CTAs: every hero and service CTA selects its matching interest, reaches the enquiry section and preserves existing inputs.",
   );
 
@@ -433,7 +445,7 @@ try {
     await page.locator("#description").inputValue(),
     "We need help with a repeatable reporting workflow.",
   );
-  report.push(
+  record(
     "PASS form: invalid email is identified and focused; values retained; actual clipboard copy confirmed; rejected clipboard shows a focused, selected manual-copy message.",
   );
 
@@ -521,10 +533,10 @@ try {
       .evaluate((node) => document.activeElement === node),
     true,
   );
-  report.push(
+  record(
     "PASS accessibility: mobile menu keyboard/touch disclosure, expanded states, Escape/focus return, selected-section focus, skip link, visible keyboard focus, FAQ keyboard activation, internal links.",
   );
-  report.push(
+  record(
     "PASS WCAG contrast thresholds for visible text at every tested width, plus input placeholder and control boundary contrast.",
   );
   await mobile.close();
@@ -582,7 +594,7 @@ try {
         });
       await routePage.close();
     }
-    report.push(
+    record(
       `PASS ${path}: production entry, page metadata, one shared header/footer, readable contrast and no overflow at 320/390/768/1440px.`,
     );
   }
@@ -666,7 +678,7 @@ try {
     .evaluateAll((elements) => elements.map((element) => element.href)))
     if (link.startsWith(url)) linksToAudit.add(link);
   for (const target of linksToAudit) {
-    const response = await fetch(target);
+    const response = await fetchWithinTimeout(target);
     assert.equal(response.status, 200, `Broken internal page: ${target}`);
     const hash = new URL(target).hash;
     if (hash) {
@@ -684,6 +696,9 @@ try {
     }
   }
   await journey.close();
+  console.log(
+    "Checking report calculations, downloads and walkthrough playback...",
+  );
   const demo = await browser.newPage({
     viewport: { width: 1440, height: 1000 },
     reducedMotion: "reduce",
@@ -765,7 +780,20 @@ try {
   await walkthrough.scrollIntoViewIfNeeded();
   await walkthrough.evaluate(async (video) => {
     video.muted = true;
-    await video.play();
+    await Promise.race([
+      video.play(),
+      new Promise((_, reject) =>
+        setTimeout(
+          () =>
+            reject(
+              new Error(
+                "Walkthrough playback did not start within 10 seconds.",
+              ),
+            ),
+          10000,
+        ),
+      ),
+    ]);
   });
   await expect
     .poll(() => walkthrough.evaluate((video) => video.currentTime))
@@ -803,15 +831,17 @@ try {
     "don’t need to submit again",
   );
   await sending.close();
-  report.push(
+  record(
     "PASS working demo: real validation, editable calculations, stale-result protection, source navigation, CSV download, walkthrough playback and privacy-safe event hooks. PASS unconfigured API and mocked live confirmation flow; no real emails sent.",
   );
   assert.equal(
-    (await fetch(`${url}/opengraph-image`)).headers.get("content-type"),
+    (await fetchWithinTimeout(`${url}/opengraph-image`)).headers.get(
+      "content-type",
+    ),
     "image/png",
   );
-  assert.equal((await fetch(`${url}/sitemap.xml`)).status, 200);
-  assert.equal((await fetch(`${url}/robots.txt`)).status, 200);
+  assert.equal((await fetchWithinTimeout(`${url}/sitemap.xml`)).status, 200);
+  assert.equal((await fetchWithinTimeout(`${url}/robots.txt`)).status, 200);
   const humanUserAgent =
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36";
   const simulateHumanVisitor = () => {
@@ -919,7 +949,7 @@ try {
       );
       await privatePage.close();
     }
-    report.push(
+    record(
       "PASS configured PostHog SDK: standard page views, required ingestion token, service/CTA funnel correlation, anonymous refresh reset, no form/query/referrer leakage, no cookies or browser storage, and both DNT/GPC opt-outs. All PostHog requests mocked; no test events sent remotely.",
     );
   }
@@ -941,11 +971,12 @@ try {
       0,
     );
     await unconfigured.close();
-    report.push(
+    record(
       "PASS unconfigured PostHog: no ingestion requests or browser storage for a normal visitor.",
     );
   }
-  await checkStateMachines(browser, url, report);
+  console.log("Checking delayed responses, retries and state transitions...");
+  await checkStateMachines(browser, url, { push: record });
   const notFoundPage = await browser.newPage();
   const missing = await notFoundPage.goto(`${url}/a-page-that-does-not-exist/`);
   assert.equal(missing.status(), 404);
@@ -953,21 +984,21 @@ try {
     "Let’s find yournext step.",
   );
   await notFoundPage.close();
-  report.push(
+  record(
     "PASS cross-page enquiry journeys: manual hero selection survives navigation; service and developer routes preselect the right interest and preserve every draft field; privacy round trip preserves the draft; refresh clears it; no browser storage; all direct enquiry URLs work.",
   );
-  report.push(
+  record(
     "PASS homepage proof links connect to the working sample-data reporting workflow.",
   );
-  report.push(
+  record(
     "PASS all internal page and anchor links, route metadata and custom 404 recovery.",
   );
   assert.deepEqual(failures, [], "Browser errors or missing assets");
-  report.push(
+  record(
     "PASS no browser console errors, page errors, hydration errors or missing assets.",
   );
   await writeFile(resolve(artifacts, "report.txt"), report.join("\n") + "\n");
-  console.log(report.join("\n"));
+  console.log("Browser validation complete.");
 } finally {
   await browser.close();
   server.kill("SIGTERM");

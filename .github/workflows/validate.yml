@@ -35,6 +35,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run build
       - run: npm run test:browser
+        timeout-minutes: 8
 
   release-source:
     name: Release source
