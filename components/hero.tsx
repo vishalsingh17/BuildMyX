@@ -9,6 +9,7 @@ import {
   type Mode,
 } from "@/lib/site-config";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
 import { Arrow } from "./icons";
 import { useEnquiry } from "./enquiry-provider";
 
@@ -159,6 +160,10 @@ export function Hero({
               setRunning(false);
               setHeroPreference({ mode, paused: true });
               onInterest(content.interest as Interest);
+              track("cta_click", {
+                interest: content.interest as Interest,
+                placement: "hero",
+              });
             }}
           >
             {content.cta}
@@ -166,7 +171,11 @@ export function Hero({
           </a>
           <Link
             className="text-link hero-detail-link"
-            href={servicePaths[mode === "X" ? "AI" : mode]}
+            href={
+              mode === "X" || mode === "AI"
+                ? "/projects/reporting-pipeline/"
+                : servicePaths[mode]
+            }
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             onFocus={() => setFocused(true)}
@@ -176,7 +185,7 @@ export function Hero({
               ? "Explore future learning"
               : mode === "Team"
                 ? "How developer sourcing works"
-                : "See what an AI pilot includes"}
+                : "Try a working reporting example"}
             <Arrow />
           </Link>
         </div>

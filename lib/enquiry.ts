@@ -72,14 +72,18 @@ export function prepareEnquiry(values: Enquiry): string {
 export async function deliverEnquiry(
   endpoint: string,
   values: Enquiry,
-): Promise<void> {
+  submissionId: string = crypto.randomUUID(),
+): Promise<{ reference?: string; confirmationSent: boolean }> {
   let response: Response;
   try {
     response = await fetch(endpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Idempotency-Key": submissionId,
+      },
       body: JSON.stringify(values),
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(30000),
     });
   } catch {
     throw new Error(
@@ -98,4 +102,12 @@ export async function deliverEnquiry(
     throw new Error(
       "Your enquiry wasn’t confirmed as delivered. Your details are still here. Please try again or copy your enquiry below.",
     );
+  return {
+    reference:
+      "reference" in result && typeof result.reference === "string"
+        ? result.reference
+        : undefined,
+    confirmationSent:
+      "confirmationSent" in result && result.confirmationSent === true,
+  };
 }

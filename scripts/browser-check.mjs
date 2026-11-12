@@ -2,44 +2,58 @@ import { chromium, expect } from "@playwright/test";
 import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
-import { resolve, extname } from "node:path";
+import { resolve } from "node:path";
+import { spawn } from "node:child_process";
 
-// Exercise the exported production page through HTTP, including its real assets.
-const root = resolve("out");
+// Exercise the actual production Next.js server, including server endpoints.
 const artifacts = resolve(process.env.QA_OUTPUT ?? "work/browser-qa");
 await mkdir(artifacts, { recursive: true });
-const mime = {
-  ".html": "text/html",
-  ".js": "text/javascript",
-  ".css": "text/css",
-  ".svg": "image/svg+xml",
-  ".ttf": "font/ttf",
-  ".woff2": "font/woff2",
-  ".txt": "text/plain",
-  ".json": "application/json",
-  ".png": "image/png",
-};
-const server = createServer(async (req, res) => {
+const reservation = createServer();
+await new Promise((done) => reservation.listen(0, "127.0.0.1", done));
+const port = reservation.address().port;
+await new Promise((done) => reservation.close(done));
+const url = `http://127.0.0.1:${port}`;
+const server = spawn(
+  process.execPath,
+  [
+    "node_modules/next/dist/bin/next",
+    "start",
+    "-H",
+    "127.0.0.1",
+    "-p",
+    String(port),
+  ],
+  {
+    env: {
+      ...process.env,
+      NEXT_TELEMETRY_DISABLED: "1",
+      RESEND_API_KEY: "",
+      ENQUIRY_FROM: "",
+      ENQUIRY_TO: "",
+    },
+    stdio: ["ignore", "pipe", "pipe"],
+  },
+);
+let serverLog = "";
+for (const stream of [server.stdout, server.stderr])
+  stream.on("data", (chunk) => {
+    serverLog = (serverLog + chunk.toString()).slice(-8000);
+  });
+let ready = false;
+for (let attempt = 0; attempt < 100; attempt++) {
+  if (server.exitCode !== null) throw new Error(serverLog);
   try {
-    const pathname = decodeURIComponent(
-      new URL(req.url, "http://localhost").pathname,
-    );
-    let file = resolve(root, `.${pathname}`);
-    if (!file.startsWith(`${root}/`) && file !== root)
-      throw new Error("Invalid path");
-    if ((await stat(file)).isDirectory()) file = resolve(file, "index.html");
-    const data = await readFile(file);
-    res.writeHead(200, {
-      "Content-Type": mime[extname(file)] ?? "application/octet-stream",
-    });
-    res.end(data);
-  } catch {
-    res.writeHead(404, { "Content-Type": "text/html" });
-    res.end(await readFile(resolve(root, "404.html")).catch(() => "Not found"));
-  }
-});
-await new Promise((done) => server.listen(0, "127.0.0.1", done));
-const url = `http://127.0.0.1:${server.address().port}`;
+    if ((await fetch(url)).ok) {
+      ready = true;
+      break;
+    }
+  } catch {}
+  await new Promise((done) => setTimeout(done, 200));
+}
+if (!ready) {
+  server.kill();
+  throw new Error(`Production server did not start: ${serverLog}`);
+}
 let executablePath = process.env.CHROMIUM_EXECUTABLE_PATH;
 if (!executablePath) {
   try {
@@ -54,7 +68,15 @@ const browser = await chromium.launch({
 });
 const failures = [];
 const report = [];
-function watch(page) {
+async function watch(page) {
+  await page.route("**/*", (route) => {
+    if (
+      route.request().method() === "POST" &&
+      new URL(route.request().url()).origin !== url
+    )
+      return route.abort("blockedbyclient");
+    return route.continue();
+  });
   page.on("pageerror", (error) => failures.push(error.message));
   page.on("console", (message) => {
     if (message.type() === "error") failures.push(message.text());
@@ -144,7 +166,7 @@ try {
       viewport: { width, height: 1000 },
       reducedMotion: "reduce",
     });
-    watch(page);
+    await watch(page);
     await page.goto(url);
     await page.evaluate(() => document.fonts.ready);
     assert.equal(await activeWord(page), "X.");
@@ -205,7 +227,7 @@ try {
     permissions: ["clipboard-read", "clipboard-write"],
   });
   const page = await context.newPage();
-  watch(page);
+  await watch(page);
   await page.clock.install({ time: new Date("2026-11-11T00:00:00Z") });
   await page.clock.pauseAt(new Date("2026-11-11T00:00:00Z"));
   await page.goto(url);
@@ -393,7 +415,7 @@ try {
     viewport: { width: 390, height: 844 },
     reducedMotion: "reduce",
   });
-  watch(mobile);
+  await watch(mobile);
   await mobile.goto(url);
   const menu = mobile.getByRole("button", { name: "Open navigation" });
   await menu.click();
@@ -453,11 +475,21 @@ try {
   await mobile.close();
 
   const routes = [
-    ["/services/ai/", "BuildMyAI"],
-    ["/services/career/", "BuildMyCareer"],
-    ["/services/team/", "BuildMyTeam"],
+    ["/services/ai/", "Reporting automation & AI development | BuildMyAI"],
+    [
+      "/services/career/",
+      "Practical data learning & career support | BuildMyCareer",
+    ],
+    [
+      "/services/team/",
+      "Developer sourcing & technical screening | BuildMyTeam",
+    ],
     ["/developers/", "Developer introductions"],
     ["/privacy/", "Privacy & enquiries"],
+    ["/projects/", "Working examples of reporting automation"],
+    ["/projects/reporting-pipeline/", "Try a checked reporting workflow"],
+    ["/resources/hiring-brief/", "Prepare a developer hiring brief"],
+    ["/resources/reporting-readiness/", "Reporting automation readiness brief"],
   ];
   const linksToAudit = new Set();
   for (const [path, title] of routes) {
@@ -466,7 +498,7 @@ try {
         viewport: { width, height: 1000 },
         reducedMotion: "reduce",
       });
-      watch(routePage);
+      await watch(routePage);
       const response = await routePage.goto(`${url}${path}`);
       assert.equal(response.status(), 200);
       await routePage.evaluate(() => document.fonts.ready);
@@ -504,7 +536,7 @@ try {
     viewport: { width: 1440, height: 1000 },
     reducedMotion: "reduce",
   });
-  watch(journey);
+  await watch(journey);
   await journey.goto(url);
   await journey.evaluate(() => document.fonts.ready);
   await journey.getByRole("button", { name: "Career", exact: true }).click();
@@ -535,7 +567,7 @@ try {
     await expect(
       journey.locator(".desktop-nav a[aria-current='page']"),
     ).toHaveText(`BuildMy${mode}`);
-    await journey.locator("main .detail-actions a.button").click();
+    await journey.locator("main .detail-actions a.button").first().click();
     await expect(journey.locator("#interest")).toHaveValue(value);
     await expect(journey.locator("#enquire")).toBeFocused();
     assert.equal(new URL(journey.url()).hash, "#enquire");
@@ -547,7 +579,7 @@ try {
     .getByRole("link", { name: "How developer introductions work" })
     .click();
   await expect(journey).toHaveURL(`${url}/developers/`);
-  await journey.locator("main .detail-actions a.button").click();
+  await journey.locator("main .detail-actions a.button").first().click();
   await expect(journey.locator("#interest")).toHaveValue("developer");
   await journey.locator(".form-privacy a").click();
   await expect(journey).toHaveURL(`${url}/privacy/`);
@@ -555,28 +587,6 @@ try {
   await expect(journey.locator("#interest")).toHaveValue("developer");
   for (const [field, expected] of Object.entries(draft))
     await expect(journey.locator(`#${field}`)).toHaveValue(expected);
-  await journey
-    .locator(".example-controls")
-    .getByRole("button", { name: "Explain", exact: true })
-    .click();
-  await expect(journey.locator(".example-question")).toHaveText(
-    "“What information is behind that change?”",
-  );
-  await expect(
-    journey.locator(".example-controls button[aria-pressed='true']"),
-  ).toHaveText("Explain");
-  await journey
-    .locator(".example-controls")
-    .getByRole("button", { name: "Review", exact: true })
-    .focus();
-  await journey.keyboard.press("Enter");
-  await expect(journey.locator(".example-question")).toHaveText(
-    "“What needs a closer look?”",
-  );
-  assert.equal(
-    await journey.locator(".example-response").getAttribute("aria-live"),
-    "polite",
-  );
   await journey.reload();
   await expect(journey.locator("#name")).toHaveValue("");
   assert.equal(
@@ -619,6 +629,134 @@ try {
     }
   }
   await journey.close();
+  const demo = await browser.newPage({
+    viewport: { width: 1440, height: 1000 },
+    reducedMotion: "reduce",
+  });
+  await watch(demo);
+  await demo.goto(`${url}/projects/reporting-pipeline/`);
+  await demo.evaluate(() => {
+    window.__events = [];
+    window.addEventListener("buildmyx:analytics", (event) =>
+      window.__events.push(event.detail),
+    );
+  });
+  await demo.getByRole("button", { name: "Run checks & report" }).click();
+  await expect(demo.locator(".report-totals")).toContainText("£4,200.00");
+  await expect(demo.locator(".report-totals")).toContainText("£5,000.00");
+  await expect(demo.locator(".computed-answer")).toContainText("19.0%");
+  await demo
+    .getByRole("button", { name: "View 5 source rows" })
+    .first()
+    .click();
+  await expect(demo.locator("#source-0")).toBeFocused();
+  assert.equal(await demo.locator(".source-highlight").count(), 5);
+  await demo.getByRole("button", { name: "Review issues" }).click();
+  await expect(demo.locator(".computed-answer")).toContainText(
+    "Duplicate record ID",
+  );
+  await demo.getByRole("button", { name: "Row 13 / R007" }).click();
+  await expect(demo.locator("#source-12")).toBeFocused();
+  await demo
+    .getByRole("textbox", { name: "Amount for row 1, R001", exact: true })
+    .fill("1500.00");
+  await expect(
+    demo.getByRole("button", { name: "Download checked report" }),
+  ).toBeDisabled();
+  await expect(demo.locator(".demo-warning")).toContainText("Inputs changed");
+  await demo.getByRole("button", { name: "Run checks & report" }).click();
+  await expect(demo.locator(".report-totals")).toContainText("£4,500.00");
+  await demo.setViewportSize({ width: 320, height: 900 });
+  assert.ok(
+    await demo.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  );
+  await demo.screenshot({
+    path: resolve(artifacts, "reporting-results-320.png"),
+    fullPage: true,
+  });
+  await demo.setViewportSize({ width: 1440, height: 1000 });
+  await demo.screenshot({
+    path: resolve(artifacts, "reporting-results-1440.png"),
+    fullPage: true,
+  });
+  const downloadEvent = demo.waitForEvent("download");
+  await demo.getByRole("button", { name: "Download checked report" }).click();
+  const download = await downloadEvent;
+  assert.match(await readFile(await download.path(), "utf8"), /4500.00/);
+  assert.ok(
+    (await demo.evaluate(() => window.__events)).some(
+      (event) => event.event === "example_run",
+    ),
+  );
+  assert.ok(
+    (await demo.evaluate(() => window.__events)).every(
+      (event) => !JSON.stringify(event).includes("1500.00"),
+    ),
+  );
+  await demo.getByRole("button", { name: "Reset sample" }).click();
+  await expect(demo.locator(".demo-empty")).toBeVisible();
+  assert.equal((await demo.request.get(`${url}/api/enquiry`)).status(), 200);
+  assert.equal(
+    (await (await demo.request.get(`${url}/api/enquiry`)).json()).enabled,
+    false,
+  );
+  assert.equal(
+    (await demo.request.post(`${url}/api/enquiry`, { data: {} })).status(),
+    503,
+  );
+  const walkthrough = demo.locator("video");
+  await walkthrough.scrollIntoViewIfNeeded();
+  await walkthrough.evaluate(async (video) => {
+    video.muted = true;
+    await video.play();
+  });
+  await expect
+    .poll(() => walkthrough.evaluate((video) => video.currentTime))
+    .toBeGreaterThan(0.25);
+  assert.equal(await walkthrough.evaluate((video) => video.videoWidth), 1280);
+  await walkthrough.evaluate((video) => video.pause());
+  await demo.close();
+  const sending = await browser.newPage();
+  await watch(sending);
+  await sending.route("**/api/enquiry", async (route) =>
+    route.fulfill({
+      json:
+        route.request().method() === "GET"
+          ? { enabled: true }
+          : {
+              delivered: true,
+              reference: "test-reference",
+              confirmationSent: false,
+            },
+    }),
+  );
+  await sending.goto(`${url}/?interest=hiring#enquire`);
+  await sending.locator("#name").fill("Example Visitor");
+  await sending.locator("#email").fill("visitor@example.com");
+  await sending
+    .locator("#description")
+    .fill("We need a developer for a reporting workflow.");
+  await sending
+    .getByRole("button", { name: "Send enquiry", exact: true })
+    .click();
+  await expect(sending.locator(".form-status")).toContainText(
+    "submitted to BuildMyX",
+  );
+  await expect(sending.locator(".form-status")).toContainText(
+    "don’t need to submit again",
+  );
+  await sending.close();
+  report.push(
+    "PASS working demo: real validation, editable calculations, stale-result protection, source navigation, CSV download, walkthrough playback and privacy-safe event hooks. PASS unconfigured API and mocked live confirmation flow; no real emails sent.",
+  );
+  assert.equal(
+    (await fetch(`${url}/opengraph-image`)).headers.get("content-type"),
+    "image/png",
+  );
+  assert.equal((await fetch(`${url}/sitemap.xml`)).status, 200);
+  assert.equal((await fetch(`${url}/robots.txt`)).status, 200);
   const notFoundPage = await browser.newPage();
   const missing = await notFoundPage.goto(`${url}/a-page-that-does-not-exist/`);
   assert.equal(missing.status(), 404);
@@ -630,7 +768,7 @@ try {
     "PASS cross-page enquiry journeys: manual hero selection survives navigation; service and developer routes preselect the right interest and preserve every draft field; privacy round trip preserves the draft; refresh clears it; no browser storage; all direct enquiry URLs work.",
   );
   report.push(
-    "PASS reporting example: click and keyboard selection update the clearly labelled illustrative workflow and accessible response.",
+    "PASS homepage proof links connect to the working sample-data reporting workflow.",
   );
   report.push(
     "PASS all internal page and anchor links, route metadata and custom 404 recovery.",
@@ -643,5 +781,5 @@ try {
   console.log(report.join("\n"));
 } finally {
   await browser.close();
-  await new Promise((done) => server.close(done));
+  server.kill("SIGTERM");
 }

@@ -135,7 +135,7 @@ em {
 }
 .eyebrow,
 .small-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1.5;
   letter-spacing: 0.12em;
@@ -186,7 +186,7 @@ em {
   min-height: 43px;
   padding: 10px 17px;
   gap: 24px;
-  font-size: 11px;
+  font-size: 12px;
 }
 .text-link {
   display: inline-flex;
@@ -254,7 +254,7 @@ em {
   margin-right: 22px;
 }
 .desktop-nav a {
-  font-size: 11px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   min-height: 44px;
@@ -284,7 +284,7 @@ em {
   border-bottom: 1px solid var(--rule);
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: 15px;
 }
 .hero {
   padding-top: 47px;
@@ -295,7 +295,7 @@ em {
   align-items: center;
 }
 .hero-location {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
 }
 .hero-wordmark {
@@ -365,7 +365,7 @@ em {
   border: 1px solid var(--rule);
   border-radius: 30px;
   color: var(--ink);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -392,7 +392,7 @@ em {
   opacity: 1;
 }
 .suffix-explanation {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .rotation-control {
@@ -405,7 +405,7 @@ em {
   border: 0;
   padding: 0 2px 0 14px;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .rotation-control span {
   font-size: 15px;
@@ -446,7 +446,7 @@ em {
 }
 .hero-intro .text-link {
   margin-top: 15px;
-  font-size: 11px;
+  font-size: 12px;
 }
 .hero-index {
   border-top: 1px solid var(--rule);
@@ -455,7 +455,7 @@ em {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.095em;
   font-weight: 600;
   color: var(--muted);
@@ -489,7 +489,7 @@ em {
 .section-heading > div > p {
   color: var(--muted);
   margin-top: 19px;
-  font-size: 13px;
+  font-size: 15px;
 }
 .services {
   padding-bottom: 0;
@@ -504,13 +504,13 @@ em {
 }
 .service-number {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   font-weight: 600;
   margin-bottom: 25px;
 }
 .service-category {
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 0.1em;
   font-weight: 600;
   display: flex;
@@ -533,7 +533,7 @@ em {
   display: block;
   color: var(--muted);
   margin-top: 28px;
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   font-weight: 600;
 }
@@ -550,7 +550,7 @@ em {
 .service-detail > p:not(.service-lead):not(.service-footnote) {
   max-width: 570px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.9;
 }
 .offer-list {
@@ -562,12 +562,12 @@ em {
 }
 .offer-list dt {
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15px;
   margin-bottom: 5px;
 }
 .offer-list dd {
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--muted);
   line-height: 1.85;
   max-width: 570px;
@@ -589,10 +589,10 @@ em {
 }
 .pilot-strip .small-label {
   color: var(--green);
-  font-size: 9px;
+  font-size: 12px;
 }
 .pilot-strip p {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .pilot-arrow {
@@ -612,7 +612,7 @@ em {
 }
 .example-description .small-label {
   color: #c9d9c2;
-  font-size: 8px;
+  font-size: 11px;
 }
 .example-description h4 {
   font-size: 28px;
@@ -645,12 +645,12 @@ em {
 }
 .report-source strong {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 .report-source div > span {
   display: block;
-  font-size: 8px;
+  font-size: 11px;
   color: var(--muted);
   margin-top: 3px;
 }
@@ -685,7 +685,7 @@ em {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--green);
   border-bottom: 1px solid #c3cbbd;
   margin-top: 9px;
@@ -710,13 +710,13 @@ em {
   margin: 3px 0 17px;
 }
 .subject-tags span {
-  font-size: 9px;
+  font-size: 12px;
   border: 1px solid var(--rule);
   padding: 4px 9px;
   border-radius: 2px;
 }
 .service-footnote {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 15px;
 }
@@ -739,7 +739,7 @@ em {
 .developer-route .text-link {
   margin-top: 4px;
   min-height: 38px;
-  font-size: 10px;
+  font-size: 12px;
   color: var(--green);
 }
 .approach {
@@ -765,7 +765,7 @@ em {
   justify-content: space-between;
   padding-block: 18px 23px;
   color: var(--green);
-  font-size: 11px;
+  font-size: 12px;
 }
 .step-number > span {
   font-size: 22px;
@@ -777,7 +777,7 @@ em {
 }
 .steps p {
   color: #525e4f;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.9;
 }
 .founder {
@@ -807,7 +807,7 @@ em {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--green);
 }
 .founder-signature strong {
@@ -816,7 +816,7 @@ em {
   font-weight: 600;
 }
 .founder-signature div > span {
-  font-size: 10px;
+  font-size: 12px;
   display: block;
   color: var(--muted);
   margin-top: 2px;
@@ -831,7 +831,7 @@ em {
   margin-bottom: 19px;
 }
 .founder-detail > p:not(.founder-lead) {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   line-height: 1.9;
 }
@@ -840,7 +840,7 @@ em {
   flex-wrap: wrap;
   gap: 18px;
   margin-block: 22px 31px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--green);
 }
@@ -849,7 +849,7 @@ em {
   padding-top: 20px;
 }
 .pipeline-example .small-label {
-  font-size: 8px;
+  font-size: 11px;
   color: var(--muted);
 }
 .pipeline {
@@ -860,7 +860,7 @@ em {
   margin-block: 19px 13px;
 }
 .pipeline span {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
 }
 .pipeline span[aria-hidden] {
@@ -875,7 +875,7 @@ em {
   color: var(--clay);
 }
 .pipeline-example > p {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -911,12 +911,12 @@ em {
   display: none;
 }
 .faq summary h3 {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1.65;
 }
 .faq-index {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
 }
 .faq-toggle {
@@ -950,7 +950,7 @@ details[open] .faq-toggle:after {
 .faq-list details > p {
   padding: 0 20px 24px 32px;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.9;
 }
 .enquiry {
@@ -978,7 +978,7 @@ details[open] .faq-toggle:after {
 }
 .enquiry-subtext {
   color: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 20px;
 }
 .enquiry-mark {
@@ -994,13 +994,13 @@ details[open] .faq-toggle:after {
   width: fit-content;
 }
 .form-note {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-bottom: 27px;
 }
 .form-note span {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 4px;
 }
 .form-grid {
@@ -1017,14 +1017,14 @@ details[open] .faq-toggle:after {
 .field label,
 .prepared-message label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 8px;
 }
 .field label span {
   font-weight: 400;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 .field input,
 .field select,
@@ -1054,7 +1054,7 @@ details[open] .faq-toggle:after {
   display: block;
 }
 .field-hint {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
   color: var(--muted);
   margin: -1px 0 9px;
@@ -1067,7 +1067,7 @@ details[open] .faq-toggle:after {
   display: block;
   color: #963521;
   margin-top: 7px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .form-submit {
   display: flex;
@@ -1080,7 +1080,7 @@ details[open] .faq-toggle:after {
   flex-shrink: 0;
 }
 .form-submit > p {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.8;
   color: var(--muted);
   max-width: 245px;
@@ -1111,7 +1111,7 @@ details[open] .faq-toggle:after {
   color: var(--ink);
 }
 .prepared-message > p {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.8;
   margin-top: 9px;
   color: var(--muted);
@@ -1128,7 +1128,7 @@ details[open] .faq-toggle:after {
   padding-bottom: 35px;
 }
 .footer-top > div > p {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 8px;
 }
@@ -1142,14 +1142,14 @@ details[open] .faq-toggle:after {
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
 }
 .footer-top nav a:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 .back-top {
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.1em;
   display: flex;
@@ -1166,7 +1166,7 @@ details[open] .faq-toggle:after {
   border-top: 1px solid var(--rule);
   padding-top: 18px;
   color: var(--muted);
-  font-size: 8px;
+  font-size: 11px;
 }
 
 @media (min-width: 1500px) {
@@ -1268,7 +1268,7 @@ details[open] .faq-toggle:after {
     gap: 15px;
   }
   .hero-intro p {
-    font-size: 13px;
+    font-size: 15px;
   }
   .section-space {
     padding-block: 75px;
@@ -1288,7 +1288,7 @@ details[open] .faq-toggle:after {
     font-size: 32px;
   }
   .service-category {
-    font-size: 8px;
+    font-size: 11px;
   }
   .service-audience {
     max-width: 210px;
@@ -1372,7 +1372,7 @@ details[open] .faq-toggle:after {
     min-height: 44px;
     padding: 8px 12px;
     gap: 14px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .header-cta svg {
     width: 16px;
@@ -1391,7 +1391,7 @@ details[open] .faq-toggle:after {
     display: none;
   }
   .hero .eyebrow {
-    font-size: 8px;
+    font-size: 11px;
     letter-spacing: 0.1em;
   }
   .hero-wordmark {
@@ -1410,16 +1410,16 @@ details[open] .faq-toggle:after {
     min-width: 63px;
     min-height: 44px;
     padding: 7px 12px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .suffix-explanation {
     order: 3;
     flex-basis: 100%;
-    font-size: 9px;
+    font-size: 12px;
     margin-top: 1px;
   }
   .rotation-control {
-    font-size: 9px;
+    font-size: 12px;
     min-height: 44px;
     padding-left: 7px;
   }
@@ -1437,7 +1437,7 @@ details[open] .faq-toggle:after {
   }
   .hero .button {
     min-height: 48px;
-    font-size: 11px;
+    font-size: 12px;
     padding-inline: 19px;
   }
   .hero-intro {
@@ -1449,16 +1449,16 @@ details[open] .faq-toggle:after {
     gap: 0;
   }
   .hero-intro .small-label {
-    font-size: 8px;
+    font-size: 11px;
     margin-bottom: 12px;
   }
   .hero-intro p {
-    font-size: 14px;
+    font-size: 15px;
     max-width: 420px;
     line-height: 1.85;
   }
   .hero-intro .text-link {
-    font-size: 10px;
+    font-size: 12px;
     margin-top: 9px;
   }
   .hero-index {
@@ -1489,10 +1489,10 @@ details[open] .faq-toggle:after {
     padding-top: 0;
   }
   .eyebrow {
-    font-size: 8px;
+    font-size: 11px;
   }
   .small-label {
-    font-size: 9px;
+    font-size: 12px;
   }
   .section-number {
     margin-right: 2px;
@@ -1521,12 +1521,12 @@ details[open] .faq-toggle:after {
     grid-row: 1/5;
     margin: 0;
     padding-top: 1px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .service-category {
     grid-column: 2;
     margin-bottom: 10px;
-    font-size: 8px;
+    font-size: 11px;
   }
   .service h3 {
     grid-column: 2;
@@ -1555,16 +1555,16 @@ details[open] .faq-toggle:after {
     margin-bottom: 13px;
   }
   .service-detail > p:not(.service-lead):not(.service-footnote) {
-    font-size: 14px;
+    font-size: 15px;
   }
   .offer-list {
     margin-top: 22px;
   }
   .offer-list dt {
-    font-size: 13px;
+    font-size: 15px;
   }
   .offer-list dd {
-    font-size: 13px;
+    font-size: 15px;
   }
   .pilot-strip {
     margin-top: 0;
@@ -1574,11 +1574,11 @@ details[open] .faq-toggle:after {
   }
   .pilot-strip .small-label {
     grid-column: 1;
-    font-size: 8px;
+    font-size: 11px;
   }
   .pilot-strip p {
     grid-column: 1;
-    font-size: 10px;
+    font-size: 12px;
   }
   .pilot-arrow {
     grid-column: 2;
@@ -1602,29 +1602,29 @@ details[open] .faq-toggle:after {
   }
   .example-description > p {
     max-width: 100%;
-    font-size: 13px;
+    font-size: 15px;
   }
   .report-example {
     padding: 16px;
   }
   .report-source strong {
-    font-size: 9px;
+    font-size: 12px;
   }
   .report-source div > span {
     font-size: 7px;
   }
   .example-question {
-    font-size: 11px;
+    font-size: 12px;
   }
   .subject-tags {
     gap: 6px;
   }
   .subject-tags span {
-    font-size: 8px;
+    font-size: 11px;
     padding: 3px 7px;
   }
   .service-footnote {
-    font-size: 8px;
+    font-size: 11px;
     line-height: 1.8;
   }
   .developer-route {
@@ -1649,7 +1649,7 @@ details[open] .faq-toggle:after {
     margin-bottom: 12px;
   }
   .steps p {
-    font-size: 14px;
+    font-size: 15px;
     max-width: 520px;
   }
   .founder {
@@ -1670,7 +1670,7 @@ details[open] .faq-toggle:after {
   }
   .expertise-list {
     gap: 18px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .pipeline {
     gap: 9px;
@@ -1678,7 +1678,7 @@ details[open] .faq-toggle:after {
     flex-wrap: nowrap;
   }
   .pipeline span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .faq {
     padding-top: 40px;
@@ -1692,12 +1692,12 @@ details[open] .faq-toggle:after {
     padding-block: 20px;
   }
   .faq summary h3 {
-    font-size: 13px;
+    font-size: 15px;
   }
   .faq-list details > p {
     padding-left: 24px;
     padding-right: 10px;
-    font-size: 14px;
+    font-size: 15px;
   }
   .enquiry-layout {
     gap: 30px;
@@ -1725,7 +1725,7 @@ details[open] .faq-toggle:after {
     gap: 18px 15px;
   }
   .field label {
-    font-size: 10px;
+    font-size: 12px;
   }
   .field input,
   .field select,
@@ -1738,7 +1738,7 @@ details[open] .faq-toggle:after {
     font-size: 12px;
   }
   .field-hint {
-    font-size: 10px;
+    font-size: 12px;
   }
   .form-submit {
     margin-top: 23px;
@@ -1749,7 +1749,7 @@ details[open] .faq-toggle:after {
     padding-inline: 20px;
   }
   .form-submit > p {
-    font-size: 9px;
+    font-size: 12px;
   }
   .site-footer {
     padding-top: 32px;
@@ -1765,18 +1765,18 @@ details[open] .faq-toggle:after {
     width: 100%;
   }
   .footer-top nav a {
-    font-size: 11px;
+    font-size: 12px;
   }
   .back-top {
     justify-content: flex-start;
     margin-top: 0;
     min-height: 44px;
-    font-size: 8px;
+    font-size: 11px;
   }
   .footer-bottom {
     flex-direction: column;
     gap: 9px;
-    font-size: 8px;
+    font-size: 11px;
   }
 }
 @media (max-width: 359px) {
@@ -1812,7 +1812,7 @@ details[open] .faq-toggle:after {
     gap: 5px;
   }
   .rotation-control {
-    font-size: 8px;
+    font-size: 11px;
     gap: 6px;
     padding-left: 0;
   }
@@ -1866,7 +1866,7 @@ details[open] .faq-toggle:after {
 }
 .hero-detail-link {
   margin-top: 12px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--green);
 }
 .hero-directory {
@@ -1879,7 +1879,7 @@ details[open] .faq-toggle:after {
   gap: 16px;
   min-height: 44px;
   border-top: 1px solid var(--rule);
-  font-size: 11px;
+  font-size: 12px;
 }
 .hero-directory a:hover strong {
   text-decoration: underline;
@@ -1891,7 +1891,7 @@ details[open] .faq-toggle:after {
 .hero-directory a > span {
   color: var(--muted);
   margin-left: auto;
-  font-size: 10px;
+  font-size: 12px;
 }
 .hero-directory svg {
   width: 15px;
@@ -1912,7 +1912,7 @@ details[open] .faq-toggle:after {
   padding-bottom: 4px;
 }
 .service-actions .secondary-link {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .developer-route > .text-link {
@@ -1935,7 +1935,7 @@ details[open] .faq-toggle:after {
   padding: 5px 8px;
   background: none;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
 }
 .example-controls button[aria-pressed="true"] {
   border-bottom-color: var(--green);
@@ -1953,12 +1953,12 @@ details[open] .faq-toggle:after {
   min-height: 54px;
 }
 .example-caption {
-  font-size: 9px;
+  font-size: 12px;
   line-height: 1.8;
 }
 .form-privacy {
   margin-top: 15px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .form-privacy a {
   display: inline-flex;
@@ -1988,7 +1988,7 @@ details[open] .faq-toggle:after {
   gap: 12px;
   padding-top: 30px;
   min-height: 74px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
 }
 .breadcrumbs a {
@@ -2012,7 +2012,7 @@ details[open] .faq-toggle:after {
   align-items: start;
 }
 .detail-intro .eyebrow {
-  font-size: 9px;
+  font-size: 12px;
 }
 .detail-intro h1 {
   font-size: clamp(34px, 5.2vw, 70px);
@@ -2046,10 +2046,10 @@ details[open] .faq-toggle:after {
   margin-top: 30px;
 }
 .detail-actions > .text-link {
-  font-size: 11px;
+  font-size: 12px;
 }
 .detail-audience {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 23px;
 }
@@ -2060,7 +2060,7 @@ details[open] .faq-toggle:after {
   margin-top: 12px;
 }
 .service-brief > .small-label {
-  font-size: 8px;
+  font-size: 11px;
   color: var(--green);
   letter-spacing: 0.11em;
 }
@@ -2081,12 +2081,12 @@ details[open] .faq-toggle:after {
   display: flex;
   align-items: center;
   gap: 13px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .service-brief dt > span {
   color: var(--clay);
-  font-size: 8px;
+  font-size: 11px;
   font-weight: 400;
 }
 .service-brief dd {
@@ -2130,7 +2130,7 @@ details[open] .faq-toggle:after {
 .detail-section-heading > p:not(.eyebrow) {
   color: var(--muted);
   margin-top: 19px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.9;
   max-width: 400px;
 }
@@ -2152,14 +2152,14 @@ details[open] .faq-toggle:after {
 }
 .detail-offer-list dt > span {
   color: var(--clay);
-  font-size: 9px;
+  font-size: 12px;
   line-height: 2.8;
   letter-spacing: 0;
   font-weight: 400;
 }
 .detail-offer-list dd {
   margin: 10px 0 0 31px;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.9;
   color: var(--muted);
 }
@@ -2175,7 +2175,7 @@ details[open] .faq-toggle:after {
 }
 .scope-note > .small-label {
   color: var(--green);
-  font-size: 9px;
+  font-size: 12px;
   padding-top: 4px;
 }
 .scope-note h2 {
@@ -2184,7 +2184,7 @@ details[open] .faq-toggle:after {
   margin-bottom: 12px;
 }
 .scope-note p {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.9;
   color: var(--muted);
   max-width: 740px;
@@ -2203,7 +2203,7 @@ details[open] .faq-toggle:after {
 }
 .detail-subjects > .small-label {
   margin-right: auto;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
 }
 .detail-subjects > span:not(.small-label) {
@@ -2247,7 +2247,7 @@ details[open] .faq-toggle:after {
 }
 .detail-cta .eyebrow {
   color: #d5ded0;
-  font-size: 9px;
+  font-size: 12px;
   margin-bottom: 15px;
 }
 .detail-cta h2 {
@@ -2256,7 +2256,7 @@ details[open] .faq-toggle:after {
 }
 .detail-cta h2 + p {
   color: #d5ded0;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.85;
   max-width: 580px;
   margin-top: 17px;
@@ -2282,7 +2282,7 @@ details[open] .faq-toggle:after {
   border-bottom: 1px solid var(--rule);
 }
 .related-services > .small-label {
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
 }
 .related-services a {
@@ -2337,7 +2337,7 @@ details[open] .faq-toggle:after {
   position: absolute;
   left: 0;
   top: 24px;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--clay);
 }
 .developer-next-list strong {
@@ -2345,7 +2345,7 @@ details[open] .faq-toggle:after {
   font-weight: 600;
 }
 .developer-next-list p {
-  font-size: 14px;
+  font-size: 15px;
   color: var(--muted);
   margin-top: 9px;
   line-height: 1.9;
@@ -2359,7 +2359,7 @@ details[open] .faq-toggle:after {
   border-bottom: 1px solid var(--rule);
 }
 .employer-return > p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--muted);
 }
 .information-page {
@@ -2455,7 +2455,7 @@ details[open] .faq-toggle:after {
     font-size: 37px;
   }
   .detail-description {
-    font-size: 14px;
+    font-size: 15px;
   }
   .service-brief {
     padding: 25px 23px 18px;
@@ -2464,7 +2464,7 @@ details[open] .faq-toggle:after {
     font-size: 23px;
   }
   .service-brief dd {
-    font-size: 11px;
+    font-size: 12px;
     margin-left: 0;
   }
   .detail-actions {
@@ -2485,7 +2485,7 @@ details[open] .faq-toggle:after {
   }
   .detail-offer-list dd {
     margin-left: 25px;
-    font-size: 13px;
+    font-size: 15px;
   }
   .scope-note {
     gap: 25px;
@@ -2503,7 +2503,7 @@ details[open] .faq-toggle:after {
 @media (max-width: 767px) {
   .hero-detail-link {
     margin-top: 7px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .hero-directory {
     max-width: 100%;
@@ -2513,7 +2513,7 @@ details[open] .faq-toggle:after {
     font-size: 12px;
   }
   .hero-directory a > span {
-    font-size: 10px;
+    font-size: 12px;
   }
   .hero .eyebrow {
     font-size: 7.5px;
@@ -2526,7 +2526,7 @@ details[open] .faq-toggle:after {
     row-gap: 4px;
   }
   .service-actions .secondary-link {
-    font-size: 11px;
+    font-size: 12px;
   }
   .example-controls {
     gap: 3px;
@@ -2541,13 +2541,13 @@ details[open] .faq-toggle:after {
     min-height: 63px;
   }
   .example-caption {
-    font-size: 9px;
+    font-size: 12px;
   }
   .breadcrumbs {
     padding-top: 14px;
     min-height: 62px;
     gap: 10px;
-    font-size: 10px;
+    font-size: 12px;
   }
   .detail-hero {
     grid-template-columns: 1fr;
@@ -2555,7 +2555,7 @@ details[open] .faq-toggle:after {
     padding-block: 25px 45px;
   }
   .detail-intro .eyebrow {
-    font-size: 8px;
+    font-size: 11px;
     gap: 8px;
     letter-spacing: 0.08em;
   }
@@ -2568,7 +2568,7 @@ details[open] .faq-toggle:after {
     margin-bottom: 23px;
   }
   .detail-description {
-    font-size: 14px;
+    font-size: 15px;
   }
   .detail-actions {
     margin-top: 24px;
@@ -2578,10 +2578,10 @@ details[open] .faq-toggle:after {
   .detail-actions .button {
     min-height: 50px;
     padding-inline: 19px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .detail-audience {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.8;
     margin-top: 18px;
   }
@@ -2601,10 +2601,10 @@ details[open] .faq-toggle:after {
   }
   .service-brief dd {
     margin-left: 25px;
-    font-size: 13px;
+    font-size: 15px;
   }
   .service-brief .small-label {
-    font-size: 8px;
+    font-size: 11px;
   }
   .detail-offers {
     grid-template-columns: 1fr;
@@ -2616,7 +2616,7 @@ details[open] .faq-toggle:after {
     margin-top: 22px;
   }
   .detail-section-heading > p:not(.eyebrow) {
-    font-size: 14px;
+    font-size: 15px;
     margin-top: 17px;
   }
   .detail-offer-list > div {
@@ -2626,7 +2626,7 @@ details[open] .faq-toggle:after {
     font-size: 16px;
   }
   .detail-offer-list dd {
-    font-size: 14px;
+    font-size: 15px;
     margin-left: 25px;
   }
   .scope-note {
@@ -2652,7 +2652,7 @@ details[open] .faq-toggle:after {
     line-height: 1.35;
   }
   .scope-note p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .detail-subjects {
     margin-block: -18px 42px;
@@ -2663,7 +2663,7 @@ details[open] .faq-toggle:after {
     flex-basis: 100%;
   }
   .detail-subjects > span:not(.small-label) {
-    font-size: 11px;
+    font-size: 12px;
   }
   .detail-developer-link {
     flex-direction: column;
@@ -2675,10 +2675,10 @@ details[open] .faq-toggle:after {
     font-size: 23px;
   }
   .detail-developer-link p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .detail-developer-link > .text-link {
-    font-size: 11px;
+    font-size: 12px;
   }
   .detail-process .section-heading {
     gap: 22px;
@@ -2698,7 +2698,7 @@ details[open] .faq-toggle:after {
     font-size: 33px;
   }
   .detail-cta h2 + p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .detail-cta .button {
     width: 100%;
@@ -2737,7 +2737,7 @@ details[open] .faq-toggle:after {
     gap: 5px;
   }
   .employer-return > p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .information-heading {
     padding-block: 25px 33px;
@@ -2757,7 +2757,7 @@ details[open] .faq-toggle:after {
     font-size: 24px;
   }
   .information-content p {
-    font-size: 14px;
+    font-size: 15px;
   }
   .information-page {
     padding-bottom: 50px;
@@ -2785,16 +2785,16 @@ details[open] .faq-toggle:after {
   }
   .hero-directory a {
     gap: 10px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .hero-directory a > span {
-    font-size: 9px;
+    font-size: 12px;
   }
   .service-brief {
     padding-inline: 21px;
   }
   .detail-actions > .text-link {
-    font-size: 10px;
+    font-size: 12px;
   }
   .related-services a {
     font-size: 20px;

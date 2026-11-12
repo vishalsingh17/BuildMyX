@@ -1,10 +1,13 @@
+import { canIndexSite } from "@/lib/launch";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { siteConfig } from "@/lib/site-config";
 import { EnquiryProvider } from "@/components/enquiry-provider";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Analytics } from "@/components/analytics";
 import "./globals.css";
+import "./improvements.css";
 
 const sans = localFont({
   src: [
@@ -47,7 +50,22 @@ export const metadata: Metadata = {
         alternates: { canonical: siteConfig.canonicalUrl },
       }
     : {}),
-  robots: { index: false, follow: false }, // Enable after naming clearance and a public launch.
+  robots: {
+    index: canIndexSite(
+      siteConfig.canonicalUrl,
+      siteConfig.launchApproved,
+      process.env.VERCEL_ENV || process.env.CONTEXT,
+    ),
+    follow: true,
+  },
+  openGraph: {
+    title: "BuildMyX — Build something useful",
+    description:
+      "Reporting automation, practical data learning and developer sourcing.",
+    type: "website",
+    siteName: "BuildMyX",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -57,6 +75,7 @@ export default function RootLayout({
     <html lang="en" className={`${sans.variable} ${serif.variable}`}>
       <body id="top">
         <EnquiryProvider>
+          <Analytics />
           <a href="#main" className="skip-link">
             Skip to content
           </a>

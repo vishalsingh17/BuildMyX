@@ -1,62 +1,87 @@
 # BuildMyX
 
-A public-facing website built with Next.js 16, React 19, TypeScript and Tailwind CSS 4. Pages are statically exported. No accounts, analytics or server-side enquiry storage are included.
+Next.js 16, React 19, TypeScript and Tailwind CSS 4. A conversion-focused website for reporting/AI development, practical learning and developer sourcing, with a real sample-data workflow and a server-side enquiry endpoint.
 
-## Pages
-
-- `/`: the complete landing page, changing wordmark, selectable reporting example and shared enquiry form.
-- `/services/ai/`: AI offers, an illustrative pilot brief, scope, acceptance criteria and support expectations.
-- `/services/career/`: planned weekend learning, reviewed projects, career support and subject-interest registration.
-- `/services/team/`: employer requirements, sourcing, assessment, introductions and engagement coordination.
-- `/developers/`: a separate developer-interest route with clear expectations about introductions.
-- `/privacy/`: how the current enquiry flow handles drafts, copying and delivery.
-- A custom 404 page with routes back to the services and enquiry form.
-
-All enquiry CTAs lead to the single homepage form and preselect the appropriate interest. Shareable links use `/?interest=ai#enquire`, with `learning`, `hiring` and `developer` as the other valid values. Draft fields survive navigation through the site's Next.js links using an in-memory provider in the shared layout. No cookies or browser storage are used; refreshing or closing the page clears the draft.
-
-## Develop and verify
+## Run and deploy
 
 ```sh
 npm ci
+cp .env.example .env.local
 npm run dev
-npm run typecheck
+```
+
+For production, set the hosting environment variables, then run `npm run build` and `npm start`, or deploy with a Next.js-compatible Node/Vercel host. **A static-only host cannot run the enquiry endpoint.** The application uses Next's standalone output; if packaging `.next/standalone` yourself, also copy `public` and `.next/static` into the corresponding standalone directories. `npm start` serves the regular production build.
+
+Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. Email credentials are server-only and must be entered through the host's secret settings. Never commit `.env.local` or put a delivery key in a public variable.
+
+## Pages and conversion paths
+
+- `/`: benefit-led animated hero, three services, working-example link, scoped pilot, founder background, FAQ and shared enquiry form.
+- `/services/ai/`: reporting automation, grounded assistants, integrations, pilot scope, acceptance and handover/support expectations.
+- `/services/career/`: planned weekend learning, assignments, project reviews, career support and subject-interest registration. No invented course dates or availability.
+- `/services/team/`: employer requirements, sourcing, assessment and supplied-developer engagement terms.
+- `/projects/` and `/projects/reporting-pipeline/`: actual validation and calculations over editable fictional records, source tracing, downloadable output and a recording of the working demo.
+- `/resources/reporting-readiness/` and `/resources/hiring-brief/`: practical worksheets with editable Markdown downloads.
+- `/developers/`: a separate introduction route with realistic expectations.
+- `/privacy/`: draft, email, clipboard, optional event collection and provider handling.
+
+All enquiry CTAs preselect a single shared form. Deep links use `/?interest=ai#enquire`; the other values are `learning`, `hiring` and `developer`. Draft fields and the manual hero preference survive internal navigation in memory. No cookies, local storage or session storage are used; refresh or closing the tab clears the draft.
+
+## Email delivery
+
+The site is honest when unconfigured: it validates and copies a message, explicitly saying that it has not been sent. Clipboard failure reveals a selectable message. Verified email, booking and LinkedIn links render only when supplied.
+
+To enable the included first-party endpoint:
+
+1. Verify a sender domain with Resend, create a scoped sending key, and configure `RESEND_API_KEY`, `ENQUIRY_FROM` and `ENQUIRY_TO` in the hosting secret settings. Example sender syntax: `BuildMyX <enquiries@your-verified-domain>`.
+2. Set `NEXT_PUBLIC_SITE_URL` to the actual HTTPS production origin. Add the verified public contact email, booking and LinkedIn destinations if available; rebuild.
+3. On a trusted reverse proxy, configure an edge rate limit for `POST /api/enquiry`. The included per-instance backstop permits five attempts per ten minutes per forwarded IP (maximum 1,000 active counters); it is not a distributed quota. Ensure the host overwrites forwarded-IP headers. For multiple replicas, use an edge/shared limit.
+4. Before advertising sending, submit one controlled test with addresses you own. Verify the business inbox, Reply-To, visitor receipt, failure message and provider delivery logs. Automated tests mock the provider and send no real email.
+
+`GET /api/enquiry` reveals only whether the three private delivery settings are present. The browser then changes to “Send enquiry”. Credentials and addresses never leave through that capability response. Presence does not prove a sender is verified; actual submission checks the provider response.
+
+`POST /api/enquiry` requires a same-origin JSON request and validates the six fields, their types, URL schemes and a 12 KB streamed body limit on the server. It sends the business notification first, then attempts the visitor receipt. A successful response is `{ delivered: true, reference, confirmationSent }` only after the provider accepts the business message. Acceptance is not final inbox delivery. A receipt failure still acknowledges the accepted enquiry and tells the visitor not to resubmit. Provider failure returns a non-2xx response without exposing provider details; the draft and copy fallback remain available. The client allows 30 seconds for the two provider calls.
+
+The client reuses an `Idempotency-Key` for retries of unchanged values while the form stays mounted. Distinct owner/receipt suffixes let Resend deduplicate those calls within its idempotency retention window. A refresh begins a new submission; this is not permanent duplicate detection. There is no enquiry database or CRM. Inbox/provider retention settings apply to submitted messages; update the public privacy page if changing providers or adding storage.
+
+An existing external backend can instead be supplied as `NEXT_PUBLIC_ENQUIRY_ENDPOINT`. It must implement the same JSON confirmation contract, validation and abuse controls. A cross-origin endpoint must allow the actual site origin, JSON content type and `Idempotency-Key` header via CORS. Do not point this setting at an untrusted service.
+
+## Public launch and search
+
+The owner has confirmed naming clearance for BuildMyX, BuildMyAI, BuildMyCareer and BuildMyTeam. `NEXT_PUBLIC_LAUNCH_APPROVED` defaults to true. Search indexing is enabled only with a real HTTPS canonical URL; Vercel previews/development and Netlify deploy/branch previews stay `noindex`. To pause indexing, set `NEXT_PUBLIC_LAUNCH_APPROVED=false` and rebuild. Other hosting platforms should use that override for previews.
+
+The site includes route-specific metadata, canonical URLs, a generated social-share image, robots rules and a sitemap of real pages. Without a production URL, the sitemap is empty and the site stays `noindex`. Do not use a guessed domain.
+
+## Working example
+
+`lib/reporting.ts` performs integer-pence arithmetic, excludes invalid or duplicate records and supplies exact row references. The 13-row sample has 10 accepted records, three review issues, £4,200 for Week 1 and £5,000 for Week 2. Editing an input invalidates the displayed output until checks are rerun. CSV output escapes punctuation and spreadsheet-formula prefixes. The demo runs in the browser, with no AI model, business-system access or data upload. It is clearly labelled as fictional, not a client result.
+
+The walkthrough is a recording of this implementation, with captions and parallel written steps. `scripts/record-demo.mjs` can regenerate the assets with Chromium and FFmpeg after building. It starts a temporary production server and stops it after recording. Install the Playwright recording helper with `npx playwright install ffmpeg` if it is missing; FFmpeg must also be available on the system for MP4 encoding.
+
+## Optional measurement and sales follow-up
+
+Leave `NEXT_PUBLIC_ANALYTICS_ENDPOINT` blank to send no event requests. The optional collector receives JSON with `event`, a clean `path`, and allowed service/placement/resource labels. Events are `service_view`, `cta_click`, `enquiry_start`, `enquiry_submitted`, `enquiry_copy`, `booking_click`, `example_run` and `resource_download`. No form text, names, email addresses, query strings, visitor IDs or browser storage enter the payload. Do Not Track and Global Privacy Control disable events. Collectors may observe network addresses; choose retention and processing settings accordingly. The collector must permit the site's origin and accept JSON; do not add identity enrichment.
+
+A local `buildmyx:analytics` CustomEvent makes hooks inspectable without a collector. Copies and submitted enquiries are separate events. There is no invented conversion dashboard. Use the private-copy template in `docs/lead-tracker-template.csv` to record qualified enquiries, next actions, agreed values and won/lost outcomes. Do not put real customer records in this public repository. `docs/business-implementation.md` maps the changes and remaining business setup.
+
+## Verify
+
+```sh
 npm test
+npm run typecheck
 npm run build
 npm run test:browser
 ```
 
-The normal application entry point is `app/page.tsx`. The production page is exported to `out/`. Use a static host for that directory; `next start` does not serve a static export. All font assets are self-hosted with their open font licences under `public/fonts/`.
+The browser check starts the actual Next production server, uses Chromium, then closes both. It checks 320/390/768/1440 px, the fixed wordmark/variable suffix, motion preferences, navigation, keyboard/focus behavior, form validation, copy/manual-copy fallback, cross-page drafts, service routes, the editable demo, source references, CSV download, mock email confirmations, contrast, links and browser errors. No real emails are sent. It uses `/usr/bin/chromium` when present; otherwise install Playwright Chromium or supply `CHROMIUM_EXECUTABLE_PATH`. Artifacts go to ignored `work/browser-qa/`; override with `QA_OUTPUT`.
 
-`test:browser` starts a temporary loopback HTTP server for `out/`, runs real Chromium checks and closes both browser and server. It uses `/usr/bin/chromium` when available; otherwise install the Playwright Chromium runtime with `npx playwright install chromium`, or supply `CHROMIUM_EXECUTABLE_PATH`. Screenshots and the report go to the ignored `work/browser-qa/` folder; set `QA_OUTPUT` to change that destination.
+## Editing
 
-## Editable settings and copy
+- `lib/site-config.ts`, `.env.example`: business destinations, launch gate, hero names/copy and optional integrations.
+- `lib/content.ts`, `lib/services.ts`: FAQ and service detail copy.
+- `components/landing.tsx`, `components/pilot-package.tsx`: concise homepage and pilot offer.
+- `components/reporting-demo.tsx`, `lib/reporting.ts`: interactive proof and calculation rules.
+- `lib/server/enquiries.ts`: validated delivery handler; `app/api/enquiry/route.ts` exposes it.
+- `app/globals.css`, `app/improvements.css`: warm ivory/forest visual system and responsive layouts.
 
-- `lib/site-config.ts`: verified contact email, booking URL, LinkedIn URL, canonical URL, submission endpoint, working service names and hero copy.
-- `lib/content.ts`: FAQ answers.
-- `lib/services.ts`: detail-page descriptions, scope, process, FAQs and calls to action.
-- `components/landing.tsx`: service descriptions, founder background and example workflows.
-- `components/reporting-example.tsx`: the illustrative, selectable reporting workflow. It does not call an AI service or process real data.
-- `app/globals.css`: colour tokens, typography, responsive layouts and motion preferences.
-
-The names follow BuildMy + X: BuildMyAI, BuildMyCareer and BuildMyTeam. They remain working names. Complete naming clearance before public publication. The page currently has `noindex, nofollow` metadata; remove that restriction in `app/layout.tsx` only when the names and public launch are ready. Configure the canonical URL at the same time.
-
-## Enquiries: copy fallback is active
-
-**No delivery destination was supplied. This page does not send enquiries.** The button validates the form, prepares a plain-text message and copies it using the Clipboard API. It confirms only a successful copy. A selectable message is displayed on both success and failure, with manual-copy guidance when clipboard access is unavailable. Values stay in the form after validation or delivery errors and when changing service interests. Values are kept in memory only.
-
-Contact, booking and LinkedIn links render only when verified destinations are entered in `lib/site-config.ts`. No placeholder contacts are used.
-
-### Activate live delivery
-
-1. Supply a real HTTPS `enquiryEndpoint` in `lib/site-config.ts` and rebuild. Keep credentials on the server; do not put secrets in this public configuration.
-2. Implement server-side validation for the six fields. Reuse the rules in `lib/enquiry.ts`; handle untrusted/missing/non-string JSON fields before invoking `validateEnquiry`. Limit request size, rate-limit submissions, constrain allowed origins and protect the delivery credentials. If the endpoint is cross-origin, configure its CORS policy for the actual website origin.
-3. Accept JSON: `{ name, email, interest, description, company, links }`. The only permitted `interest` values are `ai`, `learning`, `hiring`, `developer`. A successful delivery must return JSON `{ "delivered": true }` with a 2xx response **only after the downstream delivery service confirms acceptance**. Return a non-2xx response for validation or delivery failures. The client has a 15-second timeout and retains all values on failure. It also offers copying as a fallback.
-4. Add the verified business email, booking and LinkedIn destinations as available, a real canonical URL, and appropriate privacy information for the chosen delivery/storage provider. Run success, rejection and network-failure checks against the actual endpoint before activating it.
-
-There is deliberately no fake server route and no unverified destination. The delivery contract is covered by unit tests; a configured live endpoint still requires end-to-end verification.
-
-## Hero and navigation
-
-The server and first browser render show X. Only the suffix changes. Automatic rotation holds each state for 3.9 seconds with a 230 ms transition, and reserves space for Career. Manual selection stops rotation and updates the relevant enquiry interest; the selection and pause preference survive client navigation through the site. Resume is explicit. Hover/focus on the selector controls or hero CTAs pauses rotation. Reduced-motion users start with rotation stopped and transitions disabled. The accessible heading remains stable.
-
-Navigation is an ordinary mobile disclosure, not a modal: opening it focuses the first link; Escape closes it and returns focus; Tab can leave the menu naturally. Selecting a link closes it; cross-page navigation moves focus to the new main content. The header and footer are shared across all routes.
+Fonts are self-hosted with licences in `public/fonts/`. The initial accessible hero remains stable while only the visible suffix animates. Manual selection pauses rotation, Resume is explicit, hover/focus pauses and reduced motion starts paused.

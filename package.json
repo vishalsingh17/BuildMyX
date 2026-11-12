@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0",
+    "start": "next start --hostname 0.0.0.0",
     "build": "next build --webpack",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test lib/enquiry.test.ts",
+    "test": "tsx --test lib/*.test.ts lib/server/*.test.ts",
     "test:browser": "node scripts/browser-check.mjs"
   },
   "dependencies": {

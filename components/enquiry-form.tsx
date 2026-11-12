@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { interests, siteConfig, type Interest } from "@/lib/site-config";
+import { interests, type Interest } from "@/lib/site-config";
 import {
   deliverEnquiry,
   prepareEnquiry,
@@ -12,6 +12,7 @@ import {
 import { Arrow, CopyIcon } from "./icons";
 import Link from "next/link";
 import { useEnquiry } from "./enquiry-provider";
+import { track } from "@/lib/analytics";
 
 const descriptions: Record<Interest, string> = {
   ai: "What’s the task, where does the information live, and what would a useful result look like?",
@@ -29,6 +30,7 @@ export function EnquiryForm() {
     setInterest: onInterest,
     draft: fields,
     setDraft: setFields,
+    deliveryEndpoint,
   } = useEnquiry();
   const values: Enquiry = { ...fields, interest };
   const [errors, setErrors] = useState<EnquiryErrors>({});
@@ -39,6 +41,8 @@ export function EnquiryForm() {
   const [manualCopy, setManualCopy] = useState(false);
   const form = useRef<HTMLFormElement>(null);
   const preparedField = useRef<HTMLTextAreaElement>(null);
+  const submission = useRef({ body: "", id: "" });
+  const started = useRef(false);
   useEffect(() => {
     setErrors((current) => ({ ...current, interest: undefined }));
     setStatus("");
@@ -78,17 +82,26 @@ export function EnquiryForm() {
     setBusy(true);
     const message = prepareEnquiry(values);
     try {
-      if (siteConfig.enquiryEndpoint && !copyOnly) {
-        await deliverEnquiry(siteConfig.enquiryEndpoint, values);
-        setStatus(
-          "Your enquiry has been delivered. Thank you for sharing what you’d like to build.",
+      if (deliveryEndpoint && !copyOnly) {
+        const body = JSON.stringify(values);
+        if (submission.current.body !== body)
+          submission.current = { body, id: crypto.randomUUID() };
+        const result = await deliverEnquiry(
+          deliveryEndpoint,
+          values,
+          submission.current.id,
         );
+        setStatus(
+          `Your enquiry has been submitted to BuildMyX.${result.confirmationSent ? " A confirmation email has also been sent." : " An email confirmation could not be confirmed; you don’t need to submit again."}${result.reference ? ` Reference: ${result.reference}.` : ""}`,
+        );
+        track("enquiry_submitted", { interest });
       } else {
         setPrepared(message);
         try {
           if (!navigator.clipboard?.writeText)
             throw new Error("Clipboard unavailable");
           await navigator.clipboard.writeText(message);
+          track("enquiry_copy", { interest });
           setStatus(
             "Enquiry copied to your clipboard. It hasn’t been sent. You can also select the message below.",
           );
@@ -124,6 +137,12 @@ export function EnquiryForm() {
       noValidate
       onSubmit={submit}
       aria-busy={busy}
+      onFocusCapture={() => {
+        if (!started.current) {
+          started.current = true;
+          track("enquiry_start", { interest });
+        }
+      }}
     >
       <p className="form-note">
         A few details are enough to start.{" "}
@@ -238,16 +257,16 @@ export function EnquiryForm() {
       <div className="form-submit">
         <button className="button" type="submit" disabled={busy}>
           {busy
-            ? siteConfig.enquiryEndpoint
+            ? deliveryEndpoint
               ? "Sending…"
               : "Preparing…"
-            : siteConfig.enquiryEndpoint
+            : deliveryEndpoint
               ? "Send enquiry"
               : "Copy enquiry"}
-          {siteConfig.enquiryEndpoint ? <Arrow diagonal /> : <CopyIcon />}
+          {deliveryEndpoint ? <Arrow diagonal /> : <CopyIcon />}
         </button>
         <p>
-          {siteConfig.enquiryEndpoint
+          {deliveryEndpoint
             ? "We’ll use these details to respond to your enquiry."
             : "Copies a message for you to share. Your details stay in this tab; they aren’t sent to BuildMyX."}
         </p>

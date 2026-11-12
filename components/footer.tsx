@@ -18,6 +18,11 @@ export function Footer() {
             <Link href={servicePaths.AI}>{serviceNames.AI}</Link>
             <Link href={servicePaths.Career}>{serviceNames.Career}</Link>
             <Link href={servicePaths.Team}>{serviceNames.Team}</Link>
+            <Link href="/projects/">Working examples</Link>
+            <Link href="/resources/reporting-readiness/">
+              Reporting readiness
+            </Link>
+            <Link href="/resources/hiring-brief/">Employer brief</Link>
             <Link href="/developers/">For developers</Link>
             <Link href="/#approach">Our approach</Link>
             <Link href="/#enquire">Contact</Link>

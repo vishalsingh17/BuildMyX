@@ -2,15 +2,19 @@
 export const siteConfig = {
   brand: "BuildMyX",
   founder: "Vishal Singh",
-  contactEmail: null as string | null,
-  bookingUrl: null as string | null,
-  linkedInUrl: null as string | null,
-  canonicalUrl: null as string | null,
+  contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null,
+  bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL?.trim() || null,
+  linkedInUrl: process.env.NEXT_PUBLIC_LINKEDIN_URL?.trim() || null,
+  canonicalUrl: process.env.NEXT_PUBLIC_SITE_URL?.trim() || null,
+  launchApproved: process.env.NEXT_PUBLIC_LAUNCH_APPROVED !== "false",
+  sourceCodeUrl: "https://github.com/vishalsingh17/BuildMyX",
+  founderGithubUrl: "https://github.com/vishalsingh17",
+  analyticsEndpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() || null,
   /** An HTTPS endpoint that validates and delivers enquiries on the server. */
-  enquiryEndpoint: null as string | null,
+  enquiryEndpoint: process.env.NEXT_PUBLIC_ENQUIRY_ENDPOINT?.trim() || null,
 };
 
-// Working names: complete naming clearance before making the site public.
+// Names cleared by the owner. A canonical production URL is still required for indexing.
 export const serviceNames = {
   AI: "BuildMyAI",
   Career: "BuildMyCareer",
@@ -30,8 +34,7 @@ export const heroModes: Record<
   { sentence: string; cta: string; interest: string }
 > = {
   AI: {
-    sentence:
-      "AI assistants and automation, connected to the data and tools your business uses.",
+    sentence: "Turn recurring spreadsheets into a checked, repeatable report.",
     cta: "Discuss an AI project",
     interest: "ai",
   },

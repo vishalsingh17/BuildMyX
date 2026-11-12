@@ -18,6 +18,10 @@ export function Header() {
     "/services/career/": "learning",
     "/services/team/": "hiring",
     "/developers/": "developer",
+    "/projects/": "ai",
+    "/projects/reporting-pipeline/": "ai",
+    "/resources/reporting-readiness/": "ai",
+    "/resources/hiring-brief/": "hiring",
   };
   const pageInterest =
     pageInterests[pathname.endsWith("/") ? pathname : `${pathname}/`] ??
@@ -26,7 +30,7 @@ export function Header() {
     { name: serviceNames.AI, href: servicePaths.AI },
     { name: serviceNames.Career, href: servicePaths.Career },
     { name: serviceNames.Team, href: servicePaths.Team },
-    { name: "Approach", href: "/#approach" },
+    { name: "Examples", href: "/projects/" },
     { name: "Contact", href: `/?interest=${pageInterest}#enquire` },
   ];
   const [open, setOpen] = useState(false);

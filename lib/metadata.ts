@@ -9,6 +9,20 @@ export function pageMetadata(
   return {
     title: `${title} — BuildMyX`,
     description,
+    openGraph: {
+      type: "website",
+      siteName: "BuildMyX",
+      title: `${title} — BuildMyX`,
+      description,
+      ...(siteConfig.canonicalUrl
+        ? { url: new URL(path, siteConfig.canonicalUrl).toString() }
+        : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} — BuildMyX`,
+      description,
+    },
     ...(siteConfig.canonicalUrl
       ? {
           alternates: {

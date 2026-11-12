@@ -12,10 +12,16 @@ import {
 } from "react";
 import { useSearchParams } from "next/navigation";
 import type { Enquiry } from "@/lib/enquiry";
-import { interests, type Interest, type Mode } from "@/lib/site-config";
+import {
+  interests,
+  siteConfig,
+  type Interest,
+  type Mode,
+} from "@/lib/site-config";
 
 type Draft = Omit<Enquiry, "interest">;
 type EnquiryContextValue = {
+  deliveryEndpoint: string | null;
   interest: Interest;
   setInterest: Dispatch<SetStateAction<Interest>>;
   draft: Draft;
@@ -29,6 +35,20 @@ const EnquiryContext = createContext<EnquiryContextValue | null>(null);
 
 /** A tab-local draft survives client navigation. No cookies or browser storage. */
 export function EnquiryProvider({ children }: { children: React.ReactNode }) {
+  const [deliveryEndpoint, setDeliveryEndpoint] = useState(
+    siteConfig.enquiryEndpoint,
+  );
+  useEffect(() => {
+    if (siteConfig.enquiryEndpoint) return;
+    const controller = new AbortController();
+    fetch("/api/enquiry", { signal: controller.signal, cache: "no-store" })
+      .then(async (response) => (response.ok ? response.json() : null))
+      .then((result) => {
+        if (result?.enabled === true) setDeliveryEndpoint("/api/enquiry");
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const [interest, setInterest] = useState<Interest>("ai");
   const [heroPreference, setHeroPreference] = useState<{
     mode: "X" | Mode;
@@ -43,6 +63,7 @@ export function EnquiryProvider({ children }: { children: React.ReactNode }) {
   });
   const value = useMemo(
     () => ({
+      deliveryEndpoint,
       interest,
       setInterest,
       draft,
@@ -50,7 +71,7 @@ export function EnquiryProvider({ children }: { children: React.ReactNode }) {
       heroPreference,
       setHeroPreference,
     }),
-    [interest, draft, heroPreference],
+    [interest, draft, heroPreference, deliveryEndpoint],
   );
   return (
     <EnquiryContext.Provider value={value}>

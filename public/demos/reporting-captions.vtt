@@ -1,0 +1,22 @@
+WEBVTT
+
+00:00.000 --> 00:03.500
+A working reporting demo using editable, fictional data.
+
+00:03.500 --> 00:07.000
+Run validation: 10 accepted rows, 3 issues excluded from totals.
+
+00:07.000 --> 00:12.000
+Review a missing account, an invalid amount and a duplicate ID.
+
+00:12.000 --> 00:15.500
+Follow the duplicate issue to its exact source record.
+
+00:15.500 --> 00:19.500
+Edit a source amount. The previous report is marked out of date.
+
+00:19.500 --> 00:24.000
+Rerun: Week 1 is now £4,500 and Week 2 remains £5,000.
+
+00:24.000 --> 00:30.000
+Trace the new total to its five accepted source rows.

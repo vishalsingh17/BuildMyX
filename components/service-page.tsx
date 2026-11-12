@@ -3,6 +3,8 @@ import { serviceNames, servicePaths, type Mode } from "@/lib/site-config";
 import type { ServicePageData } from "@/lib/services";
 import { EnquiryLink } from "./enquiry-link";
 import { Arrow } from "./icons";
+import { PilotPackage } from "./pilot-package";
+import { LearningPath } from "./learning-path";
 
 export function ServicePage({ service }: { service: ServicePageData }) {
   return (
@@ -62,6 +64,40 @@ export function ServicePage({ service }: { service: ServicePageData }) {
             </span>
           </aside>
         </section>
+        {service.mode === "AI" && (
+          <>
+            <PilotPackage />
+            <aside className="service-resource">
+              <div>
+                <h2>Prepare a useful first brief.</h2>
+                <p>
+                  Map the manual task, sample inputs, quality rules and the
+                  result you want.
+                </p>
+              </div>
+              <Link
+                className="text-link"
+                href="/resources/reporting-readiness/"
+              >
+                Reporting readiness worksheet <Arrow />
+              </Link>
+            </aside>
+          </>
+        )}
+        {service.mode === "Team" && (
+          <aside className="service-resource">
+            <div>
+              <h2>Make the requirement concrete.</h2>
+              <p>
+                Use the employer brief to capture outcomes, essential skills,
+                time-zone overlap, budget and decision steps.
+              </p>
+            </div>
+            <Link className="text-link" href="/resources/hiring-brief/">
+              Prepare an employer brief <Arrow />
+            </Link>
+          </aside>
+        )}
         <section
           id="details"
           className="detail-offers section-space"
@@ -87,6 +123,7 @@ export function ServicePage({ service }: { service: ServicePageData }) {
             ))}
           </dl>
         </section>
+        {service.mode === "Career" && <LearningPath />}
         <aside className="scope-note">
           <span className="small-label">BEFORE WE START</span>
           <div>

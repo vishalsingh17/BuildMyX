@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Interest } from "@/lib/site-config";
 import { useEnquiry } from "./enquiry-provider";
+import { track } from "@/lib/analytics";
 import { Arrow } from "./icons";
 
 export function EnquiryLink({
@@ -23,6 +24,7 @@ export function EnquiryLink({
       className={className}
       onClick={() => {
         setInterest(interest);
+        track("cta_click", { interest, placement: "service" });
         if (pathname === "/")
           requestAnimationFrame(() =>
             document.getElementById("enquire")?.focus({ preventScroll: true }),

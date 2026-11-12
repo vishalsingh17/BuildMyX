@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Arrow } from "@/components/icons";
 import { pageMetadata } from "@/lib/metadata";
-import { siteConfig } from "@/lib/site-config";
 
 export const metadata = pageMetadata(
   "Privacy & enquiries",
@@ -50,34 +49,31 @@ export default function Privacy() {
           </p>
         </section>
         <section aria-labelledby="privacy-delivery">
-          <h2 id="privacy-delivery">
-            {siteConfig.enquiryEndpoint
-              ? "When you send an enquiry"
-              : "When you copy an enquiry"}
-          </h2>
-          {siteConfig.enquiryEndpoint ? (
-            <p>
-              Submitting the form sends the details you entered to the
-              configured enquiry service so BuildMyX can respond. Delivery is
-              confirmed only after a successful response. If delivery cannot be
-              confirmed, the form keeps your entries and offers a copy option.
-            </p>
-          ) : (
-            <>
-              <p>
-                The form currently prepares a message on your device. It does
-                not send your enquiry to BuildMyX. “Copy enquiry” asks your
-                browser to put that message on your clipboard and confirms only
-                when the copy succeeds.
-              </p>
-              <p>
-                If automatic copying is unavailable, a selectable version
-                appears in the form. You decide where to paste or share the
-                message. Once shared through another service, that service’s
-                handling of the message also applies.
-              </p>
-            </>
-          )}
+          <h2 id="privacy-delivery">Copying or sending an enquiry</h2>
+          <p>
+            When the form offers “Copy enquiry”, it prepares the message on your
+            device. Nothing is sent to BuildMyX. Your browser confirms when
+            copying succeeds, or provides a selectable message when automatic
+            copying is unavailable. You decide where to share it.
+          </p>
+          <p>
+            When sending is enabled, “Send enquiry” submits the fields securely
+            to the enquiry service. The first-party service uses Resend to send
+            the message to the business inbox and attempts a confirmation email
+            to you. The form confirms submission only after the email service
+            accepts the business message. This is not a guarantee of final inbox
+            delivery. If your confirmation email fails after that, the form says
+            so without asking you to submit again.
+          </p>
+          <p>
+            Enquiries are used to assess and respond to your request. Submitted
+            messages are handled by the business inbox and its email providers
+            under their retention settings. The application keeps no enquiry
+            database. The first-party endpoint temporarily holds a request
+            counter associated with an IP address in server memory for up to ten
+            minutes to limit abuse. Hosting and email providers may retain
+            technical logs under their own settings.
+          </p>
         </section>
         <section aria-labelledby="privacy-controls">
           <h2 id="privacy-controls">What you control</h2>
@@ -91,10 +87,19 @@ export default function Privacy() {
         <section aria-labelledby="privacy-tracking">
           <h2 id="privacy-tracking">Website activity</h2>
           <p>
-            This site includes no advertising pixels or analytics integration.
-            Your browser still makes the normal requests needed to load the
-            website’s pages, scripts and fonts. Fonts are served with the site
-            rather than requested from a third-party font service.
+            There are no advertising pixels, analytics cookies or visitor IDs.
+            By default, no analytics events leave this site. If an activity
+            collector is configured, it receives only event names, clean page
+            paths and fixed service or resource labels, such as a demo run or
+            enquiry submission. Names, email addresses, form text, links and URL
+            query strings are excluded. Do Not Track and Global Privacy Control
+            disable these events. A collector and hosting provider may still
+            observe the request’s IP address under their own retention settings.
+          </p>
+          <p>
+            Your browser makes the normal requests needed to load pages,
+            scripts, fonts and the optional demonstration video. Fonts are
+            served with the site.
           </p>
         </section>
         <Link href="/#enquire" className="text-link">

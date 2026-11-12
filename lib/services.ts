@@ -258,5 +258,9 @@ export const servicePages: Record<string, ServicePageData> = {
 };
 
 export function servicePageTitle(service: ServicePageData) {
-  return serviceNames[service.mode];
+  return {
+    AI: "Reporting automation & AI development | BuildMyAI",
+    Career: "Practical data learning & career support | BuildMyCareer",
+    Team: "Developer sourcing & technical screening | BuildMyTeam",
+  }[service.mode];
 }
