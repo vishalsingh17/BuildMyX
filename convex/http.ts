@@ -1,6 +1,12 @@
 import { httpRouter } from "convex/server";
 import { httpAction, env } from "./_generated/server";
 import { internal } from "./_generated/api";
+import {
+  enquiryHeaders,
+  enquiryJson,
+  readEnquiry,
+} from "../lib/enquiry-request";
+import { emailClient } from "./enquiryNotifications";
 
 const http = httpRouter();
 const json = (data: object, status = 200) =>
@@ -117,6 +123,68 @@ http.route({
         ok: await ctx.runMutation(internal.enquiryDelivery.uncertain, identity),
       });
     return json({ error: "Invalid request" }, 400);
+  }),
+});
+http.route({
+  path: "/enquiries/health",
+  method: "GET",
+  handler: httpAction(async () => enquiryJson({ enabled: true })),
+});
+http.route({
+  path: "/enquiries",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    const origin =
+      env.ENQUIRY_ALLOWED_ORIGIN ?? "https://build-my-x.vercel.app";
+    const headerError = enquiryHeaders(request, origin);
+    if (headerError) return headerError;
+    const reference =
+      request.headers.get("Idempotency-Key") ?? crypto.randomUUID();
+    if (!validId(reference))
+      return enquiryJson({ error: "Invalid submission reference." }, 400);
+    const body = await readEnquiry(request);
+    if ("error" in body) return body.error;
+    try {
+      const result = await ctx.runMutation(internal.enquiries.save, {
+        ...body.values,
+        interest: body.values.interest as
+          "ai" | "learning" | "hiring" | "developer",
+        reference,
+      });
+      if ("error" in result) {
+        const status =
+          result.error === "rateLimited"
+            ? 429
+            : result.error === "conflict"
+              ? 409
+              : 422;
+        const message =
+          result.error === "rateLimited"
+            ? "Too many enquiries. Please try again later."
+            : result.error === "conflict"
+              ? "This reference belongs to another enquiry. Edit your details before trying again."
+              : "Please check your enquiry fields.";
+        return enquiryJson({ error: message }, status);
+      }
+      return enquiryJson(result);
+    } catch {
+      return enquiryJson(
+        {
+          error:
+            "Your enquiry could not be confirmed as saved. Please retry with the same reference.",
+        },
+        503,
+      );
+    }
+  }),
+});
+http.route({
+  path: "/resend-webhook",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    if (!env.RESEND_WEBHOOK_SECRET)
+      return enquiryJson({ error: "Webhook not configured." }, 503);
+    return emailClient().handleResendEventWebhook(ctx, request);
   }),
 });
 export default http;

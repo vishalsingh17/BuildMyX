@@ -1,4 +1,7 @@
-import { deliveryAvailable, handleEnquiry } from "@/lib/server/enquiries";
+import {
+  intakeAvailable,
+  handleEnquiryIntake,
+} from "@/lib/server/enquiry-intake";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -6,7 +9,7 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     return Response.json(
-      { enabled: await deliveryAvailable() },
+      { enabled: await intakeAvailable() },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch {
@@ -18,5 +21,5 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  return handleEnquiry(request);
+  return handleEnquiryIntake(request);
 }

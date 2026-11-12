@@ -1,7 +1,16 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { enquiryRecord } from "./enquiryFields";
 
 export default defineSchema({
+  enquiries: defineTable(enquiryRecord)
+    .index("by_reference", ["reference"])
+    .index("by_notificationEmailId", ["notificationEmailId"])
+    .index("by_notificationStatus_and_notificationCheckAt", [
+      "notificationStatus",
+      "notificationCheckAt",
+    ])
+    .index("by_expiresAt", ["expiresAt"]),
   enquiryDeliveries: defineTable({
     submissionId: v.string(),
     payloadHash: v.string(),

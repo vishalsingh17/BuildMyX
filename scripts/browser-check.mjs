@@ -28,6 +28,7 @@ const server = spawn(
     env: {
       ...process.env,
       NEXT_TELEMETRY_DISABLED: "1",
+      ENQUIRY_ENABLED: "false",
       RESEND_API_KEY: "",
       ENQUIRY_FROM: "",
       ENQUIRY_TO: "",

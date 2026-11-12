@@ -9,6 +9,8 @@ export default defineConfig({
           "convex-test",
           "@convex-dev/rate-limiter",
           "@convex-dev/batch-worker",
+          "@convex-dev/resend",
+          "@convex-dev/workpool",
         ],
       },
     },

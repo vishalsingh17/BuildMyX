@@ -58,24 +58,23 @@ export default function Privacy() {
           </p>
           <p>
             When sending is enabled, “Send enquiry” submits the fields securely
-            to the enquiry service. The first-party service uses Resend to send
-            the message to the business inbox and attempts a confirmation email
-            to you. The form confirms submission only after the email service
-            accepts the business message. This is not a guarantee of final inbox
-            delivery. If your confirmation email fails after that, the form says
-            so without asking you to submit again.
+            to BuildMyX and saves your name, email, interest, description,
+            company and links in our Convex database. The form confirms success
+            once the enquiry is saved and shows a reference. When email
+            notifications are configured, Resend sends a copy to the business
+            inbox. An email delay or failure does not undo your submission.
           </p>
           <p>
             Enquiries are used to assess and respond to your request. Submitted
-            messages are handled by the business inbox and its email providers
-            under their retention settings. To prevent duplicate sends, Convex
-            keeps a random submission reference, a protected fingerprint of the
-            message, email-provider references and delivery status for 30 days.
-            Message contents are not stored in that database. Shared abuse
-            controls use a protected fingerprint of the network address; the raw
-            address is not stored there. Inactive abuse-control records are
-            removed by scheduled cleanup. Hosting, database and email providers
-            may retain technical logs under their own settings.
+            enquiries, their random reference and notification status are kept
+            in Convex for 30 days, then removed by scheduled cleanup. Enquiries
+            can be read by authorized project administrators, not by other
+            website visitors. Queued email copies are removed from the database
+            component after seven days when finalized, or 30 days if abandoned.
+            Business inbox and email-provider copies follow their own retention
+            settings. Shared submission limits use a hash of the email address;
+            the form does not store your network address. Hosting, database and
+            email providers may retain technical logs under their own settings.
           </p>
         </section>
         <section aria-labelledby="privacy-controls">

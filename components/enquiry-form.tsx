@@ -42,7 +42,9 @@ export function EnquiryForm() {
       : "";
   const status =
     phase.tag === "submitted"
-      ? `Your enquiry has been submitted to BuildMyX.${phase.result.confirmationSent ? " A confirmation email has also been sent." : " An email confirmation could not be confirmed; you don’t need to submit again."}${phase.result.reference ? ` Reference: ${phase.result.reference}.` : ""}`
+      ? phase.result.saved
+        ? `Your enquiry has been received and saved. We’ll review it and get back to you. Reference: ${phase.result.reference}.`
+        : `Your enquiry has been submitted to BuildMyX.${phase.result.confirmationSent ? " A confirmation email has also been sent." : " An email confirmation could not be confirmed; you don’t need to submit again."}${phase.result.reference ? ` Reference: ${phase.result.reference}.` : ""}`
       : phase.tag === "deliveryUnconfirmed"
         ? phase.message
         : phase.tag === "copied"
@@ -214,7 +216,7 @@ export function EnquiryForm() {
         </button>
         <p>
           {deliveryEndpoint
-            ? "We’ll use these details to respond to your enquiry."
+            ? "Your enquiry will be saved so we can review it and respond."
             : "Copies a message for you to share. Your details stay in this tab; they aren’t sent to BuildMyX."}
         </p>
       </div>

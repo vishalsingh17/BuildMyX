@@ -9,7 +9,10 @@
  */
 
 import type * as crons from "../crons.js";
+import type * as enquiries from "../enquiries.js";
 import type * as enquiryDelivery from "../enquiryDelivery.js";
+import type * as enquiryFields from "../enquiryFields.js";
+import type * as enquiryNotifications from "../enquiryNotifications.js";
 import type * as http from "../http.js";
 
 import type {
@@ -20,7 +23,10 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   crons: typeof crons;
+  enquiries: typeof enquiries;
   enquiryDelivery: typeof enquiryDelivery;
+  enquiryFields: typeof enquiryFields;
+  enquiryNotifications: typeof enquiryNotifications;
   http: typeof http;
 }>;
 
@@ -52,4 +58,5 @@ export declare const internal: FilterApi<
 
 export declare const components: {
   rateLimiter: import("@convex-dev/rate-limiter/_generated/component.js").ComponentApi<"rateLimiter">;
+  resend: import("@convex-dev/resend/_generated/component.js").ComponentApi<"resend">;
 };

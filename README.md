@@ -12,7 +12,7 @@ npm run dev
 
 For production, set the hosting environment variables, then run `npm run build` and `npm start`, or deploy with a Next.js-compatible Node/Vercel host. **A static-only host cannot run the enquiry endpoint.** The application uses Next's standalone output; if packaging `.next/standalone` yourself, also copy `public` and `.next/static` into the corresponding standalone directories. `npm start` serves the regular production build.
 
-Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. Email credentials are server-only and must be entered through the host's secret settings. Never commit `.env.local` or put a delivery key in a public variable.
+Public settings are read at build time; rebuild when changing `NEXT_PUBLIC_*`. Email credentials belong in the chosen Convex deployment’s environment settings. Never commit `.env.local` or put a delivery key in a public variable.
 
 ## Convex development setup
 
@@ -20,7 +20,7 @@ BuildMyX is linked to the existing [Convex cloud development deployment `tacit-b
 
 Run `npm run dev:convex` alongside the Next.js development server. To sync once with Convex's TypeScript checks enabled, run `npx convex dev --once --typecheck enable --tail-logs disable`. The generated bindings under `convex/_generated/` and the backend TypeScript configuration in `convex/tsconfig.json` are committed.
 
-Convex stores delivery metadata in `enquiryDeliveries` and protected rate-limit keys in `enquiryRateKeys`. Internal mutations implement the delivery ledger; an HMAC-authenticated HTTP action is the server entry point. The official rate-limiter component enforces shared limits. Enquiry text stays in the browser/request and email provider; it is not stored in these tables. The Next.js endpoint orchestrates email sending. Production uses a production Convex deployment and its own private service secret. Convex account credentials stay outside the repository.
+Convex stores submitted contact details in the private `enquiries` table. Only the validated HTTP intake can accept anonymous submissions; reads, deletion, notification queuing and cleanup use internal functions. The official rate-limiter component enforces shared submission limits and the official Resend component durably queues owner notifications. A missing email account or a notification failure does not prevent a database save. The older metadata ledger remains available for legacy delivery clients; the website’s built-in API uses the database flow exclusively. Convex account credentials stay outside the repository.
 
 `npx convex ai-files install` installs the generated guidance at `convex/_generated/ai/guidelines.md` and project skills under `.agents/skills`. The generated `AGENTS.md` and `CLAUDE.md` direct coding agents to that guidance. Rerun the installer when updating Convex's AI instructions.
 
@@ -37,27 +37,26 @@ Convex stores delivery metadata in `enquiryDeliveries` and protected rate-limit 
 
 All enquiry CTAs preselect a single shared form. Deep links use `/?interest=ai#enquire`; the other values are `learning`, `hiring` and `developer`. Draft fields and the manual hero preference survive internal navigation in memory. No cookies, local storage or session storage are used; refresh or closing the tab clears the draft.
 
-## Email delivery
+## Enquiry storage and owner notifications
 
-The site is honest when unconfigured: it validates and copies a message, explicitly saying that it has not been sent. Clipboard failure reveals a selectable message. Verified email, booking and LinkedIn links render only when supplied.
+The built-in Next.js endpoint proxies submissions to the configured Convex HTTP actions URL. Set `ENQUIRY_CONVEX_SITE_URL` to the chosen `https://…convex.site` URL in `.env.local` or the hosting environment. Development settings select `tacit-badger-38`; previews need an explicit development/preview URL. Set `ENQUIRY_ENABLED=false` on the Next.js server to force the copy-only fallback during maintenance or browser tests.
 
-To enable the included first-party endpoint:
+`GET /api/enquiry` checks database availability independently of email settings. `POST /api/enquiry` validates origin, JSON media type, a streamed 12 KB limit and all fields before forwarding. The Convex HTTP action repeats validation and applies shared limits: five new enquiries per normalized email address per ten-minute window and 200 requests using new references per day across the deployment. Only email hashes are used as rate-limit keys. Adjust the named limits in `convex/enquiries.ts` as traffic grows.
 
-1. Deploy the Convex functions to the intended backend. The existing `tacit-badger-38` deployment is for development. Use a production deployment for the live website.
-2. Generate a random service secret with at least 32 characters. Set `ENQUIRY_SERVICE_SECRET` in both that Convex deployment and Vercel's server environment. Set `ENQUIRY_CONVEX_SITE_URL` in Vercel to that deployment's `https://…convex.site` HTTP actions URL. Keep the secret out of public variables and Git.
-3. Verify a Resend sender domain and configure server-only `RESEND_API_KEY`, `ENQUIRY_FROM` and `ENQUIRY_TO`. Example sender: `BuildMyX <enquiries@your-verified-domain>`.
-4. Set `NEXT_PUBLIC_SITE_URL` to the actual production origin. Ensure the host overwrites forwarded-IP headers. An edge request limit remains useful before application processing; the Convex component supplies the shared application limit of five attempts per aligned ten-minute window, plus a cap on new rate keys.
-5. Rebuild and verify with addresses you own before advertising sending. Automated checks simulate email responses and do not send mail. If Vercel should also deploy the backend on builds, configure its build command as `npx convex deploy --cmd 'npm run build'` with the intended deployment's private `CONVEX_DEPLOY_KEY` in the host's secrets.
+A random reference is bound atomically to a fingerprint of the normalized fields. Unchanged retries return the saved result without inserting another record or queuing a second notification; changed fields with the same reference return 409. The success response is `{ saved: true, reference }`. Network uncertainty keeps the draft and its original reference available for retry. Submitted fields and notification status are removed after 30 days by scheduled cleanup. Finalized email copies in the component are cleaned after seven days; abandoned copies after 30 days. Business inbox and provider retention settings are separate.
 
-`GET /api/enquiry` enables sending only when email settings and the signed metadata service are available. A backend outage returns 503 so the browser can retry discovery; absent configuration offers copying. Credentials and destinations are not exposed in the capability response. Configuration does not prove that the sender or inbox has been verified.
+View submitted enquiries in **Convex dashboard → the matching deployment → Data → enquiries**. Enquiry fields, reference, notification status and any generic notification error appear there. There is no publicly accessible enquiry list or lookup. For administrator deletion, run the internal `enquiries:remove` mutation with the document’s `enquiryId`; it also cancels a queued notification when possible.
 
-`POST /api/enquiry` enforces origin, media type, a 12 KB streamed limit, field validation and shared abuse controls. It claims the submission ID atomically, binding it to a keyed fingerprint of normalized fields. Concurrent claims cannot send another business message; an ID used with different content is rejected. Cached submissions return their original result. A 60-second lease lets an interrupted request resume; recorded owner acceptance skips the business send on retries. Uncertain owner sends are not automatically retried after 23 hours, before provider deduplication can expire. Delivery metadata is removed after 30 days by scheduled cleanup, so this is a bounded retention policy, not permanent duplicate detection.
+Owner emails require a Resend account; database storage does not. To activate notifications:
 
-Owner and receipt messages retain separate provider idempotency keys. A successful response is `{ delivered: true, reference, confirmationSent }` after provider acceptance of the business message. Receipt failure and metadata-update failure after known acceptance do not turn it into an unsuccessful enquiry. Store failures before sending fail closed. The client allows 45 seconds for bounded provider and ledger operations.
+1. Create an account at [Resend](https://resend.com/signup), add a domain you own and complete [domain verification](https://resend.com/docs/dashboard/domains/introduction). A Gmail recipient is fine; the sender must belong to your verified domain.
+2. In the **chosen Convex deployment’s** Settings → Environment Variables, add `RESEND_API_KEY`, `ENQUIRY_FROM` (for example, `BuildMyX <enquiries@your-domain>`), `ENQUIRY_TO` (your private notification address), and `ENQUIRY_EMAIL_TEST_MODE=false`. These belong in Convex, not in public browser variables. Never share keys in chat or commit them.
+3. Optionally create a Resend webhook for `https://<deployment>.convex.site/resend-webhook`, enable all email events and store its `RESEND_WEBHOOK_SECRET` in that Convex deployment. Signature verification is handled by the Resend component. Without a webhook, API send status still updates, but final inbox delivery cannot be confirmed.
+4. Submit a controlled enquiry and check both the `enquiries` row and your inbox. Existing unconfigured enquiries still inside the 30-day retention window are queued automatically within five minutes after settings become available.
 
-The draft, current operation, normalized retry identity and first-focus analytics latch live in the root provider across client navigation. Each operation owns its snapshot and draft revision; old completions cannot mark edited values submitted or show a missing prepared message. Copy/send feedback is mutually exclusive. Discovery times out after five seconds and can retry; clipboard permission times out after fifteen seconds into manual copying. Refresh starts a new draft; no browser storage is used.
+Notifications use the visitor’s address as Reply-To and a stable idempotency key. Enqueue failures retry up to five times; transient delivery retries are managed by the component. A failed notification leaves the enquiry saved and visible to the owner. `queued`, `sent` and `delivered` are distinct states; `sent` does not guarantee final inbox delivery. No visitor receipt is promised by the database flow. Keep `ENQUIRY_EMAIL_TEST_MODE=true` in development and use Resend test recipients to avoid real email during tests.
 
-An existing external backend can instead be supplied as `NEXT_PUBLIC_ENQUIRY_ENDPOINT`. It must implement the same JSON confirmation contract, validation and abuse controls. A cross-origin endpoint must allow the actual site origin, JSON content type and `Idempotency-Key` header via CORS. Do not point this setting at an untrusted service.
+All enquiry CTAs share one in-memory draft. The copy-only fallback remains available when storage is not configured. Capability checks time out after eight seconds and can retry; clipboard permission times out after fifteen seconds into manual copying. Refresh starts a new draft; no browser storage is used. An optional `NEXT_PUBLIC_ENQUIRY_ENDPOINT` can supply an external HTTPS intake instead; it must return `{ saved: true, reference }` or the supported legacy `{ delivered: true, reference?, confirmationSent }` contract and implement its own validation, limits and CORS.
 
 ## Public launch and search
 
@@ -100,7 +99,7 @@ The browser check starts the actual Next production server, uses Chromium, then 
 - `lib/content.ts`, `lib/services.ts`: FAQ and service detail copy.
 - `components/landing.tsx`, `components/pilot-package.tsx`: concise homepage and pilot offer.
 - `components/reporting-demo.tsx`, `lib/reporting.ts`: interactive proof and calculation rules.
-- `lib/server/enquiries.ts`: validated delivery handler; `app/api/enquiry/route.ts` exposes it.
+- `lib/server/enquiry-intake.ts`: validated database intake proxy; `app/api/enquiry/route.ts` exposes it. `convex/enquiries.ts` stores submissions; `convex/enquiryNotifications.ts` handles owner emails. The old `lib/server/enquiries.ts` delivery handler is retained for legacy compatibility.
 - `app/globals.css`, `app/improvements.css`: warm ivory/forest visual system and responsive layouts.
 
 Fonts are self-hosted with licences in `public/fonts/`. The initial accessible hero remains stable while only the visible suffix animates. Manual selection pauses rotation, Resume is explicit, hover/focus pauses and reduced motion starts paused.

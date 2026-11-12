@@ -2,7 +2,7 @@ import { normalizeEnquiry, type Enquiry, type EnquiryErrors } from "./enquiry";
 import { interests, type Interest } from "./site-config";
 
 export type EnquiryValues = Omit<Enquiry, "interest"> & { interest: Interest };
-export type DeliveryResult = { reference?: string; confirmationSent: boolean };
+export type DeliveryResult = import("./enquiry-fields").EnquirySubmissionResult;
 type Attempt = { operationId: string; revision: number; values: EnquiryValues };
 type SendAttempt = Attempt & { submissionId: string; body: string };
 export type EnquiryPhase =

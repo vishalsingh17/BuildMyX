@@ -96,6 +96,29 @@ test("an HTTP failure never declares delivery", async (context) => {
     /wasn’t confirmed/,
   );
 });
+test("confirmed database storage succeeds without claiming an email receipt", async (context) => {
+  const reference = "11111111-1111-4111-8111-111111111111";
+  context.mock.method(globalThis, "fetch", async () =>
+    Response.json({ saved: true, reference }),
+  );
+  assert.deepEqual(
+    await deliverEnquiry("https://example.com/enquiry", valid, reference),
+    {
+      saved: true,
+      reference,
+      confirmationSent: false,
+    },
+  );
+});
+test("a saved claim without a valid reference cannot confirm submission", async (context) => {
+  context.mock.method(globalThis, "fetch", async () =>
+    Response.json({ saved: true }),
+  );
+  await assert.rejects(
+    () => deliverEnquiry("https://example.com/enquiry", valid),
+    /couldn’t be confirmed as saved/,
+  );
+});
 test("a 200 without explicit delivery confirmation is rejected", async (context) => {
   context.mock.method(
     globalThis,

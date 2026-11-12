@@ -104,6 +104,43 @@ export async function checkStateMachines(browser, base, report) {
     );
 
   {
+    const { context, page, errors } = await setup({
+      post: (route) =>
+        route.fulfill({
+          json: {
+            saved: true,
+            reference: route.request().headers()["idempotency-key"],
+          },
+        }),
+    });
+    try {
+      await fill(page);
+      await send(page);
+      await settled(page);
+      await expect(page.locator(".form-status")).toContainText(
+        "received and saved",
+      );
+      await expect(page.locator(".form-status")).toContainText("Reference:");
+      await expect(page.locator(".form-status")).not.toContainText(
+        "confirmation email",
+      );
+      await page
+        .getByRole("link", { name: "How your enquiry details are handled" })
+        .click();
+      await page.getByRole("link", { name: "Back to your enquiry" }).click();
+      await expect(page.locator(".form-status")).toContainText(
+        "received and saved",
+      );
+      assert.deepEqual(errors, []);
+      report.push(
+        "PASS database submissions: saved confirmation survives navigation and does not claim an email receipt.",
+      );
+    } finally {
+      await context.close();
+    }
+  }
+
+  {
     const keys = [];
     const { context, page, errors } = await setup({
       post: (route) => {
