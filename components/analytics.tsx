@@ -7,6 +7,7 @@ import type { Interest } from "@/lib/site-config";
 export function Analytics() {
   const path = usePathname();
   useEffect(() => {
+    track("page_view");
     const interest = (
       {
         "/services/ai": "ai",

@@ -68,12 +68,58 @@ const browser = await chromium.launch({
 });
 const failures = [];
 const report = [];
+function decodePosthog(body) {
+  if (!body) return [];
+  const text = body.toString("utf8");
+  const encoded = new URLSearchParams(text).get("data");
+  for (const candidate of [
+    text,
+    encoded,
+    encoded && Buffer.from(encoded, "base64").toString("utf8"),
+  ]) {
+    if (!candidate) continue;
+    try {
+      const value = JSON.parse(candidate);
+      return Array.isArray(value) ? value : (value.batch ?? [value]);
+    } catch {}
+  }
+  throw new Error("Unrecognised PostHog request body");
+}
 async function watch(page) {
-  await page.route("**/*", (route) => {
+  const captured = [];
+  await page.route("**/*", async (route) => {
+    const request = route.request();
+    const destination = new URL(request.url());
     if (
-      route.request().method() === "POST" &&
-      new URL(route.request().url()).origin !== url
-    )
+      destination.hostname === "posthog.com" ||
+      destination.hostname.endsWith(".posthog.com")
+    ) {
+      if (request.method() === "POST") {
+        try {
+          captured.push(...decodePosthog(request.postDataBuffer()));
+        } catch (error) {
+          failures.push(error.message);
+        }
+      }
+      return route.fulfill({
+        status: request.method() === "OPTIONS" ? 204 : 200,
+        headers: {
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, POST, OPTIONS",
+          "access-control-allow-headers": "*",
+          "content-type": "application/json",
+        },
+        body:
+          request.method() === "OPTIONS"
+            ? ""
+            : JSON.stringify({
+                status: 1,
+                featureFlags: {},
+                errorsWhileComputingFlags: false,
+              }),
+      });
+    }
+    if (request.method() === "POST" && destination.origin !== url)
       return route.abort("blockedbyclient");
     return route.continue();
   });
@@ -85,6 +131,7 @@ async function watch(page) {
     if (response.status() >= 400)
       failures.push(`${response.status()} ${response.url()}`);
   });
+  return captured;
 }
 const activeWord = (page) => page.locator(".suffix.is-active").textContent();
 
@@ -757,6 +804,139 @@ try {
   );
   assert.equal((await fetch(`${url}/sitemap.xml`)).status, 200);
   assert.equal((await fetch(`${url}/robots.txt`)).status, 200);
+  const humanUserAgent =
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36";
+  const simulateHumanVisitor = () => {
+    Object.defineProperty(navigator, "webdriver", {
+      configurable: true,
+      get: () => false,
+    });
+    Object.defineProperty(navigator, "userAgentData", {
+      configurable: true,
+      get: () => undefined,
+    });
+  };
+  if (process.env.POSTHOG_EXPECT_ENABLED === "1") {
+    // PostHog intentionally filters HeadlessChrome; exercise a normal visitor.
+    const analyticsPage = await browser.newPage({
+      userAgent: humanUserAgent,
+      viewport: { width: 1440, height: 1000 },
+      reducedMotion: "reduce",
+    });
+    await analyticsPage.addInitScript(simulateHumanVisitor);
+    const captured = await watch(analyticsPage);
+    await analyticsPage.goto(`${url}/?email=private@example.com#enquire`);
+    await expect
+      .poll(
+        () => captured.filter((event) => event.event === "$pageview").length,
+      )
+      .toBeGreaterThan(0);
+    const initial = captured.find((event) => event.event === "$pageview");
+    assert.ok(initial.properties.token.startsWith("phc_"));
+    assert.match(initial.properties.distinct_id, /^[a-f0-9-]{32,40}$/i);
+    await analyticsPage.locator("#name").fill("Private Visitor");
+    await analyticsPage.locator("#email").fill("private@example.com");
+    await analyticsPage
+      .locator("#description")
+      .fill("Private project information that must never reach analytics.");
+    await analyticsPage
+      .locator(".desktop-nav")
+      .getByRole("link", { name: "BuildMyAI", exact: true })
+      .click();
+    await expect
+      .poll(
+        () => captured.filter((event) => event.event === "service_view").length,
+      )
+      .toBeGreaterThan(0);
+    await analyticsPage
+      .locator("main .detail-actions a.button")
+      .first()
+      .click();
+    await expect(analyticsPage.locator("#email")).toHaveValue(
+      "private@example.com",
+    );
+    await expect
+      .poll(
+        () => captured.filter((event) => event.event === "cta_click").length,
+      )
+      .toBeGreaterThan(0);
+    assert.ok(
+      captured.every(
+        (event) =>
+          event.properties.distinct_id === initial.properties.distinct_id,
+      ),
+    );
+    assert.doesNotMatch(
+      JSON.stringify(captured),
+      /Private Visitor|private@example|Private project|\$initial_current_url|\$referrer|\$set_once/,
+    );
+    assert.equal(
+      await analyticsPage.evaluate(
+        () => localStorage.length + sessionStorage.length,
+      ),
+      0,
+    );
+    assert.deepEqual(await analyticsPage.context().cookies(), []);
+    captured.length = 0;
+    await analyticsPage.reload();
+    await expect
+      .poll(
+        () => captured.filter((event) => event.event === "$pageview").length,
+      )
+      .toBeGreaterThan(0);
+    assert.notEqual(
+      captured.find((event) => event.event === "$pageview").properties
+        .distinct_id,
+      initial.properties.distinct_id,
+    );
+    await analyticsPage.close();
+    for (const preference of ["doNotTrack", "globalPrivacyControl"]) {
+      const privatePage = await browser.newPage({ userAgent: humanUserAgent });
+      await privatePage.addInitScript(simulateHumanVisitor);
+      const privateEvents = await watch(privatePage);
+      await privatePage.addInitScript(
+        (name) =>
+          Object.defineProperty(navigator, name, {
+            configurable: true,
+            get: () => (name === "doNotTrack" ? "1" : true),
+          }),
+        preference,
+      );
+      await privatePage.goto(`${url}/services/ai/`);
+      await privatePage.waitForLoadState("networkidle");
+      assert.deepEqual(
+        privateEvents,
+        [],
+        `${preference} must prevent PostHog collection`,
+      );
+      await privatePage.close();
+    }
+    report.push(
+      "PASS configured PostHog SDK: standard page views, required ingestion token, service/CTA funnel correlation, anonymous refresh reset, no form/query/referrer leakage, no cookies or browser storage, and both DNT/GPC opt-outs. All PostHog requests mocked; no test events sent remotely.",
+    );
+  }
+  if (process.env.POSTHOG_EXPECT_ENABLED === "0") {
+    const unconfigured = await browser.newPage({ userAgent: humanUserAgent });
+    await unconfigured.addInitScript(simulateHumanVisitor);
+    const captured = await watch(unconfigured);
+    await unconfigured.goto(`${url}/services/ai/`);
+    await unconfigured.waitForLoadState("networkidle");
+    assert.deepEqual(
+      captured,
+      [],
+      "Unconfigured analytics must send no PostHog events",
+    );
+    assert.equal(
+      await unconfigured.evaluate(
+        () => localStorage.length + sessionStorage.length,
+      ),
+      0,
+    );
+    await unconfigured.close();
+    report.push(
+      "PASS unconfigured PostHog: no ingestion requests or browser storage for a normal visitor.",
+    );
+  }
   const notFoundPage = await browser.newPage();
   const missing = await notFoundPage.goto(`${url}/a-page-that-does-not-exist/`);
   assert.equal(missing.status(), 404);

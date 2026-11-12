@@ -1,6 +1,7 @@
 import { siteConfig, type Interest } from "./site-config";
 
 export type AnalyticsEvent =
+  | "page_view"
   | "service_view"
   | "cta_click"
   | "enquiry_start"
@@ -11,6 +12,7 @@ export type AnalyticsEvent =
   | "resource_download";
 type Props = { interest?: Interest; placement?: string; resource?: string };
 const events: AnalyticsEvent[] = [
+  "page_view",
   "service_view",
   "cta_click",
   "enquiry_start",
@@ -45,7 +47,11 @@ const allowedPaths = new Set([
   "/resources/reporting-readiness/",
 ]);
 
-/** No input values, query strings, identifiers or browser storage enter analytics. */
+export function isAnalyticsEvent(value: string): value is AnalyticsEvent {
+  return events.includes(value as AnalyticsEvent);
+}
+
+/** No input values or URL query strings enter the event properties. */
 export function analyticsPayload(
   event: AnalyticsEvent,
   path: string,
@@ -75,6 +81,12 @@ export function track(event: AnalyticsEvent, props: Props = {}) {
   window.dispatchEvent(
     new CustomEvent("buildmyx:analytics", { detail: payload }),
   );
+  if (siteConfig.posthogToken && siteConfig.posthogHost) {
+    void import("./posthog-client")
+      .then(({ capturePosthog }) => capturePosthog(payload))
+      .catch(() => {});
+    return;
+  }
   if (!siteConfig.analyticsEndpoint) return;
   void fetch(siteConfig.analyticsEndpoint, {
     method: "POST",

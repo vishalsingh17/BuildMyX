@@ -9,6 +9,8 @@ export const siteConfig = {
   launchApproved: process.env.NEXT_PUBLIC_LAUNCH_APPROVED !== "false",
   sourceCodeUrl: "https://github.com/vishalsingh17/BuildMyX",
   founderGithubUrl: "https://github.com/vishalsingh17",
+  posthogToken: process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN?.trim() || null,
+  posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST?.trim() || null,
   analyticsEndpoint: process.env.NEXT_PUBLIC_ANALYTICS_ENDPOINT?.trim() || null,
   /** An HTTPS endpoint that validates and delivers enquiries on the server. */
   enquiryEndpoint: process.env.NEXT_PUBLIC_ENQUIRY_ENDPOINT?.trim() || null,

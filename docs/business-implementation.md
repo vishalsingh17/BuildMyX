@@ -11,7 +11,7 @@ The website now gives a small business team a specific starting offer: a scoped 
 - Reporting-readiness and employer-brief pages plus editable downloads.
 - Server-side enquiry delivery with business notification, attempted visitor receipt, validation, origin/body limits, a per-instance rate-limit backstop and retry idempotency.
 - Accurate submission/error/copy states and retained drafts across internal navigation.
-- Service-aware event hooks with no personal details or default external tracking.
+- PostHog integration for service-aware conversion events, with explicit capture, anonymous tab-memory IDs and no collection until a project is configured.
 - Descriptive metadata, canonical URLs, social image, robots and sitemap. Names cleared; indexing activates for a configured production URL.
 - Updated privacy information and a lead follow-up template.
 
@@ -22,6 +22,6 @@ The website now gives a small business team a specific starting offer: a scoped 
 - Choose actual commercial prices, availability and support terms during scoping. No invented claims are shown.
 - When a real workshop is scheduled, add its confirmed date, prerequisites, curriculum, format, fee and cancellation terms before accepting bookings.
 - With permission, add genuine project outcomes and customer feedback as they become available. Keep this sample clearly separate from client case studies.
-- If measuring acquisition, connect an appropriate collector, then assess service interest, enquiries and actual qualified/won outcomes. Establish a baseline before claiming improvement.
+- Configure the PostHog public project token and matching region, then assess service interest, enquiries and actual qualified/won outcomes. Establish a baseline before claiming improvement.
 
 Use the private lead tracker to assign an owner and next action to each enquiry. Review qualified enquiries, response time, progression to scoped proposals and won work by service. The site does not pretend to provide a CRM or guaranteed business results.

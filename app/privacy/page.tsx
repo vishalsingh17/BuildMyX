@@ -87,14 +87,29 @@ export default function Privacy() {
         <section aria-labelledby="privacy-tracking">
           <h2 id="privacy-tracking">Website activity</h2>
           <p>
-            There are no advertising pixels, analytics cookies or visitor IDs.
-            By default, no analytics events leave this site. If an activity
-            collector is configured, it receives only event names, clean page
-            paths and fixed service or resource labels, such as a demo run or
-            enquiry submission. Names, email addresses, form text, links and URL
-            query strings are excluded. Do Not Track and Global Privacy Control
-            disable these events. A collector and hosting provider may still
-            observe the request’s IP address under their own retention settings.
+            There are no advertising pixels. When PostHog is configured, we
+            record page views and selected actions, such as choosing a service,
+            trying the demo or submitting an enquiry. Events include clean page
+            paths and fixed service or resource labels. Names, email addresses,
+            form contents, relevant links, URL query strings and referrers are
+            excluded.
+          </p>
+          <p>
+            PostHog uses randomly generated identifiers held only in this tab’s
+            memory to connect actions within an open visit. Refreshing or
+            closing the page clears those identifiers. This configuration does
+            not use analytics cookies, local storage or session storage, create
+            person profiles, record sessions or automatically capture form
+            interactions. Do Not Track and Global Privacy Control disable
+            collection.
+          </p>
+          <p>
+            Analytics is inactive until configured. A separately configured
+            activity collector receives the same limited event labels without
+            PostHog identifiers. Hosting and analytics providers can observe
+            network addresses when handling requests; IP-based enrichment is
+            disabled in this PostHog configuration. Provider retention settings
+            apply.
           </p>
           <p>
             Your browser makes the normal requests needed to load pages,

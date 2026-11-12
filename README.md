@@ -58,11 +58,17 @@ The site includes route-specific metadata, canonical URLs, a generated social-sh
 
 The walkthrough is a recording of this implementation, with captions and parallel written steps. `scripts/record-demo.mjs` can regenerate the assets with Chromium and FFmpeg after building. It starts a temporary production server and stops it after recording. Install the Playwright recording helper with `npx playwright install ffmpeg` if it is missing; FFmpeg must also be available on the system for MP4 encoding.
 
-## Optional measurement and sales follow-up
+## PostHog analytics and sales follow-up
 
-Leave `NEXT_PUBLIC_ANALYTICS_ENDPOINT` blank to send no event requests. The optional collector receives JSON with `event`, a clean `path`, and allowed service/placement/resource labels. Events are `service_view`, `cta_click`, `enquiry_start`, `enquiry_submitted`, `enquiry_copy`, `booking_click`, `example_run` and `resource_download`. No form text, names, email addresses, query strings, visitor IDs or browser storage enter the payload. Do Not Track and Global Privacy Control disable events. Collectors may observe network addresses; choose retention and processing settings accordingly. The collector must permit the site's origin and accept JSON; do not add identity enrichment.
+PostHog is integrated through the official `posthog-js` SDK. Add `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` (the public browser token, usually `phc_…`) and `NEXT_PUBLIC_POSTHOG_HOST` (EU: `https://eu.i.posthog.com`; US: `https://us.i.posthog.com`) to the hosting environment and rebuild. A personal/private API key is never used in browser code. Missing values keep PostHog inactive. See [the PostHog setup guide](docs/posthog-setup.md) for activation and dashboard steps.
 
-A local `buildmyx:analytics` CustomEvent makes hooks inspectable without a collector. Copies and submitted enquiries are separate events. There is no invented conversion dashboard. Use the private-copy template in `docs/lead-tracker-template.csv` to record qualified enquiries, next actions, agreed values and won/lost outcomes. Do not put real customer records in this public repository. `docs/business-implementation.md` maps the changes and remaining business setup.
+The SDK loads only when configured and the visitor has not enabled Do Not Track or Global Privacy Control. The existing event hooks feed PostHog directly; no collector adapter is needed. Automatic interaction capture, replay, surveys, exception capture, feature flags and external extension loading are disabled. A final event guard strips SDK URL/referrer defaults, form data, person properties and unapproved events. Clean page views appear as `$pageview`. Service views, CTA clicks, enquiry starts/submissions/copies, bookings, demo runs and downloads retain their existing names.
+
+Anonymous identifiers are held in tab memory to connect actions within the open visit. Cookies, local storage, session storage, person profiles and IP enrichment are disabled. Refresh starts a new visit, so unique visitor and returning-user figures are deliberately limited. Do not enable extra collection without reviewing the configuration and updating the public privacy page.
+
+`NEXT_PUBLIC_ANALYTICS_ENDPOINT` remains an optional alternative collector when PostHog is unset. It accepts the documented JSON event/path/label payload without visitor identifiers. Do not put a PostHog ingestion URL into that setting: its protocol is different. PostHog takes precedence when both its settings are supplied, avoiding duplicate collection. With neither integration configured, no analytics events leave the browser. The local `buildmyx:analytics` CustomEvent remains available for inspection.
+
+Use a private copy of `docs/lead-tracker-template.csv` to record qualified enquiries, follow-ups and actual won/lost outcomes. Do not put customer records in this public repository.
 
 ## Verify
 
