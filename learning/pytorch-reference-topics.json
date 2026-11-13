@@ -1,0 +1,1597 @@
+{
+  "source_url": "https://aman.ai/primers/pytorch/",
+  "retrieved_on": "2026-11-14",
+  "source_html_sha256": "39d456bf1447fe4f34ffb4bd2982f771f66e115a0e62e7691853de5edf03154c",
+  "headings": [
+    {
+      "level": 3,
+      "id": "loading-text-data",
+      "title": "Loading text data"
+    },
+    {
+      "level": 3,
+      "id": "preparing-a-batch",
+      "title": "Preparing a Batch"
+    },
+    {
+      "level": 3,
+      "id": "recurrent-network-model",
+      "title": "Recurrent network model"
+    },
+    {
+      "level": 3,
+      "id": "writing-a-custom-loss-function",
+      "title": "Writing a custom loss function"
+    },
+    {
+      "level": 2,
+      "id": "selected-methods",
+      "title": "Selected methods"
+    },
+    {
+      "level": 3,
+      "id": "tensor-shapesize",
+      "title": "Tensor shape/size"
+    },
+    {
+      "level": 3,
+      "id": "initialization",
+      "title": "Initialization"
+    },
+    {
+      "level": 4,
+      "id": "static",
+      "title": "Static"
+    },
+    {
+      "level": 3,
+      "id": "standard-normal",
+      "title": "Standard normal"
+    },
+    {
+      "level": 4,
+      "id": "xavierglorot",
+      "title": "Xavier/Glorot"
+    },
+    {
+      "level": 5,
+      "id": "uniform",
+      "title": "Uniform"
+    },
+    {
+      "level": 5,
+      "id": "normal",
+      "title": "Normal"
+    },
+    {
+      "level": 4,
+      "id": "kaiminghe",
+      "title": "Kaiming/He"
+    },
+    {
+      "level": 5,
+      "id": "uniform-1",
+      "title": "Uniform"
+    },
+    {
+      "level": 5,
+      "id": "normal-1",
+      "title": "Normal"
+    },
+    {
+      "level": 3,
+      "id": "send-tensor-to-gpu",
+      "title": "Send Tensor to GPU"
+    },
+    {
+      "level": 3,
+      "id": "convert-to-numpy",
+      "title": "Convert to NumPy"
+    },
+    {
+      "level": 3,
+      "id": "tensoritem-convert-single-value-tensor-to-scalar",
+      "title": "tensor.item(): Convert Single Value Tensor to Scalar"
+    },
+    {
+      "level": 3,
+      "id": "tensortolist-convert-multi-value-tensor-to-scalar",
+      "title": "tensor.tolist(): Convert Multi Value Tensor to Scalar"
+    },
+    {
+      "level": 3,
+      "id": "len",
+      "title": "Len"
+    },
+    {
+      "level": 3,
+      "id": "arange",
+      "title": "Arange"
+    },
+    {
+      "level": 3,
+      "id": "linspace",
+      "title": "Linspace"
+    },
+    {
+      "level": 3,
+      "id": "view",
+      "title": "View"
+    },
+    {
+      "level": 3,
+      "id": "transpose",
+      "title": "Transpose"
+    },
+    {
+      "level": 4,
+      "id": "swapaxes",
+      "title": "Swapaxes"
+    },
+    {
+      "level": 3,
+      "id": "permute",
+      "title": "Permute"
+    },
+    {
+      "level": 3,
+      "id": "movedim",
+      "title": "Movedim"
+    },
+    {
+      "level": 3,
+      "id": "randperm",
+      "title": "Randperm"
+    },
+    {
+      "level": 3,
+      "id": "where",
+      "title": "Where"
+    },
+    {
+      "level": 3,
+      "id": "reshape",
+      "title": "Reshape"
+    },
+    {
+      "level": 3,
+      "id": "concatenate",
+      "title": "Concatenate"
+    },
+    {
+      "level": 3,
+      "id": "squeeze",
+      "title": "Squeeze"
+    },
+    {
+      "level": 3,
+      "id": "unsqueeze",
+      "title": "Unsqueeze"
+    },
+    {
+      "level": 3,
+      "id": "print-model-summary",
+      "title": "Print Model Summary"
+    },
+    {
+      "level": 2,
+      "id": "keepdim-keeping-reduced-dimensions",
+      "title": "Keepdim (Keeping Reduced Dimensions)"
+    },
+    {
+      "level": 3,
+      "id": "basic-syntax",
+      "title": "Basic Syntax"
+    },
+    {
+      "level": 3,
+      "id": "example-1-sum-with-and-without-keepdim",
+      "title": "Example 1: Sum With and Without keepdim"
+    },
+    {
+      "level": 3,
+      "id": "example-2-mean-and-broadcasting",
+      "title": "Example 2: Mean and Broadcasting"
+    },
+    {
+      "level": 3,
+      "id": "example-3-max-values-and-indices",
+      "title": "Example 3: Max Values and Indices"
+    },
+    {
+      "level": 3,
+      "id": "example-4-keepdim-vs-unsqueeze",
+      "title": "Example 4: keepdim vs. unsqueeze"
+    },
+    {
+      "level": 2,
+      "id": "end-to-end-data-to-model-pipeline",
+      "title": "End-to-End Data to Model Pipeline"
+    },
+    {
+      "level": 3,
+      "id": "data-pre-processing",
+      "title": "Data Pre-processing"
+    },
+    {
+      "level": 4,
+      "id": "overview",
+      "title": "Overview"
+    },
+    {
+      "level": 4,
+      "id": "key-abstractions-for-pre-processing",
+      "title": "Key Abstractions for Pre-processing"
+    },
+    {
+      "level": 5,
+      "id": "torchutilsdatadataset",
+      "title": "torch.utils.data.Dataset"
+    },
+    {
+      "level": 5,
+      "id": "torchtexttransforms",
+      "title": "torchtext.transforms"
+    },
+    {
+      "level": 5,
+      "id": "torchvisiontransforms",
+      "title": "torchvision.transforms"
+    },
+    {
+      "level": 5,
+      "id": "torchaudiotransforms",
+      "title": "torchaudio.transforms"
+    },
+    {
+      "level": 5,
+      "id": "torchutilsdatadataloader",
+      "title": "torch.utils.data.DataLoader"
+    },
+    {
+      "level": 4,
+      "id": "pre-processing-for-vision-data",
+      "title": "Pre-processing for Vision Data"
+    },
+    {
+      "level": 5,
+      "id": "loading-and-cleaning",
+      "title": "Loading and Cleaning"
+    },
+    {
+      "level": 5,
+      "id": "normalization",
+      "title": "Normalization"
+    },
+    {
+      "level": 5,
+      "id": "data-augmentation",
+      "title": "Data Augmentation"
+    },
+    {
+      "level": 5,
+      "id": "conversion-to-tensor",
+      "title": "Conversion to Tensor"
+    },
+    {
+      "level": 4,
+      "id": "pre-processing-for-text-data",
+      "title": "Pre-processing for Text Data"
+    },
+    {
+      "level": 5,
+      "id": "tokenization",
+      "title": "Tokenization"
+    },
+    {
+      "level": 5,
+      "id": "vocabulary-building",
+      "title": "Vocabulary Building"
+    },
+    {
+      "level": 5,
+      "id": "handling-variable-length-sequences",
+      "title": "Handling Variable-Length Sequences"
+    },
+    {
+      "level": 5,
+      "id": "embedding-lookup",
+      "title": "Embedding Lookup"
+    },
+    {
+      "level": 5,
+      "id": "masking",
+      "title": "Masking"
+    },
+    {
+      "level": 4,
+      "id": "pre-processing-for-audio-data",
+      "title": "Pre-processing for Audio Data"
+    },
+    {
+      "level": 5,
+      "id": "loading-and-cleaning-1",
+      "title": "Loading and Cleaning"
+    },
+    {
+      "level": 5,
+      "id": "normalization-standardization",
+      "title": "Normalization (Standardization)"
+    },
+    {
+      "level": 5,
+      "id": "feature-extraction",
+      "title": "Feature Extraction"
+    },
+    {
+      "level": 5,
+      "id": "data-augmentation-1",
+      "title": "Data Augmentation"
+    },
+    {
+      "level": 5,
+      "id": "conversion-to-tensor-and-batching",
+      "title": "Conversion to Tensor and Batching"
+    },
+    {
+      "level": 5,
+      "id": "integration-with-models",
+      "title": "Integration with Models"
+    },
+    {
+      "level": 4,
+      "id": "data-quality-checks",
+      "title": "Data Quality Checks"
+    },
+    {
+      "level": 4,
+      "id": "tabular-summary",
+      "title": "Tabular Summary"
+    },
+    {
+      "level": 4,
+      "id": "faqs",
+      "title": "FAQs"
+    },
+    {
+      "level": 4,
+      "id": "references-and-further-reading",
+      "title": "References and Further Reading"
+    },
+    {
+      "level": 4,
+      "id": "practical-implementation--data-pre-processing",
+      "title": "Practical Implementation – Data Pre-processing"
+    },
+    {
+      "level": 5,
+      "id": "nlp-data-pre-processing--text-classification-example",
+      "title": "NLP Data Pre-processing – Text Classification Example"
+    },
+    {
+      "level": 5,
+      "id": "vision-data-pre-processing--cifar-10-example",
+      "title": "Vision Data Pre-processing – CIFAR-10 Example"
+    },
+    {
+      "level": 5,
+      "id": "faqs-1",
+      "title": "FAQs"
+    },
+    {
+      "level": 3,
+      "id": "model-trainingfine-tuning-and-evaluation-workflow",
+      "title": "Model Training/Fine-tuning and Evaluation Workflow"
+    },
+    {
+      "level": 4,
+      "id": "overview-1",
+      "title": "Overview"
+    },
+    {
+      "level": 4,
+      "id": "core-components-of-a-training-workflow",
+      "title": "Core Components of a Training Workflow"
+    },
+    {
+      "level": 4,
+      "id": "example-nlp-model-training-workflow",
+      "title": "Example: NLP Model Training Workflow"
+    },
+    {
+      "level": 4,
+      "id": "example-vision-classification-training-loop",
+      "title": "Example: Vision Classification Training Loop"
+    },
+    {
+      "level": 4,
+      "id": "lora-low-rank-adaptation-fine-tuning",
+      "title": "LoRA (Low-Rank Adaptation) Fine-Tuning"
+    },
+    {
+      "level": 5,
+      "id": "example-lora-fine-tuning-in-pytorch",
+      "title": "Example: LoRA Fine-Tuning in PyTorch"
+    },
+    {
+      "level": 4,
+      "id": "evaluation-and-metrics",
+      "title": "Evaluation and Metrics"
+    },
+    {
+      "level": 5,
+      "id": "classification-metrics",
+      "title": "Classification Metrics"
+    },
+    {
+      "level": 4,
+      "id": "early-stopping-and-checkpointing",
+      "title": "Early Stopping and Checkpointing"
+    },
+    {
+      "level": 4,
+      "id": "reproducibility-techniques",
+      "title": "Reproducibility Techniques"
+    },
+    {
+      "level": 4,
+      "id": "logging-and-monitoring",
+      "title": "Logging and Monitoring"
+    },
+    {
+      "level": 4,
+      "id": "faqs-2",
+      "title": "FAQs"
+    },
+    {
+      "level": 4,
+      "id": "practical-implementation--model-trainingfine-tuning-and-evaluation-workflow",
+      "title": "Practical Implementation – Model Training/Fine-tuning and Evaluation Workflow"
+    },
+    {
+      "level": 5,
+      "id": "example-1-vision-use-case-image-classification-on-cifar-10",
+      "title": "Example 1: Vision Use-Case (Image Classification on CIFAR-10)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-setup-and-data-loading",
+      "title": "Step 1: Setup and Data Loading"
+    },
+    {
+      "level": 6,
+      "id": "step-2-define-the-model",
+      "title": "Step 2: Define the Model"
+    },
+    {
+      "level": 6,
+      "id": "step-3-training-and-evaluation-loops",
+      "title": "Step 3: Training and Evaluation Loops"
+    },
+    {
+      "level": 6,
+      "id": "step-4-run-training",
+      "title": "Step 4: Run Training"
+    },
+    {
+      "level": 5,
+      "id": "example-2-nlp-use-case-sentiment-classification-on-imdb-dataset",
+      "title": "Example 2: NLP Use-Case (Sentiment Classification on IMDb Dataset)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-data-preparation",
+      "title": "Step 1: Data Preparation"
+    },
+    {
+      "level": 6,
+      "id": "step-2-define-the-lstm-model",
+      "title": "Step 2: Define the LSTM Model"
+    },
+    {
+      "level": 6,
+      "id": "step-3-training-and-validation-loop",
+      "title": "Step 3: Training and Validation Loop"
+    },
+    {
+      "level": 6,
+      "id": "step-4-run-training-1",
+      "title": "Step 4: Run Training"
+    },
+    {
+      "level": 6,
+      "id": "end-result",
+      "title": "End Result"
+    },
+    {
+      "level": 3,
+      "id": "model-experimentation-and-hyperparameter-tuning",
+      "title": "Model Experimentation and Hyperparameter Tuning"
+    },
+    {
+      "level": 4,
+      "id": "overview-2",
+      "title": "Overview"
+    },
+    {
+      "level": 4,
+      "id": "core-principles-of-experimentation",
+      "title": "Core Principles of Experimentation"
+    },
+    {
+      "level": 5,
+      "id": "isolate-one-variable-at-a-time",
+      "title": "Isolate One Variable at a Time"
+    },
+    {
+      "level": 5,
+      "id": "track-every-experiment",
+      "title": "Track Every Experiment"
+    },
+    {
+      "level": 5,
+      "id": "automate-where-possible",
+      "title": "Automate Where Possible"
+    },
+    {
+      "level": 4,
+      "id": "example-manual-hyperparameter-tuning-loop",
+      "title": "Example: Manual Hyperparameter Tuning Loop"
+    },
+    {
+      "level": 4,
+      "id": "example-automated-tuning-with-optuna",
+      "title": "Example: Automated Tuning with Optuna"
+    },
+    {
+      "level": 4,
+      "id": "configuration-management-with-hydra",
+      "title": "Configuration Management with Hydra"
+    },
+    {
+      "level": 4,
+      "id": "experiment-tracking-with-weights--biases",
+      "title": "Experiment Tracking with Weights & Biases"
+    },
+    {
+      "level": 4,
+      "id": "visualization-of-hyperparameter-results",
+      "title": "Visualization of Hyperparameter Results"
+    },
+    {
+      "level": 4,
+      "id": "reproducibility-and-randomness-control",
+      "title": "Reproducibility and Randomness Control"
+    },
+    {
+      "level": 4,
+      "id": "faqs-3",
+      "title": "FAQs"
+    },
+    {
+      "level": 4,
+      "id": "practical-implementation--model-experimentation-and-hyperparameter-tuning",
+      "title": "Practical Implementation – Model Experimentation and Hyperparameter Tuning"
+    },
+    {
+      "level": 5,
+      "id": "example-1-vision-use-case-cifar-10-cnn-hyperparameter-tuning",
+      "title": "Example 1: Vision Use-Case (CIFAR-10 CNN Hyperparameter Tuning)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-setup-experiment-function",
+      "title": "Step 1: Setup Experiment Function"
+    },
+    {
+      "level": 6,
+      "id": "step-2-experiment-function",
+      "title": "Step 2: Experiment Function"
+    },
+    {
+      "level": 6,
+      "id": "step-3-grid-search",
+      "title": "Step 3: Grid Search"
+    },
+    {
+      "level": 6,
+      "id": "step-4-visualizing-results",
+      "title": "Step 4: Visualizing Results"
+    },
+    {
+      "level": 5,
+      "id": "example-2-nlp-use-case-imdb-sentiment-classification-tuning",
+      "title": "Example 2: NLP Use-Case (IMDb Sentiment Classification Tuning)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-setup-study-environment",
+      "title": "Step 1: Setup Study Environment"
+    },
+    {
+      "level": 6,
+      "id": "step-2-run-the-optimization",
+      "title": "Step 2: Run the Optimization"
+    },
+    {
+      "level": 6,
+      "id": "step-3-track-experiments-with-weights--biases-optional",
+      "title": "Step 3: Track Experiments with Weights & Biases (Optional)"
+    },
+    {
+      "level": 5,
+      "id": "summary-of-both-pipelines",
+      "title": "Summary of Both Pipelines"
+    },
+    {
+      "level": 5,
+      "id": "key-takeaways",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 3,
+      "id": "model-evaluation-benchmarking-and-reporting",
+      "title": "Model Evaluation, Benchmarking, and Reporting"
+    },
+    {
+      "level": 4,
+      "id": "overview-3",
+      "title": "Overview"
+    },
+    {
+      "level": 4,
+      "id": "dataset-splitting-and-evaluation-protocols",
+      "title": "Dataset Splitting and Evaluation Protocols"
+    },
+    {
+      "level": 5,
+      "id": "standard-split",
+      "title": "Standard Split"
+    },
+    {
+      "level": 5,
+      "id": "cross-validation",
+      "title": "Cross-Validation"
+    },
+    {
+      "level": 5,
+      "id": "stratified-sampling",
+      "title": "Stratified Sampling"
+    },
+    {
+      "level": 4,
+      "id": "quantitative-evaluation-metrics",
+      "title": "Quantitative Evaluation Metrics"
+    },
+    {
+      "level": 5,
+      "id": "classification-metrics-1",
+      "title": "Classification Metrics"
+    },
+    {
+      "level": 5,
+      "id": "regression-metrics",
+      "title": "Regression Metrics"
+    },
+    {
+      "level": 5,
+      "id": "nlp-and-generation-metrics",
+      "title": "NLP and Generation Metrics"
+    },
+    {
+      "level": 4,
+      "id": "practical-evaluation-code-example",
+      "title": "Practical Evaluation Code Example"
+    },
+    {
+      "level": 5,
+      "id": "classification-example-vision-or-nlp",
+      "title": "Classification Example (Vision or NLP)"
+    },
+    {
+      "level": 4,
+      "id": "benchmarking-across-models",
+      "title": "Benchmarking Across Models"
+    },
+    {
+      "level": 5,
+      "id": "example",
+      "title": "Example"
+    },
+    {
+      "level": 4,
+      "id": "qualitative-evaluation-and-error-analysis",
+      "title": "Qualitative Evaluation and Error Analysis"
+    },
+    {
+      "level": 5,
+      "id": "error-bucketing",
+      "title": "Error Bucketing"
+    },
+    {
+      "level": 5,
+      "id": "visualization-for-vision-models",
+      "title": "Visualization for Vision Models"
+    },
+    {
+      "level": 5,
+      "id": "visualization-for-text-models",
+      "title": "Visualization for Text Models"
+    },
+    {
+      "level": 4,
+      "id": "reporting-and-documentation",
+      "title": "Reporting and Documentation"
+    },
+    {
+      "level": 4,
+      "id": "statistical-significance-testing",
+      "title": "Statistical Significance Testing"
+    },
+    {
+      "level": 4,
+      "id": "faqs-4",
+      "title": "FAQs"
+    },
+    {
+      "level": 4,
+      "id": "practical-implementation--model-evaluation-benchmarking-and-reporting",
+      "title": "Practical Implementation – Model Evaluation, Benchmarking, and Reporting"
+    },
+    {
+      "level": 5,
+      "id": "example-1-vision-use-case-evaluating-cifar-10-cnn",
+      "title": "Example 1: Vision Use-Case (Evaluating CIFAR-10 CNN)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-load-model-and-prepare-test-data",
+      "title": "Step 1: Load Model and Prepare Test Data"
+    },
+    {
+      "level": 6,
+      "id": "step-2-generate-predictions-and-compute-metrics",
+      "title": "Step 2: Generate Predictions and Compute Metrics"
+    },
+    {
+      "level": 6,
+      "id": "step-3-visualize-confusion-matrix",
+      "title": "Step 3: Visualize Confusion Matrix"
+    },
+    {
+      "level": 6,
+      "id": "step-4-benchmark-report-across-model-variants",
+      "title": "Step 4: Benchmark Report Across Model Variants"
+    },
+    {
+      "level": 5,
+      "id": "example-2-nlp-use-case-evaluating-imdb-sentiment-model",
+      "title": "Example 2: NLP Use-Case (Evaluating IMDb Sentiment Model)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-load-model-and-prepare-test-loader",
+      "title": "Step 1: Load Model and Prepare Test Loader"
+    },
+    {
+      "level": 6,
+      "id": "step-2-compute-predictions-and-metrics",
+      "title": "Step 2: Compute Predictions and Metrics"
+    },
+    {
+      "level": 6,
+      "id": "step-3-inspect-misclassified-examples",
+      "title": "Step 3: Inspect Misclassified Examples"
+    },
+    {
+      "level": 6,
+      "id": "step-4-report-comparison-across-experiments",
+      "title": "Step 4: Report Comparison Across Experiments"
+    },
+    {
+      "level": 5,
+      "id": "summary-of-the-evaluation-workflow",
+      "title": "Summary of the Evaluation Workflow"
+    },
+    {
+      "level": 5,
+      "id": "key-takeaways-1",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 3,
+      "id": "model-deployment-monitoring-and-continuous-evaluation",
+      "title": "Model Deployment, Monitoring, and Continuous Evaluation"
+    },
+    {
+      "level": 4,
+      "id": "overview-4",
+      "title": "Overview"
+    },
+    {
+      "level": 4,
+      "id": "deployment-modes",
+      "title": "Deployment Modes"
+    },
+    {
+      "level": 4,
+      "id": "model-serialization-and-export",
+      "title": "Model Serialization and Export"
+    },
+    {
+      "level": 5,
+      "id": "torchscript-export",
+      "title": "TorchScript Export"
+    },
+    {
+      "level": 5,
+      "id": "onnx-export",
+      "title": "ONNX Export"
+    },
+    {
+      "level": 4,
+      "id": "serving-infrastructure",
+      "title": "Serving Infrastructure"
+    },
+    {
+      "level": 5,
+      "id": "option-1-torchserve",
+      "title": "Option 1: TorchServe"
+    },
+    {
+      "level": 5,
+      "id": "option-2-fastapi-or-flask",
+      "title": "Option 2: FastAPI or Flask"
+    },
+    {
+      "level": 5,
+      "id": "option-3-cloud-deployments",
+      "title": "Option 3: Cloud Deployments"
+    },
+    {
+      "level": 4,
+      "id": "inference-optimization",
+      "title": "Inference Optimization"
+    },
+    {
+      "level": 5,
+      "id": "quantization",
+      "title": "Quantization"
+    },
+    {
+      "level": 5,
+      "id": "pruning",
+      "title": "Pruning"
+    },
+    {
+      "level": 5,
+      "id": "batch-inference-and-caching",
+      "title": "Batch Inference and Caching"
+    },
+    {
+      "level": 4,
+      "id": "continuous-monitoring-and-feedback-loops",
+      "title": "Continuous Monitoring and Feedback Loops"
+    },
+    {
+      "level": 5,
+      "id": "system-metrics",
+      "title": "System Metrics"
+    },
+    {
+      "level": 5,
+      "id": "model-metrics",
+      "title": "Model Metrics"
+    },
+    {
+      "level": 6,
+      "id": "example-drift-detection",
+      "title": "Example: Drift Detection"
+    },
+    {
+      "level": 4,
+      "id": "model-versioning-and-retraining",
+      "title": "Model Versioning and Retraining"
+    },
+    {
+      "level": 5,
+      "id": "version-control",
+      "title": "Version Control"
+    },
+    {
+      "level": 5,
+      "id": "retraining-workflow",
+      "title": "Retraining Workflow"
+    },
+    {
+      "level": 4,
+      "id": "continuous-evaluation",
+      "title": "Continuous Evaluation"
+    },
+    {
+      "level": 5,
+      "id": "shadow-mode",
+      "title": "Shadow Mode"
+    },
+    {
+      "level": 5,
+      "id": "ab-testing",
+      "title": "A/B Testing"
+    },
+    {
+      "level": 5,
+      "id": "feedback-integration",
+      "title": "Feedback Integration"
+    },
+    {
+      "level": 4,
+      "id": "logging-and-observability",
+      "title": "Logging and Observability"
+    },
+    {
+      "level": 4,
+      "id": "deployment-safety-and-compliance",
+      "title": "Deployment Safety and Compliance"
+    },
+    {
+      "level": 4,
+      "id": "faqs-5",
+      "title": "FAQs"
+    },
+    {
+      "level": 4,
+      "id": "practical-implementation--model-deployment-monitoring-and-continuous-evaluation",
+      "title": "Practical Implementation – Model Deployment, Monitoring, and Continuous Evaluation"
+    },
+    {
+      "level": 5,
+      "id": "example-1-vision-use-case-deploying-cifar-10-cnn-as-an-api",
+      "title": "Example 1: Vision Use-Case (Deploying CIFAR-10 CNN as an API)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-export-the-trained-model",
+      "title": "Step 1: Export the Trained Model"
+    },
+    {
+      "level": 6,
+      "id": "step-2-create-a-fastapi-inference-server",
+      "title": "Step 2: Create a FastAPI Inference Server"
+    },
+    {
+      "level": 6,
+      "id": "step-3-add-basic-monitoring-latency--drift-tracking",
+      "title": "Step 3: Add Basic Monitoring (Latency & Drift Tracking)"
+    },
+    {
+      "level": 6,
+      "id": "step-4-automate-retraining-via-drift-detection",
+      "title": "Step 4: Automate Retraining via Drift Detection"
+    },
+    {
+      "level": 5,
+      "id": "example-2-nlp-use-case-deploying-imdb-sentiment-classifier",
+      "title": "Example 2: NLP Use-Case (Deploying IMDb Sentiment Classifier)"
+    },
+    {
+      "level": 6,
+      "id": "step-1-prepare-model-for-inference",
+      "title": "Step 1: Prepare Model for Inference"
+    },
+    {
+      "level": 6,
+      "id": "step-2-define-api-for-sentiment-prediction",
+      "title": "Step 2: Define API for Sentiment Prediction"
+    },
+    {
+      "level": 6,
+      "id": "step-3-confidence-drift-monitoring",
+      "title": "Step 3: Confidence Drift Monitoring"
+    },
+    {
+      "level": 6,
+      "id": "step-4-continuous-evaluation-via-feedback-integration",
+      "title": "Step 4: Continuous Evaluation via Feedback Integration"
+    },
+    {
+      "level": 5,
+      "id": "summary-of-the-deployment-and-monitoring-workflow",
+      "title": "Summary of the Deployment and Monitoring Workflow"
+    },
+    {
+      "level": 5,
+      "id": "key-takeaways-2",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 3,
+      "id": "practical-implementation--end-to-end-example-from-data-to-deployment",
+      "title": "Practical Implementation – End-to-End Example: From Data to Deployment"
+    },
+    {
+      "level": 4,
+      "id": "example-1-end-to-end-vision-pipeline-cifar-10-cnn",
+      "title": "Example 1: End-to-End Vision Pipeline (CIFAR-10 CNN)"
+    },
+    {
+      "level": 5,
+      "id": "step-1-project-structure",
+      "title": "Step 1: Project Structure"
+    },
+    {
+      "level": 5,
+      "id": "step-2-data-preparation-utilspy",
+      "title": "Step 2: Data Preparation (utils.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-3-model-definition-modelscnn_modelpy",
+      "title": "Step 3: Model Definition (models/cnn_model.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-4-training-script-trainpy",
+      "title": "Step 4: Training Script (train.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-5-evaluation-script-evaluatepy",
+      "title": "Step 5: Evaluation Script (evaluate.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-6-deployment-api-servepy",
+      "title": "Step 6: Deployment API (serve.py)"
+    },
+    {
+      "level": 4,
+      "id": "pipeline-summary",
+      "title": "Pipeline Summary"
+    },
+    {
+      "level": 4,
+      "id": "key-takeaways-3",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 4,
+      "id": "example-1-end-to-end-nlp-pipeline-imdb-sentiment-analysis",
+      "title": "Example 1: End-to-End NLP Pipeline (IMDb Sentiment Analysis)"
+    },
+    {
+      "level": 5,
+      "id": "step-1-data-preparation-1",
+      "title": "Step 1: Data Preparation"
+    },
+    {
+      "level": 5,
+      "id": "step-2-model-definition",
+      "title": "Step 2: Model Definition"
+    },
+    {
+      "level": 5,
+      "id": "step-3-train-and-evaluate",
+      "title": "Step 3: Train and Evaluate"
+    },
+    {
+      "level": 5,
+      "id": "step-4-deploy-as-text-api",
+      "title": "Step 4: Deploy as Text API"
+    },
+    {
+      "level": 3,
+      "id": "end-to-end-orchestration-with-prefect-or-airflow",
+      "title": "End-to-End Orchestration with Prefect or Airflow"
+    },
+    {
+      "level": 4,
+      "id": "comparison-prefect-vs-airflow",
+      "title": "Comparison: Prefect vs. Airflow"
+    },
+    {
+      "level": 4,
+      "id": "orchestrating-a-vision-cifar-10-image-classification-pipeline-with-prefect-or-airflow",
+      "title": "Orchestrating a Vision (CIFAR-10 Image Classification) Pipeline with Prefect or Airflow"
+    },
+    {
+      "level": 5,
+      "id": "prefect",
+      "title": "Prefect"
+    },
+    {
+      "level": 5,
+      "id": "step-1-install-dependencies",
+      "title": "Step 1: Install Dependencies"
+    },
+    {
+      "level": 5,
+      "id": "step-2-define-pipeline-script-vision_pipelinepy",
+      "title": "Step 2: Define Pipeline Script (vision_pipeline.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-3-run-the-flow",
+      "title": "Step 3: Run the Flow"
+    },
+    {
+      "level": 5,
+      "id": "step-4-schedule-and-automate",
+      "title": "Step 4: Schedule and Automate"
+    },
+    {
+      "level": 5,
+      "id": "step-5-optional-integrations",
+      "title": "Step 5: Optional Integrations"
+    },
+    {
+      "level": 5,
+      "id": "summary-of-the-vision-prefect-pipeline",
+      "title": "Summary of the Vision Prefect Pipeline"
+    },
+    {
+      "level": 5,
+      "id": "key-takeaways-4",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 5,
+      "id": "airflow",
+      "title": "Airflow"
+    },
+    {
+      "level": 6,
+      "id": "airflow-setup",
+      "title": "Airflow Setup"
+    },
+    {
+      "level": 6,
+      "id": "define-the-airflow-dag",
+      "title": "Define the Airflow DAG"
+    },
+    {
+      "level": 6,
+      "id": "how-it-works",
+      "title": "How It Works"
+    },
+    {
+      "level": 4,
+      "id": "orchestrating-an-nlp-sentiment-prediction-pipeline-with-prefect-or-airflow",
+      "title": "Orchestrating an NLP (Sentiment Prediction) Pipeline with Prefect or Airflow"
+    },
+    {
+      "level": 5,
+      "id": "prefect-1",
+      "title": "Prefect"
+    },
+    {
+      "level": 5,
+      "id": "step-1-install-dependencies-1",
+      "title": "Step 1: Install Dependencies"
+    },
+    {
+      "level": 5,
+      "id": "step-2-define-pipeline-script-nlp_pipelinepy",
+      "title": "Step 2: Define Pipeline Script (nlp_pipeline.py)"
+    },
+    {
+      "level": 5,
+      "id": "step-3-run-the-flow-1",
+      "title": "Step 3: Run the Flow"
+    },
+    {
+      "level": 5,
+      "id": "step-4-schedule-and-automate-1",
+      "title": "Step 4: Schedule and Automate"
+    },
+    {
+      "level": 5,
+      "id": "step-5-optional-integrations-1",
+      "title": "Step 5: Optional Integrations"
+    },
+    {
+      "level": 5,
+      "id": "summary-of-the-nlp-prefect-pipeline",
+      "title": "Summary of the NLP Prefect Pipeline"
+    },
+    {
+      "level": 5,
+      "id": "key-takeaways-5",
+      "title": "Key Takeaways"
+    },
+    {
+      "level": 5,
+      "id": "airflow-1",
+      "title": "Airflow"
+    },
+    {
+      "level": 6,
+      "id": "airflow-setup-1",
+      "title": "Airflow Setup"
+    },
+    {
+      "level": 6,
+      "id": "define-the-airflow-dag-1",
+      "title": "Define the Airflow DAG"
+    },
+    {
+      "level": 6,
+      "id": "how-it-works-1",
+      "title": "How It Works"
+    },
+    {
+      "level": 2,
+      "id": "references",
+      "title": "References"
+    },
+    {
+      "level": 3,
+      "id": "model-training-and-evaluation",
+      "title": "Model Training and Evaluation"
+    },
+    {
+      "level": 3,
+      "id": "hyperparameter-tuning",
+      "title": "Hyperparameter Tuning"
+    },
+    {
+      "level": 3,
+      "id": "model-evaluation-and-benchmarking",
+      "title": "Model Evaluation and Benchmarking"
+    },
+    {
+      "level": 3,
+      "id": "model-deployment",
+      "title": "Model Deployment"
+    },
+    {
+      "level": 3,
+      "id": "monitoring-and-continuous-evaluation",
+      "title": "Monitoring and Continuous Evaluation"
+    },
+    {
+      "level": 3,
+      "id": "continuous-integration-and-orchestration",
+      "title": "Continuous Integration and Orchestration"
+    },
+    {
+      "level": 3,
+      "id": "advanced-topics",
+      "title": "Advanced Topics"
+    },
+    {
+      "level": 2,
+      "id": "citation",
+      "title": "Citation"
+    }
+  ],
+  "supplemental_terms": {
+    "getting-started.md": ["2.15.0", "dtype", "device", "shape"],
+    "tensors.md": [
+      ".numel()",
+      ".size()",
+      "torch.tensor",
+      "torch.Tensor",
+      "torch.empty",
+      "torch.arange",
+      "torch.linspace",
+      "torch.randperm",
+      "nn.init.zeros_",
+      "nn.init.ones_",
+      "nn.init.constant_",
+      "torch.randn",
+      "xavier_uniform_",
+      "xavier_normal_",
+      "kaiming_uniform_",
+      "kaiming_normal_",
+      "calculate_gain",
+      "detach().cpu().numpy",
+      ".item()",
+      ".tolist()",
+      "torch.from_numpy"
+    ],
+    "shapes.md": [
+      "view",
+      "reshape",
+      "is_contiguous",
+      "contiguous",
+      "clone",
+      "transpose",
+      "swapaxes",
+      "swapdims",
+      "permute",
+      "movedim",
+      "moveaxis",
+      "torch.cat",
+      "torch.concatenate",
+      "torch.concat",
+      "torch.stack",
+      "squeeze",
+      "unsqueeze",
+      "torch.where",
+      "keepdim=True",
+      "untyped_storage"
+    ],
+    "autograd.md": [
+      "requires_grad",
+      "nn.Parameter",
+      "register_buffer",
+      "ModuleList",
+      "ModuleDict",
+      "CrossEntropyLoss",
+      "NLLLoss",
+      "BCEWithLogitsLoss",
+      "zero_grad",
+      "backward",
+      "step",
+      "AdamW",
+      "model.eval",
+      "model.train",
+      "inference_mode",
+      "torchinfo",
+      "Variable"
+    ],
+    "datasets.md": [
+      "Dataset",
+      "DataLoader",
+      "IterableDataset",
+      "TensorDataset",
+      "random_split",
+      "worker_init_fn",
+      "pin_memory",
+      "num_workers=0",
+      "torchtext.transforms",
+      "vocabularies",
+      "stratified",
+      "leakage"
+    ],
+    "vision-data.md": [
+      "CIFAR10",
+      "ToImage",
+      "ToDtype",
+      "Normalize",
+      "RandomCrop",
+      "RandomHorizontalFlip",
+      "ToTensor",
+      "ImageNet",
+      "Pillow",
+      "OpenCV",
+      "Albumentations",
+      "make_grid",
+      "permute"
+    ],
+    "text-data.md": [
+      "ner_dataset.csv",
+      "ner.csv",
+      "sentences.txt",
+      "labels.txt",
+      "words.txt",
+      "tags.txt",
+      "B-PER",
+      "I-PER",
+      "B-LOC",
+      "<unk>",
+      "<pad>",
+      "VocabTransform",
+      "Truncate",
+      "PadTransform",
+      "set_default_index",
+      "SentencePiece",
+      "AutoTokenizer",
+      "collate_fn",
+      "pad_sequence",
+      "padding_idx",
+      "-100"
+    ],
+    "audio-data.md": [
+      "torchaudio.load",
+      "TorchCodec",
+      "Resample",
+      "MelSpectrogram",
+      "AmplitudeToDB",
+      "MFCC",
+      "FrequencyMasking",
+      "TimeMasking",
+      "SpecAugment",
+      "sample_rate",
+      "pad_sequence"
+    ],
+    "networks.md": [
+      "Conv2d",
+      "AdaptiveAvgPool2d",
+      "Embedding",
+      "LSTM",
+      "pack_padded_sequence",
+      "batch_first",
+      "log_softmax",
+      "gather",
+      "ignore_index",
+      "breakpoint",
+      "BIO"
+    ],
+    "training.md": [
+      "SGD",
+      "CrossEntropyLoss",
+      "clip_grad_norm_",
+      "set_to_none",
+      "Empty evaluation loader",
+      "patience",
+      "min_delta",
+      "deepcopy",
+      "state_dict",
+      "weights_only=True",
+      "random.seed",
+      "np.random.seed",
+      "torch.manual_seed",
+      "cudnn",
+      "use_deterministic_algorithms",
+      "TensorBoard"
+    ],
+    "fine-tuning.md": [
+      "LoRA",
+      "alpha",
+      "rank",
+      "requires_grad_(False)",
+      "base_id",
+      "merg"
+    ],
+    "experiments.md": [
+      "Optuna",
+      "TPESampler",
+      "suggest_float",
+      "log=True",
+      "should_prune",
+      "Hydra",
+      "hydra.main",
+      "hydra.job.chdir",
+      "SummaryWriter",
+      "W&B",
+      "mode=\"offline\"",
+      "TensorBoard",
+      "grid",
+      "random search",
+      "Bayesian",
+      "Lightning Tuner",
+      "Sweeps"
+    ],
+    "evaluation.md": [
+      "StratifiedKFold",
+      "train_test_split",
+      "Cross-validation",
+      "ROC-AUC",
+      "precision",
+      "recall",
+      "macro",
+      "Calibration",
+      "MSE",
+      "MAE",
+      "R²",
+      "Perplexity",
+      "BLEU",
+      "ROUGE",
+      "BERTScore",
+      "Human evaluation",
+      "bootstrap",
+      "McNemar",
+      "paired t-test",
+      "TorchMetrics",
+      "Seaborn",
+      "model card"
+    ],
+    "exporting.md": [
+      "weights_only=True",
+      "torch.jit.trace",
+      "torch.jit.script",
+      "TorchScript",
+      "deprecated",
+      "torch.export",
+      "dynamic_shapes",
+      "ONNX",
+      "onnx.checker",
+      "onnxruntime",
+      "CPUExecutionProvider",
+      "TensorRT",
+      "OpenVINO",
+      "map_location"
+    ],
+    "serving.md": [
+      "FastAPI",
+      "Flask",
+      "TorchServe",
+      "archived",
+      "TestClient",
+      "field_validator",
+      "model_version",
+      "422",
+      "inference_mode",
+      "readiness",
+      "cloud"
+    ],
+    "optimization.md": [
+      "quantization",
+      "quantize_dynamic",
+      "TorchAO",
+      "Int8DynamicActivationInt8WeightConfig",
+      "lru_cache",
+      "prune.l1_unstructured",
+      "prune.remove",
+      "structured",
+      "p95",
+      "torch.compile"
+    ],
+    "monitoring.md": [
+      "PSI",
+      "KL divergence",
+      "Concept drift",
+      "confidence",
+      "Prometheus",
+      "Grafana",
+      "Elasticsearch",
+      "Kibana",
+      "MLflow",
+      "DVC",
+      "S3/GCS",
+      "Shadow mode",
+      "A/B testing",
+      "canary",
+      "SHAP",
+      "LIME",
+      "Differential privacy",
+      "DP-SGD",
+      "epsilon/delta",
+      "Opacus",
+      "rollback"
+    ],
+    "vision-project.md": [
+      "vision_project/data.py",
+      "vision_project/model.py",
+      "vision_project/train.py",
+      "vision_project/evaluate.py",
+      "vision_project/serve.py",
+      "CIFAR-10",
+      "TestClient"
+    ],
+    "text-project.md": [
+      "text_project/data.py",
+      "text_project/model.py",
+      "text_project/train.py",
+      "text_project/serve.py",
+      "IMDb",
+      "load_dataset",
+      "vocabulary",
+      "tokenizer",
+      "model_version"
+    ],
+    "orchestration.md": [
+      "Prefect 3",
+      "Airflow 3",
+      "prefect.schedules",
+      "Cron",
+      "retries",
+      "retry_delay",
+      "airflow.sdk",
+      "catchup=False",
+      "max_active_runs",
+      "XCom",
+      "idempotent",
+      "Slack/email",
+      "S3/GCS",
+      "MLflow",
+      "Docker",
+      "TaskFlow"
+    ]
+  },
+  "unheaded_topics": [
+    {
+      "title": "Dataset structure, Kaggle file selection, split files, vocabulary and tag files",
+      "target": "text-data.md#loading-text"
+    }
+  ],
+  "validated_environment": {
+    "python": "3.12+",
+    "torch": "2.15.0",
+    "torchvision": "0.29.2",
+    "torchaudio": "2.11.1",
+    "device": "cpu"
+  },
+  "execution_policy": "Core chapter programs execute in CI on CPU. Explicit Optional integration recipes compile but require their documented dataset or runtime."
+}

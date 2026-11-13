@@ -10,7 +10,7 @@ BuildMyX uses one codebase and two separate deployments. Code and schema move th
 ## What “green flag” means
 
 1. Push changes to `dev`. Vercel builds that commit’s preview website, deploys its backend to development, then publishes the preview.
-2. Open a release pull request from `dev` to `main`. `Quality checks` runs TypeScript, unit/Convex tests, the build and production-browser journeys. `Release source` rejects releases from other branches or forks. The `Vercel` check must also be green, proving that the development backend and preview build completed.
+2. Open a release pull request from `dev` to `main`. `Quality checks` runs TypeScript, unit/Convex tests, the core PyTorch CPU examples, the build and production-browser journeys. `Release source` rejects releases from other branches or forks. The `Vercel` check must also be green, proving that the development backend and preview build completed.
 3. Review the actual development preview, including a test enquiry in the development database. **Manually merge the release PR using “Create a merge commit” to give the green flag.** Nothing auto-merges a release PR.
 4. Vercel builds the production website from the same source tree, deploys its matching backend, then publishes the website. A failed website build cannot change database functions; a backend deployment failure blocks website publication. New schemas must remain compatible with the currently live website while a release builds.
 5. After Vercel reports a successful production deployment, `Sync development after release` fast-forwards `dev` to the released commit when possible. It never force-pushes or overwrites newer work. If development has moved ahead, merge `main` into `dev` before preparing the next release.

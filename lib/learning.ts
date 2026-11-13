@@ -39,10 +39,36 @@ export const pandasLearningPaths = [
   "/learn/pandas/coverage/",
 ] as const;
 
+export const pytorchLearningPaths = [
+  "/learn/pytorch/",
+  "/learn/pytorch/getting-started/",
+  "/learn/pytorch/tensors/",
+  "/learn/pytorch/shapes/",
+  "/learn/pytorch/autograd/",
+  "/learn/pytorch/datasets/",
+  "/learn/pytorch/vision-data/",
+  "/learn/pytorch/text-data/",
+  "/learn/pytorch/audio-data/",
+  "/learn/pytorch/networks/",
+  "/learn/pytorch/training/",
+  "/learn/pytorch/fine-tuning/",
+  "/learn/pytorch/experiments/",
+  "/learn/pytorch/evaluation/",
+  "/learn/pytorch/exporting/",
+  "/learn/pytorch/serving/",
+  "/learn/pytorch/optimization/",
+  "/learn/pytorch/monitoring/",
+  "/learn/pytorch/vision-project/",
+  "/learn/pytorch/text-project/",
+  "/learn/pytorch/orchestration/",
+  "/learn/pytorch/coverage/",
+] as const;
+
 export const learningPaths = [
   "/learn/",
   ...pythonLearningPaths,
   ...pandasLearningPaths,
+  ...pytorchLearningPaths,
   "/learn/system-design/",
   "/learn/fundamentals/what-is-system-design-interview/",
   "/learn/fundamentals/requirements/",

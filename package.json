@@ -15,6 +15,7 @@
     "release:protect": "tsx scripts/configure-release.ts --apply",
     "typecheck": "tsc --noEmit",
     "test": "npm run test:unit && npm run test:convex",
+    "test:pytorch": "node scripts/check-pytorch-examples.mjs",
     "test:browser": "node scripts/browser-check.mjs",
     "test:unit": "tsx --test lib/*.test.ts lib/server/*.test.ts scripts/*.test.*",
     "test:convex": "vitest run"

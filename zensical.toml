@@ -1,7 +1,7 @@
 [project]
 site_name = "BuildMyX Learn"
 site_url = "https://build-my-x.vercel.app/learn/"
-site_description = "Free Python, pandas and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
+site_description = "Free Python, pandas, PyTorch and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
 site_author = "BuildMyX"
 docs_dir = "learning/content"
 site_dir = "public/learn"
@@ -47,6 +47,30 @@ nav = [
     { "14 · Write reliable pandas" = "pandas/reliable-workflows.md" },
     { "15 · A complete analysis" = "pandas/project.md" },
     { "Full topic coverage" = "pandas/coverage.md" },
+  ] },
+  { "PyTorch" = [
+    { "The PyTorch learning path" = "pytorch/index.md" },
+    { "01 · Getting started" = "pytorch/getting-started.md" },
+    { "02 · Create & initialize tensors" = "pytorch/tensors.md" },
+    { "03 · Shapes, axes & broadcasting" = "pytorch/shapes.md" },
+    { "04 · Autograd & modules" = "pytorch/autograd.md" },
+    { "05 · Datasets & data quality" = "pytorch/datasets.md" },
+    { "06 · Vision preprocessing" = "pytorch/vision-data.md" },
+    { "07 · Text preprocessing" = "pytorch/text-data.md" },
+    { "08 · Audio preprocessing" = "pytorch/audio-data.md" },
+    { "09 · CNNs, LSTMs & custom losses" = "pytorch/networks.md" },
+    { "10 · Train, validate & checkpoint" = "pytorch/training.md" },
+    { "11 · Fine-tuning & LoRA" = "pytorch/fine-tuning.md" },
+    { "12 · Run useful experiments" = "pytorch/experiments.md" },
+    { "13 · Evaluate & report" = "pytorch/evaluation.md" },
+    { "14 · Save & export" = "pytorch/exporting.md" },
+    { "15 · Serve predictions" = "pytorch/serving.md" },
+    { "16 · Optimize inference" = "pytorch/optimization.md" },
+    { "17 · Monitor & improve" = "pytorch/monitoring.md" },
+    { "18 · A complete vision workflow" = "pytorch/vision-project.md" },
+    { "19 · A complete text workflow" = "pytorch/text-project.md" },
+    { "20 · Orchestrate the workflow" = "pytorch/orchestration.md" },
+    { "Full topic coverage" = "pytorch/coverage.md" },
   ] },
   { "System design" = [
     { "The system design learning path" = "system-design/index.md" },

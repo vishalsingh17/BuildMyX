@@ -24,7 +24,7 @@ export async function checkLearning(
   ).origin;
   const internalLinks = new Set();
   for (const path of learningPaths) {
-    const widths = /^\/learn\/(python|pandas)\/.+/.test(path)
+    const widths = /^\/learn\/(python|pandas|pytorch)\/.+/.test(path)
       ? [320, 1440]
       : [320, 390, 768, 1440];
     for (const width of widths) {
@@ -199,6 +199,24 @@ export async function checkLearning(
     await expect(page.locator("main h1")).toHaveText(
       /^Write reliable pandas¶?$/,
     );
+    await page
+      .locator(width === 390 ? "[data-learning-search]" : ".md-search__button")
+      .click();
+    await page
+      .getByRole("combobox", { name: "Search", exact: true })
+      .fill("padding-aware loss");
+    await page
+      .getByRole("option", {
+        name: "Write a custom padding-aware loss",
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      /\/learn\/pytorch\/networks\/(?:\?[^#]*)?(#.*)?$/,
+    );
+    await expect(page.locator("main h1")).toHaveText(
+      /^CNNs, LSTMs and a masked token loss¶?$/,
+    );
   }
   await page.goto(`${url}/learn/pandas/`);
   await page
@@ -230,6 +248,33 @@ export async function checkLearning(
     path: resolve(artifacts, "pandas-coverage.png"),
     fullPage: true,
   });
+  await page.goto(`${url}/learn/pytorch/`);
+  await page
+    .getByRole("link", { name: "Start learning PyTorch →", exact: true })
+    .click();
+  await expect(page).toHaveURL(`${url}/learn/pytorch/getting-started/`);
+  const bundleResponse = await fetch(
+    `${url}/learn/pytorch/assets/pytorch-projects.zip`,
+  );
+  assert.equal(bundleResponse.status, 200);
+  const bundle = new Uint8Array(await bundleResponse.arrayBuffer());
+  assert.deepEqual([...bundle.slice(0, 4)], [80, 75, 3, 4]);
+  assert.ok(bundle.length > 5000);
+  await page.goto(`${url}/learn/pytorch/experiments/`);
+  const pytorchFigure = page.getByRole("img", {
+    name: /^Four learning-rate and width configurations/,
+  });
+  await pytorchFigure.scrollIntoViewIfNeeded();
+  assert.ok(
+    await pytorchFigure.evaluate(
+      (image) => image.complete && image.naturalWidth > 0,
+    ),
+  );
+  await page.goto(`${url}/learn/pytorch/coverage/`);
+  const pytorchCoverage = page.locator(".md-typeset table").filter({
+    has: page.locator('a[href^="https://aman.ai/primers/pytorch/#"]'),
+  });
+  assert.equal(await pytorchCoverage.locator("tbody tr").count(), 252);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(article);
   await page.locator(".learning-cta .md-button").click();
@@ -258,6 +303,19 @@ export async function checkLearning(
   await expect(pandasCourse).toHaveURL(`${url}/learn/pandas/`);
   await expect(page.locator("#name")).toHaveValue("Learning Visitor");
   await pandasCourse.close();
+  const pytorchOpened = page.waitForEvent("popup");
+  await page
+    .locator("#learn")
+    .getByRole("link", {
+      name: "Build models with PyTorch (opens in a new tab)",
+      exact: true,
+    })
+    .click();
+  const pytorchCourse = await pytorchOpened;
+  await pytorchCourse.waitForLoadState("domcontentloaded");
+  await expect(pytorchCourse).toHaveURL(`${url}/learn/pytorch/`);
+  await expect(page.locator("#name")).toHaveValue("Learning Visitor");
+  await pytorchCourse.close();
   await page.close();
   const missing = await browser.newPage();
   assert.equal(

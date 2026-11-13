@@ -16,12 +16,13 @@ export function LearningLibrary() {
           <em>Build with understanding.</em>
         </h2>
         <p className="home-learning-description">
-          Build your Python skills, analyze data with pandas or sharpen your
-          system design thinking. Follow clear explanations, work through
-          practical examples and check your understanding as you go.
+          Build your Python skills, analyze data with pandas, train models with
+          PyTorch or sharpen your system design thinking. Follow clear
+          explanations, work through practical examples and check your
+          understanding as you go.
         </p>
         <ul className="home-learning-meta" aria-label="About the lessons">
-          <li>3 free learning paths</li>
+          <li>4 free learning paths</li>
           <li>Self-paced</li>
           <li>No sign-up</li>
         </ul>
@@ -53,6 +54,16 @@ export function LearningLibrary() {
             rel="noopener noreferrer"
           >
             Start learning Python
+            <span className="sr-only"> (opens in a new tab)</span>
+            <Arrow diagonal />
+          </a>
+          <a
+            href="/learn/pytorch/"
+            className="text-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Build models with PyTorch
             <span className="sr-only"> (opens in a new tab)</span>
             <Arrow diagonal />
           </a>

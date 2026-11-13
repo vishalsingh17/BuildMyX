@@ -23,6 +23,7 @@ async function main() {
   const temporaryConfig = resolve(root, ".zensical-build.toml");
   run(python, ["scripts/check-python-content.py"]);
   run(python, ["scripts/check-pandas-content.py"]);
+  run(python, ["scripts/check-pytorch-content.py"]);
   const canIndex = canIndexSite(
     siteConfig.canonicalUrl,
     siteConfig.launchApproved,
@@ -61,6 +62,7 @@ async function main() {
   }
   run(python, ["scripts/check-python-content.py", "--html"]);
   run(python, ["scripts/check-pandas-content.py", "--html"]);
+  run(python, ["scripts/check-pytorch-content.py", "--html"]);
 }
 main().catch((error) => {
   console.error(error);
