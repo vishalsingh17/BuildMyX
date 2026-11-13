@@ -29,6 +29,15 @@ export async function checkLearning(
       const response = await page.goto(`${url}${path}`);
       assert.equal(response.status(), 200, path);
       await page.evaluate(() => document.fonts.ready);
+      if (width === 1440) {
+        await expect(page.locator("[data-learning-drawer]")).not.toBeVisible();
+        await expect(page.locator("[data-learning-search]")).not.toBeVisible();
+        await expect(page.locator(".md-search__button")).toBeVisible();
+      } else {
+        await expect(page.locator("[data-learning-drawer]")).toBeVisible();
+        await expect(page.locator("[data-learning-search]")).toBeVisible();
+        await expect(page.locator(".md-search__button")).not.toBeVisible();
+      }
       assert.equal(await page.locator("main h1").count(), 1, path);
       await expect(page).toHaveTitle(/BuildMyX Learn/);
       await expect(page.locator('meta[name="generator"]')).toHaveAttribute(

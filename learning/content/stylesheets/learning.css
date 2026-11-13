@@ -100,6 +100,9 @@ label:focus-visible {
   margin-left: 1.4rem;
 }
 .learning-header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
   background: #28553d;
   color: #faf8f3;
   padding: 0.5rem 0.8rem;
@@ -107,6 +110,10 @@ label:focus-visible {
   font-weight: 600;
   white-space: nowrap;
   border-radius: 0.2rem;
+}
+.learning-header-cta svg {
+  width: 0.8rem;
+  height: 0.8rem;
 }
 .learning-header-cta:hover {
   background: #203f30;
@@ -381,6 +388,9 @@ label:focus-visible {
   color: #28553d;
   border: 1px solid #cbd6c3;
 }
+.md-search__button::before {
+  background-color: currentColor;
+}
 .learning-menu,
 .learning-search {
   border: 0;
@@ -389,12 +399,12 @@ label:focus-visible {
   cursor: pointer;
 }
 @media (min-width: 76.25em) {
-  .learning-menu {
+  .md-header .learning-menu {
     display: none;
   }
 }
 @media (min-width: 60em) {
-  .learning-search {
+  .md-header .learning-search {
     display: none;
   }
 }
