@@ -13,7 +13,7 @@
   {% if page.meta.lesson %}
     <aside class="learning-cta" aria-label="Learning support">
       <span class="learning-cta__eyebrow">BUILD YOUR UNDERSTANDING</span>
-      {% if page.meta.course == "Python" %}
+      {% if page.meta.course in ["Python", "Pandas"] %}
         <h2>Make the next concept click.</h2>
         <p>Bring a small piece of code or the idea you’re stuck on. We’ll discuss whether guided learning or project feedback could help.</p>
       {% else %}

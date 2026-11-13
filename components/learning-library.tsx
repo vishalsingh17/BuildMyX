@@ -16,12 +16,12 @@ export function LearningLibrary() {
           <em>Build with understanding.</em>
         </h2>
         <p className="home-learning-description">
-          Build your Python skills or sharpen your system design thinking.
-          Follow clear explanations, work through practical examples and check
-          your understanding as you go.
+          Build your Python skills, analyze data with pandas or sharpen your
+          system design thinking. Follow clear explanations, work through
+          practical examples and check your understanding as you go.
         </p>
         <ul className="home-learning-meta" aria-label="About the lessons">
-          <li>2 free learning paths</li>
+          <li>3 free learning paths</li>
           <li>Self-paced</li>
           <li>No sign-up</li>
         </ul>
@@ -33,6 +33,16 @@ export function LearningLibrary() {
             rel="noopener noreferrer"
           >
             Explore free lessons
+            <span className="sr-only"> (opens in a new tab)</span>
+            <Arrow diagonal />
+          </a>
+          <a
+            href="/learn/pandas/"
+            className="text-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn data analysis with pandas
             <span className="sr-only"> (opens in a new tab)</span>
             <Arrow diagonal />
           </a>

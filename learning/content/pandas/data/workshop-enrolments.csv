@@ -1,0 +1,9 @@
+booking_id,workshop,city,seats,fee,booked_at,rating,tags
+B01,Python,Pune,2,40,2026-10-01,5,"beginner,online"
+B02,Pandas,Delhi,1,60,2026-10-01,,"data,online"
+B03,Python,Pune,3,40,2026-10-02,4,"beginner,in-person"
+B04,System Design,Delhi,1,80,2026-10-02,5,"architecture,online"
+B05,Pandas,Pune,2,60,2026-10-03,3,"data,in-person"
+B06,Python,Delhi,1,40,2026-10-03,,"beginner,online"
+B07,System Design,Pune,2,80,2026-10-04,4,"architecture,in-person"
+B08,Pandas,Delhi,1,60,2026-10-04,5,"data,online"

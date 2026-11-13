@@ -1,0 +1,771 @@
+{
+  "source_url": "https://aman.ai/primers/pandas/",
+  "retrieved_on": "2026-11-13",
+  "source_html_sha256": "93131012601724f30583e59b96fc0d547cc52313353c4a32f7585c1c0d94c91b",
+  "headings": [
+    {
+      "level": 2,
+      "id": "overview",
+      "title": "Overview"
+    },
+    {
+      "level": 2,
+      "id": "background",
+      "title": "Background"
+    },
+    {
+      "level": 2,
+      "id": "prerequisites",
+      "title": "Prerequisites"
+    },
+    {
+      "level": 2,
+      "id": "setup",
+      "title": "Setup"
+    },
+    {
+      "level": 2,
+      "id": "overview-pandas-data-structures",
+      "title": "Overview: pandas data-structures"
+    },
+    {
+      "level": 2,
+      "id": "pandas-is-column-major",
+      "title": "Pandas is column-major"
+    },
+    {
+      "level": 3,
+      "id": "converting-dataframe-to-row-major-order",
+      "title": "Converting DataFrame to row-major order"
+    },
+    {
+      "level": 2,
+      "id": "series-objects",
+      "title": "Series objects"
+    },
+    {
+      "level": 3,
+      "id": "creating-a-series",
+      "title": "Creating a Series"
+    },
+    {
+      "level": 3,
+      "id": "similar-to-a-1d-ndarray",
+      "title": "Similar to a 1D ndarray"
+    },
+    {
+      "level": 3,
+      "id": "index-labels",
+      "title": "Index labels"
+    },
+    {
+      "level": 3,
+      "id": "initialize-using-a-dict",
+      "title": "Initialize using a dict"
+    },
+    {
+      "level": 3,
+      "id": "automatic-alignment",
+      "title": "Automatic alignment"
+    },
+    {
+      "level": 4,
+      "id": "initialize-with-a-scalar",
+      "title": "Initialize with a scalar"
+    },
+    {
+      "level": 4,
+      "id": "series-name",
+      "title": "Series name"
+    },
+    {
+      "level": 4,
+      "id": "plotting-a-series",
+      "title": "Plotting a Series"
+    },
+    {
+      "level": 3,
+      "id": "handling-time",
+      "title": "Handling time"
+    },
+    {
+      "level": 5,
+      "id": "time-range",
+      "title": "Time range"
+    },
+    {
+      "level": 4,
+      "id": "resampling",
+      "title": "Resampling"
+    },
+    {
+      "level": 4,
+      "id": "upsampling-and-interpolation",
+      "title": "Upsampling and interpolation"
+    },
+    {
+      "level": 4,
+      "id": "timezones",
+      "title": "Timezones"
+    },
+    {
+      "level": 4,
+      "id": "periods",
+      "title": "Periods"
+    },
+    {
+      "level": 2,
+      "id": "dataframe-objects",
+      "title": "DataFrame objects"
+    },
+    {
+      "level": 3,
+      "id": "creating-a-dataframe",
+      "title": "Creating a DataFrame"
+    },
+    {
+      "level": 3,
+      "id": "multi-indexing",
+      "title": "Multi-indexing"
+    },
+    {
+      "level": 3,
+      "id": "dropping-a-level",
+      "title": "Dropping a level"
+    },
+    {
+      "level": 3,
+      "id": "transposing",
+      "title": "Transposing"
+    },
+    {
+      "level": 3,
+      "id": "stacking-and-unstacking-levels",
+      "title": "Stacking and unstacking levels"
+    },
+    {
+      "level": 4,
+      "id": "most-pandas-methods-return-modified-copies",
+      "title": "Most pandas methods return modified copies"
+    },
+    {
+      "level": 3,
+      "id": "accessing-rows",
+      "title": "Accessing rows"
+    },
+    {
+      "level": 3,
+      "id": "accessing-columns",
+      "title": "Accessing columns"
+    },
+    {
+      "level": 3,
+      "id": "adding-and-removing-columns",
+      "title": "Adding and removing columns"
+    },
+    {
+      "level": 4,
+      "id": "assigning-new-columns",
+      "title": "Assigning new columns"
+    },
+    {
+      "level": 3,
+      "id": "evaluating-an-expression",
+      "title": "Evaluating an expression"
+    },
+    {
+      "level": 3,
+      "id": "querying-a-dataframe",
+      "title": "Querying a DataFrame"
+    },
+    {
+      "level": 3,
+      "id": "sorting-a-dataframe",
+      "title": "Sorting a DataFrame"
+    },
+    {
+      "level": 3,
+      "id": "plotting-a-dataframe",
+      "title": "Plotting a DataFrame"
+    },
+    {
+      "level": 3,
+      "id": "operations-on-dataframes",
+      "title": "Operations on DataFrames"
+    },
+    {
+      "level": 3,
+      "id": "automatic-alignment-1",
+      "title": "Automatic alignment"
+    },
+    {
+      "level": 3,
+      "id": "handling-missing-data",
+      "title": "Handling missing data"
+    },
+    {
+      "level": 3,
+      "id": "aggregating-using-groupby",
+      "title": "Aggregating using groupby"
+    },
+    {
+      "level": 4,
+      "id": "group-dataframes-rows-into-a-list-using-groupby",
+      "title": "Group DataFrame’s Rows into a List Using groupby"
+    },
+    {
+      "level": 3,
+      "id": "get-the-n-largest-values-for-each-category-in-a-dataframe",
+      "title": "Get the N Largest Values for Each Category in a DataFrame"
+    },
+    {
+      "level": 3,
+      "id": "assign-name-to-a-pandas-aggregation",
+      "title": "Assign Name to a Pandas Aggregation"
+    },
+    {
+      "level": 3,
+      "id": "pdpivot_table-turn-your-dataframe-into-a-pivot-table",
+      "title": "pd.pivot_table(): Turn Your DataFrame Into a Pivot Table"
+    },
+    {
+      "level": 3,
+      "id": "overview-functions",
+      "title": "Overview functions"
+    },
+    {
+      "level": 2,
+      "id": "saving-and-loading",
+      "title": "Saving and loading"
+    },
+    {
+      "level": 4,
+      "id": "saving",
+      "title": "Saving"
+    },
+    {
+      "level": 4,
+      "id": "loading",
+      "title": "Loading"
+    },
+    {
+      "level": 2,
+      "id": "combining-dataframes",
+      "title": "Combining DataFrames"
+    },
+    {
+      "level": 4,
+      "id": "sql-like-joins",
+      "title": "SQL-like joins"
+    },
+    {
+      "level": 4,
+      "id": "concatenation",
+      "title": "Concatenation"
+    },
+    {
+      "level": 2,
+      "id": "categories",
+      "title": "Categories"
+    },
+    {
+      "level": 2,
+      "id": "practical-example-using-a-sample-dataset",
+      "title": "Practical example using a sample dataset"
+    },
+    {
+      "level": 3,
+      "id": "dataset-at-a-glance",
+      "title": "Dataset at a glance"
+    },
+    {
+      "level": 3,
+      "id": "iterating-over-rows",
+      "title": "Iterating over rows"
+    },
+    {
+      "level": 4,
+      "id": "apply",
+      "title": ".apply()"
+    },
+    {
+      "level": 4,
+      "id": "iterrows-and-itertuples",
+      "title": ".iterrows() and .itertuples()"
+    },
+    {
+      "level": 4,
+      "id": "ordering-slicing-operations",
+      "title": "Ordering slicing operations"
+    },
+    {
+      "level": 3,
+      "id": "settingwithcopywarning",
+      "title": "SettingWithCopyWarning"
+    },
+    {
+      "level": 4,
+      "id": "view-vs-copy",
+      "title": "View vs. Copy"
+    },
+    {
+      "level": 4,
+      "id": "solutions",
+      "title": "Solutions"
+    },
+    {
+      "level": 5,
+      "id": "combine-all-chained-operations-into-one-single-operation",
+      "title": "Combine all chained operations into one single operation"
+    },
+    {
+      "level": 5,
+      "id": "raise-an-error",
+      "title": "Raise an error"
+    },
+    {
+      "level": 3,
+      "id": "indexing-and-slicing",
+      "title": "Indexing and slicing"
+    },
+    {
+      "level": 4,
+      "id": "iloc-selecting-rows-based-on-integer-indices",
+      "title": ".iloc[]: selecting rows based on integer indices"
+    },
+    {
+      "level": 4,
+      "id": "loc-selecting-rows-by-labels-or-boolean-masks",
+      "title": ".loc[]: selecting rows by labels or boolean masks"
+    },
+    {
+      "level": 5,
+      "id": "selecting-rows-by-boolean-masks",
+      "title": "Selecting rows by boolean masks"
+    },
+    {
+      "level": 5,
+      "id": "selecting-rows-by-labels",
+      "title": "Selecting rows by labels"
+    },
+    {
+      "level": 6,
+      "id": "creating-labels",
+      "title": "Creating labels"
+    },
+    {
+      "level": 6,
+      "id": "selecting-rows-by-labels-1",
+      "title": "Selecting rows by labels"
+    },
+    {
+      "level": 4,
+      "id": "slicing-series",
+      "title": "Slicing Series"
+    },
+    {
+      "level": 3,
+      "id": "accessors",
+      "title": "Accessors"
+    },
+    {
+      "level": 4,
+      "id": "string-accessor",
+      "title": "string accessor"
+    },
+    {
+      "level": 4,
+      "id": "other-accessors",
+      "title": "Other accessors"
+    },
+    {
+      "level": 3,
+      "id": "data-exploration",
+      "title": "Data exploration"
+    },
+    {
+      "level": 4,
+      "id": "head-tail-describe-info",
+      "title": ".head(), .tail(), .describe(), .info()"
+    },
+    {
+      "level": 4,
+      "id": "count-unique-values",
+      "title": "Count unique values"
+    },
+    {
+      "level": 4,
+      "id": "plotting",
+      "title": "Plotting"
+    },
+    {
+      "level": 3,
+      "id": "common-pitfalls",
+      "title": "Common pitfalls"
+    },
+    {
+      "level": 4,
+      "id": "nans-as-floats",
+      "title": "NaNs as floats"
+    },
+    {
+      "level": 4,
+      "id": "changes-arent-in-place-by-default",
+      "title": "Changes aren’t in-place by default"
+    },
+    {
+      "level": 4,
+      "id": "reproducibility-issues",
+      "title": "Reproducibility issues"
+    },
+    {
+      "level": 4,
+      "id": "gpu-incompatibility",
+      "title": "GPU incompatibility"
+    },
+    {
+      "level": 2,
+      "id": "selected-methods",
+      "title": "Selected Methods"
+    },
+    {
+      "level": 3,
+      "id": "creating-a-dataframe-1",
+      "title": "Creating a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "fix-unnamed0-when-reading-a-csv-in-pandas",
+      "title": "Fix Unnamed:0 When Reading a CSV in pandas"
+    },
+    {
+      "level": 4,
+      "id": "read-html-tables-using-pandas",
+      "title": "Read HTML Tables Using Pandas"
+    },
+    {
+      "level": 4,
+      "id": "pdread_clipboard-copy-csv-directly-into-a-dataframe",
+      "title": "pd.read_clipboard(): Copy CSV directly into a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframecopy-make-a-copy-of-a-dataframe",
+      "title": "DataFrame.copy(): Make a Copy of a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframeseriesstrsplit-split-a-string-into-multiple-rows",
+      "title": "DataFrame.Series.str.split: Split a String into Multiple Rows"
+    },
+    {
+      "level": 3,
+      "id": "transformingmodifying-a-dataframe",
+      "title": "Transforming/Modifying a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "seriesmap-change-values-of-a-pandas-series-using-a-dictionary",
+      "title": "Series.map(): Change Values of a Pandas Series Using a Dictionary"
+    },
+    {
+      "level": 4,
+      "id": "dataframeto_frame-convert-series-to-dataframe",
+      "title": "DataFrame.to_frame(): Convert Series to DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframevalues-return-a-numpy-representation-of-the-dataframe",
+      "title": "DataFrame.values: Return a NumPy representation of the DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframeapply-apply-a-function-to-a-column-of-a-dataframe",
+      "title": "DataFrame.apply(): Apply a Function to a Column of a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframeassign-assign-values-to-multiple-new-columns",
+      "title": "DataFrame.assign(): Assign Values to Multiple New Columns"
+    },
+    {
+      "level": 5,
+      "id": "chaining-multiple-assigns",
+      "title": "Chaining multiple assigns"
+    },
+    {
+      "level": 4,
+      "id": "dataframegroupby-group-dataframe-using-a-mapper-or-by-a-series-of-columns",
+      "title": "DataFrame.groupby(): Group DataFrame using a mapper or by a Series of columns"
+    },
+    {
+      "level": 5,
+      "id": "dataframegroupbysample-get-a-random-sample-of-items-from-each-category-in-a-column",
+      "title": "DataFrame.groupby.sample(): Get a Random Sample of Items from Each Category in a Column"
+    },
+    {
+      "level": 5,
+      "id": "dataframegroupbysize--dataframegroupbycount-compute-the-size-of-each-group",
+      "title": "DataFrame.groupby().size() / DataFrame.groupby().count(): Compute the Size of Each Group"
+    },
+    {
+      "level": 4,
+      "id": "dataframeexplode-transform-each-element-in-an-iterable-to-a-row",
+      "title": "DataFrame.explode(): Transform Each Element in an Iterable to a Row"
+    },
+    {
+      "level": 4,
+      "id": "dataframefillnamethodffill-forward-fill-in-pandas",
+      "title": "DataFrame.fillna(method=\"ffill\"): Forward Fill in pandas"
+    },
+    {
+      "level": 4,
+      "id": "pdmelt-unpivot-a-dataframe",
+      "title": "pd.melt(): Unpivot a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "pdcrosstab-create-a-cross-tabulation",
+      "title": "pd.crosstab(): Create a Cross Tabulation"
+    },
+    {
+      "level": 4,
+      "id": "pddataframeagg-aggregate-over-columns-or-rows-using-multiple-operations",
+      "title": "pd.DataFrame.agg(): Aggregate over Columns or Rows Using Multiple Operations"
+    },
+    {
+      "level": 4,
+      "id": "pddataframeagg-apply-different-aggregations-to-different-columns",
+      "title": "pd.DataFrame.agg(): Apply Different Aggregations to Different Columns"
+    },
+    {
+      "level": 3,
+      "id": "analyzing-a-dataframe",
+      "title": "Analyzing a DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframeany-return-whether-any-element-is-true-potentially-over-an-axis",
+      "title": "DataFrame.any(): Return whether any element is True, potentially over an axis."
+    },
+    {
+      "level": 5,
+      "id": "series",
+      "title": "Series"
+    },
+    {
+      "level": 5,
+      "id": "dataframe",
+      "title": "DataFrame"
+    },
+    {
+      "level": 4,
+      "id": "dataframeisna-detect-missing-values",
+      "title": "DataFrame.isna(): Detect missing values"
+    },
+    {
+      "level": 4,
+      "id": "dataframevalue_counts-return-a-series-containing-counts-of-unique-values",
+      "title": "DataFrame.value_counts(): Return a Series containing counts of unique values"
+    },
+    {
+      "level": 4,
+      "id": "dataframeunique-return-unique-values-based-on-a-hash-table",
+      "title": "DataFrame.unique(): Return unique values based on a hash table"
+    },
+    {
+      "level": 2,
+      "id": "whats-next",
+      "title": "What’s next?"
+    },
+    {
+      "level": 2,
+      "id": "references-and-credits",
+      "title": "References and Credits"
+    },
+    {
+      "level": 2,
+      "id": "citation",
+      "title": "Citation"
+    }
+  ],
+  "supplemental_terms": {
+    "dataframes.md": [
+      "np.ma.array",
+      "np.object",
+      "np.sqrt",
+      "axis=0",
+      "axis=1",
+      "axis=\"index\"",
+      ".values",
+      ".to_numpy",
+      "order=\"C\"",
+      "copy=True"
+    ],
+    "series.md": [
+      "pd.Series",
+      "dtype=\"Int64\"",
+      "reindex",
+      "rename",
+      "to_frame",
+      "fill_value=0"
+    ],
+    "indexing.md": [
+      ".iloc",
+      ".loc",
+      "set_index",
+      "reset_index",
+      "sort_values",
+      "sort_index",
+      "isin",
+      "kind=\"stable\""
+    ],
+    "transforming.md": [
+      "insert",
+      "pop",
+      "del temporary",
+      "drop",
+      "assign",
+      "map",
+      "replace",
+      "apply",
+      "axis=1",
+      "str.split",
+      "explode",
+      "eval",
+      "query"
+    ],
+    "missing-and-exploration.md": [
+      "head",
+      "tail",
+      "describe",
+      "info",
+      "isna",
+      "notna",
+      "dropna",
+      "fillna",
+      "ffill",
+      "bfill",
+      "min_count=1",
+      "value_counts",
+      "nunique",
+      "unique",
+      "any",
+      "all",
+      "pd.NA",
+      "NaT"
+    ],
+    "groupby.md": [
+      "groupby",
+      "dropna=False",
+      "observed=True",
+      "observed=False",
+      "as_index=False",
+      "agg",
+      "nlargest",
+      "keep=\"all\"",
+      "sample",
+      "random_state",
+      "size",
+      "count",
+      "level=",
+      "mapper"
+    ],
+    "reshaping.md": [
+      "MultiIndex",
+      "from_arrays",
+      "from_tuples",
+      "from_product",
+      "droplevel",
+      "transpose",
+      "unstack",
+      "stack",
+      "pivot_table",
+      "aggfunc=\"sum\"",
+      "pivot",
+      "melt",
+      "crosstab",
+      "normalize=\"index\""
+    ],
+    "time-series.md": [
+      "Timestamp",
+      "Timedelta",
+      "date_range",
+      "freq=\"h\"",
+      "freq=\"B\"",
+      "BDay",
+      "resample",
+      "asfreq",
+      "interpolate",
+      "tz_localize",
+      "tz_convert",
+      "ambiguous",
+      "nonexistent",
+      "Period",
+      "period_range",
+      "to_timestamp",
+      "Q-DEC"
+    ],
+    "accessors.md": [
+      ".str",
+      ".dt",
+      ".cat",
+      ".sparse",
+      "str.extract",
+      "str.contains",
+      "rename_categories",
+      "CategoricalDtype",
+      "ordered=True",
+      "cat.codes",
+      "SparseDtype",
+      "to_dense"
+    ],
+    "input-output.md": [
+      "to_csv",
+      "read_csv",
+      "index=False",
+      "index_col=0",
+      "to_json",
+      "read_json",
+      "to_dict",
+      "to_html",
+      "read_html",
+      "StringIO",
+      "to_excel",
+      "read_excel",
+      "openpyxl",
+      "read_clipboard"
+    ],
+    "reliable-workflows.md": [
+      "Copy-on-Write",
+      "SettingWithCopyWarning",
+      "ChainedAssignmentError",
+      "chained_assignment",
+      "copy(deep=False)",
+      "copy(deep=True)",
+      "iterrows",
+      "itertuples",
+      "inplace=True",
+      "random_state",
+      "assert_allclose",
+      "cuDF"
+    ],
+    "plotting.md": [
+      ".plot",
+      "plot.bar",
+      "plot.hist",
+      "plot.scatter",
+      "savefig",
+      "plt.close",
+      "unstack"
+    ]
+  },
+  "validated_environment": {
+    "python": "3.12+",
+    "pandas": "3.1.1",
+    "numpy": "2.5.4",
+    "matplotlib": "3.11.2",
+    "lxml": "6.1.3",
+    "openpyxl": "3.1.5"
+  }
+}

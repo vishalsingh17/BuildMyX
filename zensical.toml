@@ -1,7 +1,7 @@
 [project]
 site_name = "BuildMyX Learn"
 site_url = "https://build-my-x.vercel.app/learn/"
-site_description = "Free Python and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
+site_description = "Free Python, pandas and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
 site_author = "BuildMyX"
 docs_dir = "learning/content"
 site_dir = "public/learn"
@@ -28,6 +28,25 @@ nav = [
     { "14 · Modules & packages" = "python/modules-and-packages.md" },
     { "15 · Useful built-ins" = "python/builtins.md" },
     { "Full topic coverage" = "python/coverage.md" },
+  ] },
+  { "Pandas" = [
+    { "The pandas learning path" = "pandas/index.md" },
+    { "01 · Getting started" = "pandas/getting-started.md" },
+    { "02 · Series & alignment" = "pandas/series.md" },
+    { "03 · DataFrames & NumPy" = "pandas/dataframes.md" },
+    { "04 · Select, index & sort" = "pandas/indexing.md" },
+    { "05 · Transform a table" = "pandas/transforming.md" },
+    { "06 · Missing values & exploration" = "pandas/missing-and-exploration.md" },
+    { "07 · Group & aggregate" = "pandas/groupby.md" },
+    { "08 · Reshape & MultiIndex" = "pandas/reshaping.md" },
+    { "09 · Combine tables" = "pandas/combining.md" },
+    { "10 · Time series" = "pandas/time-series.md" },
+    { "11 · Strings, categories & accessors" = "pandas/accessors.md" },
+    { "12 · Read & write data" = "pandas/input-output.md" },
+    { "13 · Plot an answer" = "pandas/plotting.md" },
+    { "14 · Write reliable pandas" = "pandas/reliable-workflows.md" },
+    { "15 · A complete analysis" = "pandas/project.md" },
+    { "Full topic coverage" = "pandas/coverage.md" },
   ] },
   { "System design" = [
     { "The system design learning path" = "system-design/index.md" },

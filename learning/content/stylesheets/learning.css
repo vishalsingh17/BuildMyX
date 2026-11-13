@@ -327,6 +327,14 @@ label:focus-visible {
   gap: 0.8rem;
   margin: 1.4rem 0;
 }
+.learning-card:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.md-typeset figcaption {
+  color: #515e54;
+  font-size: 0.66rem;
+  line-height: 1.7;
+}
 .learning-card {
   display: block;
   padding: 1.1rem;

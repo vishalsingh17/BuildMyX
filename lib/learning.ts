@@ -19,9 +19,30 @@ export const pythonLearningPaths = [
   "/learn/python/coverage/",
 ] as const;
 
+export const pandasLearningPaths = [
+  "/learn/pandas/",
+  "/learn/pandas/getting-started/",
+  "/learn/pandas/series/",
+  "/learn/pandas/dataframes/",
+  "/learn/pandas/indexing/",
+  "/learn/pandas/transforming/",
+  "/learn/pandas/missing-and-exploration/",
+  "/learn/pandas/groupby/",
+  "/learn/pandas/reshaping/",
+  "/learn/pandas/combining/",
+  "/learn/pandas/time-series/",
+  "/learn/pandas/accessors/",
+  "/learn/pandas/input-output/",
+  "/learn/pandas/plotting/",
+  "/learn/pandas/reliable-workflows/",
+  "/learn/pandas/project/",
+  "/learn/pandas/coverage/",
+] as const;
+
 export const learningPaths = [
   "/learn/",
   ...pythonLearningPaths,
+  ...pandasLearningPaths,
   "/learn/system-design/",
   "/learn/fundamentals/what-is-system-design-interview/",
   "/learn/fundamentals/requirements/",

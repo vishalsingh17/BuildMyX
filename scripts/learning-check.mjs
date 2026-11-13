@@ -24,10 +24,9 @@ export async function checkLearning(
   ).origin;
   const internalLinks = new Set();
   for (const path of learningPaths) {
-    const widths =
-      path.startsWith("/learn/python/") && path !== "/learn/python/"
-        ? [320, 1440]
-        : [320, 390, 768, 1440];
+    const widths = /^\/learn\/(python|pandas)\/.+/.test(path)
+      ? [320, 1440]
+      : [320, 390, 768, 1440];
     for (const width of widths) {
       await page.setViewportSize({ width, height: 1000 });
       const response = await page.goto(`${url}${path}`);
@@ -182,7 +181,55 @@ export async function checkLearning(
     await expect(page.locator("main h1")).toHaveText(
       /^Scope, nested functions and closures¶?$/,
     );
+    await page
+      .locator(width === 390 ? "[data-learning-search]" : ".md-search__button")
+      .click();
+    await page
+      .getByRole("combobox", { name: "Search", exact: true })
+      .fill("chained assignment");
+    await page
+      .getByRole("option", {
+        name: "SettingWithCopyWarning and chained assignment",
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      /\/learn\/pandas\/reliable-workflows\/(?:\?[^#]*)?(#.*)?$/,
+    );
+    await expect(page.locator("main h1")).toHaveText(
+      /^Write reliable pandas¶?$/,
+    );
   }
+  await page.goto(`${url}/learn/pandas/`);
+  await page
+    .getByRole("link", { name: "Start learning pandas →", exact: true })
+    .click();
+  await expect(page).toHaveURL(`${url}/learn/pandas/getting-started/`);
+  const csvResponse = await fetch(
+    `${url}/learn/pandas/data/workshop-enrolments.csv`,
+  );
+  assert.equal(csvResponse.status, 200);
+  const csv = await csvResponse.text();
+  assert.equal(csv.trim().split("\n").length, 9);
+  assert.ok(
+    csv.startsWith("booking_id,workshop,city,seats,fee,booked_at,rating,tags"),
+  );
+  await page.goto(`${url}/learn/pandas/plotting/`);
+  const figure = page.getByRole("img", { name: /^Grouped bar chart:/ });
+  await figure.scrollIntoViewIfNeeded();
+  await expect(figure).toBeVisible();
+  assert.ok(
+    await figure.evaluate((image) => image.complete && image.naturalWidth > 0),
+  );
+  await page.goto(`${url}/learn/pandas/coverage/`);
+  const coverageTable = page.locator(".md-typeset table").filter({
+    has: page.locator('a[href^="https://aman.ai/primers/pandas/#"]'),
+  });
+  assert.equal(await coverageTable.locator("tbody tr").count(), 117);
+  await page.screenshot({
+    path: resolve(artifacts, "pandas-coverage.png"),
+    fullPage: true,
+  });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(article);
   await page.locator(".learning-cta .md-button").click();
@@ -198,6 +245,19 @@ export async function checkLearning(
   await expect(library).toHaveURL(`${url}/learn/`);
   await expect(page.locator("#name")).toHaveValue("Learning Visitor");
   await library.close();
+  const pandasOpened = page.waitForEvent("popup");
+  await page
+    .locator("#learn")
+    .getByRole("link", {
+      name: "Learn data analysis with pandas (opens in a new tab)",
+      exact: true,
+    })
+    .click();
+  const pandasCourse = await pandasOpened;
+  await pandasCourse.waitForLoadState("domcontentloaded");
+  await expect(pandasCourse).toHaveURL(`${url}/learn/pandas/`);
+  await expect(page.locator("#name")).toHaveValue("Learning Visitor");
+  await pandasCourse.close();
   await page.close();
   const missing = await browser.newPage();
   assert.equal(
