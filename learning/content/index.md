@@ -11,13 +11,13 @@ description: Free Python, pandas and system design learning paths. Work through 
 
 <div class="lesson-meta"><span>3 free learning paths</span><span>Self-paced</span><span>No sign-up</span></div>
 
-<div class="learning-cards" markdown>
+<div class="learning-cards">
 
-<a class="learning-card" href="python/"><span>PYTHON / 15 CHAPTERS</span><strong>From a first script to confident Python ↗</strong><small>Variables, strings, collections, functions, typing, classes, files and the protocols that connect them. Original examples and a complete reference-topic index.</small></a>
+<a class="learning-card" href="python/"><span>PYTHON / 15 CHAPTERS</span><strong>From a first script to confident Python →</strong><small>Variables, strings, collections, functions, typing, classes, files and the protocols that connect them. Original examples and a complete reference-topic index.</small></a>
 
-<a class="learning-card" href="pandas/"><span>PANDAS / 15 CHAPTERS</span><strong>From raw tables to useful answers ↗</strong><small>Select, clean, group, join and reshape data. Learn time series, plotting and reliable pandas 3 workflows with a downloadable dataset and a complete topic index.</small></a>
+<a class="learning-card" href="pandas/"><span>PANDAS / 15 CHAPTERS</span><strong>From raw tables to useful answers →</strong><small>Select, clean, group, join and reshape data. Learn time series, plotting and reliable pandas 3 workflows with a downloadable dataset and a complete topic index.</small></a>
 
-<a class="learning-card" href="system-design/"><span>SYSTEM DESIGN / 6 LESSONS</span><strong>One design decision at a time ↗</strong><small>Frame requirements, estimate capacity, define an API and explain data and scaling choices. Finish with a guided design exercise.</small></a>
+<a class="learning-card" href="system-design/"><span>SYSTEM DESIGN / 6 LESSONS</span><strong>One design decision at a time →</strong><small>Frame requirements, estimate capacity, define an API and explain data and scaling choices. Finish with a guided design exercise.</small></a>
 
 </div>
 
