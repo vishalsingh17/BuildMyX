@@ -9,6 +9,7 @@ import { PilotPackage } from "./pilot-package";
 import { Hero } from "./hero";
 import { EnquiryForm } from "./enquiry-form";
 import { Arrow } from "./icons";
+import { LearningLibrary } from "./learning-library";
 
 export function Landing() {
   const { setInterest } = useEnquiry();
@@ -28,6 +29,7 @@ export function Landing() {
   return (
     <main id="main" tabIndex={-1}>
       <Hero onInterest={setInterest} />
+      <LearningLibrary />
       <section
         id="services"
         className="services container section-space"
