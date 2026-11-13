@@ -9,7 +9,7 @@ console.log(
 process.exitCode = buildAndDeploy(plan, (tool, environment) => {
   const args =
     tool === "website"
-      ? ["node_modules/next/dist/bin/next", "build", "--webpack"]
+      ? ["scripts/build-website.mjs"]
       : ["node_modules/convex/bin/main.js", "deploy", "--typecheck", "enable"];
   const result = spawnSync(process.execPath, args, {
     stdio: "inherit",

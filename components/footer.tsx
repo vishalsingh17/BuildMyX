@@ -23,6 +23,10 @@ export function Footer() {
               Reporting readiness
             </Link>
             <Link href="/resources/hiring-brief/">Employer brief</Link>
+            <a href="/learn/" target="_blank" rel="noopener noreferrer">
+              System design lessons ↗
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
             <Link href="/developers/">For developers</Link>
             <Link href="/#approach">Our approach</Link>
             <Link href="/#enquire">Contact</Link>

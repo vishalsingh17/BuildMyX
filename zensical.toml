@@ -1,0 +1,52 @@
+[project]
+site_name = "BuildMyX Learn"
+site_url = "https://build-my-x.vercel.app/learn/"
+site_description = "Practical system design lessons. Learn to ask better questions, explain trade-offs and design systems that work."
+site_author = "BuildMyX"
+docs_dir = "learning/content"
+site_dir = "public/learn"
+copyright = 'Build something useful. <a href="/privacy/">Privacy</a> · <a href="/">BuildMyX home</a>'
+extra_css = ["stylesheets/learning.css"]
+extra_javascript = ["javascripts/learning.js"]
+nav = [
+  { "Learning path" = "index.md" },
+  { "01 · The foundations" = [
+    { "What is a system design interview?" = "fundamentals/what-is-system-design-interview.md" },
+    { "Start with requirements" = "fundamentals/requirements.md" },
+    { "Estimate the load" = "fundamentals/capacity-estimation.md" },
+  ] },
+  { "02 · Make design decisions" = [
+    { "Design an API" = "fundamentals/api-design.md" },
+    { "Data, caching & scaling" = "fundamentals/data-and-scaling.md" },
+  ] },
+  { "03 · Put it into practice" = [
+    { "Design a link shortener" = "practice/design-a-link-shortener.md" },
+  ] },
+]
+
+[project.theme]
+variant = "classic"
+custom_dir = "learning/overrides"
+language = "en"
+font = false
+favicon = "assets/mark.svg"
+logo = "assets/mark.svg"
+features = ["navigation.sections", "navigation.expand", "navigation.path", "navigation.footer", "navigation.top", "toc.follow", "search.highlight", "content.code.copy"]
+
+[project.theme.palette]
+scheme = "default"
+primary = "custom"
+accent = "custom"
+
+[project.extra]
+indexing_allowed = false
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.details = {}
+pymdownx.superfences = {}
+pymdownx.highlight.pygments_lang_class = true

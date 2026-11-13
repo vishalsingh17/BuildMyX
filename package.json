@@ -3,10 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --hostname 0.0.0.0",
+    "dev": "npm run build:learn && next dev --hostname 0.0.0.0",
+    "setup:learn": "node scripts/setup-learning.mjs",
+    "build:learn": "tsx scripts/build-learn.ts",
+    "dev:learn": "npm run setup:learn && .venv/bin/zensical serve -f zensical.toml --dev-addr 0.0.0.0:8000",
     "dev:convex": "convex dev",
     "start": "next start --hostname 0.0.0.0",
-    "build": "next build --webpack",
+    "build": "node scripts/build-website.mjs",
     "build:deploy": "tsx scripts/vercel-build.ts",
     "release:check": "tsx scripts/configure-release.ts --check",
     "release:protect": "tsx scripts/configure-release.ts --apply",
@@ -19,6 +22,7 @@
   "dependencies": {
     "@convex-dev/rate-limiter": "^0.4.3",
     "@convex-dev/resend": "^0.2.10",
+    "@next/env": "^16.4.6",
     "convex": "^1.49.0",
     "next": "^16.0.0",
     "posthog-js": "^1.447.12",

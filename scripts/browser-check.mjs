@@ -5,6 +5,7 @@ import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { checkStateMachines } from "./state-machine-check.mjs";
+import { checkLearning } from "./learning-check.mjs";
 
 // Exercise the actual production Next.js server, including server endpoints.
 const artifacts = resolve(process.env.QA_OUTPUT ?? "work/browser-qa");
@@ -976,6 +977,12 @@ try {
       "PASS unconfigured PostHog: no ingestion requests or browser storage for a normal visitor.",
     );
   }
+  await checkLearning(browser, url, {
+    watch,
+    checkContrast,
+    artifacts,
+    record,
+  });
   console.log("Checking delayed responses, retries and state transitions...");
   await checkStateMachines(browser, url, { push: record });
   const notFoundPage = await browser.newPage();

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {% if not config.extra.indexing_allowed %}<meta name="robots" content="noindex, nofollow">{% endif %}
+  <meta name="theme-color" content="#28553d">
+{% endblock %}
+
+{% block content %}
+  {% if page.meta.lesson %}
+    <div class="lesson-eyebrow">SYSTEM DESIGN · {{ page.meta.lesson }}</div>
+  {% endif %}
+  {{ super() }}
+  {% if page.meta.lesson %}
+    <aside class="learning-cta" aria-label="Learning support">
+      <span class="learning-cta__eyebrow">BUILD YOUR UNDERSTANDING</span>
+      <h2>Bring a design. Find your next step.</h2>
+      <p>Tell us what you’re learning and where you’re stuck. We’ll clarify whether project feedback or guided learning could help.</p>
+      <a href="/?interest=learning#enquire" class="md-button md-button--primary">Discuss learning support <span aria-hidden="true">↗</span></a>
+    </aside>
+  {% endif %}
+{% endblock %}
