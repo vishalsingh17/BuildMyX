@@ -11,3 +11,5 @@ Convex agent skills for common tasks can be installed by running
 `npx convex ai-files install`.
 
 <!-- convex-ai-end -->
+
+Read and follow the owner's release policy in [AGENTS.md](AGENTS.md): development must pass verification and receive the owner's green flag before production promotion.

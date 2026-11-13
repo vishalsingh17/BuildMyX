@@ -53,8 +53,19 @@ test("storage discovery works without email settings and disabling intake forces
     null,
   );
   assert.equal(intakeConfig({ ENQUIRY_CONVEX_SITE_URL: siteUrl }), siteUrl);
-  assert.equal(intakeConfig({ VERCEL_ENV: "preview" }), null);
+  const development = "https://tacit-badger-38.convex.site";
+  assert.equal(intakeConfig({ VERCEL_ENV: "preview" }), development);
+  assert.equal(intakeConfig({}), development);
   const production = "https://kindhearted-hippopotamus-469.convex.site";
+  assert.equal(
+    intakeConfig({
+      VERCEL_ENV: "preview",
+      ENQUIRY_CONVEX_SITE_URL: production,
+    }),
+    null,
+  );
+  assert.equal(intakeConfig({ ENQUIRY_CONVEX_SITE_URL: production }), null);
+  assert.equal(intakeConfig({ APP_ENV: "production" }), production);
   assert.equal(intakeConfig({ VERCEL_ENV: "production" }), production);
   assert.equal(
     intakeConfig({
@@ -70,6 +81,28 @@ test("storage discovery works without email settings and disabling intake forces
     }),
     siteUrl,
   );
+});
+test("development and preview submissions validate their own website origin and forward the canonical service origin", async () => {
+  const previewOrigin = "https://buildmyx-dev.example.com";
+  const preview = new Request(`${previewOrigin}/api/enquiry/`, {
+    method: "POST",
+    headers: {
+      Origin: previewOrigin,
+      "Content-Type": "application/json",
+      "Idempotency-Key": reference,
+    },
+    body: JSON.stringify(fields),
+  });
+  let forwardedOrigin;
+  const response = await handleEnquiryIntake(preview, {
+    siteUrl,
+    fetch: async (_url, init) => {
+      forwardedOrigin = (init!.headers as Record<string, string>).Origin;
+      return Response.json({ saved: true, reference });
+    },
+  });
+  assert.equal(response.status, 200);
+  assert.equal(forwardedOrigin, "https://build-my-x.vercel.app");
 });
 test("intake requires confirmed storage and forwards one stable submission reference", async () => {
   const calls: RequestInit[] = [];

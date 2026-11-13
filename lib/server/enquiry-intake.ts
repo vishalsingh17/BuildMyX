@@ -1,24 +1,27 @@
 import { siteConfig } from "../site-config";
 import { enquiryHeaders, enquiryJson, readEnquiry } from "../enquiry-request";
+import { deploymentEnvironment, deploymentUrls } from "../deployment-config";
 
 // Public HTTP actions URL. Credentials and notification settings stay in Convex.
-const productionSiteUrl = "https://kindhearted-hippopotamus-469.convex.site";
-const developmentSiteUrl = "https://tacit-badger-38.convex.site";
+const productionSiteUrl = deploymentUrls("production").site;
+const developmentSiteUrl = deploymentUrls("development").site;
 export function intakeConfig(
   environment: Record<string, string | undefined> = process.env,
 ) {
   if (environment.ENQUIRY_ENABLED === "false") return null;
+  const stage = deploymentEnvironment(environment);
   const override =
     environment.ENQUIRY_CONVEX_SITE_URL?.trim().replace(/\/$/, "") || null;
   // Migrate the original development URL on Vercel production; previews stay isolated.
   const value =
-    environment.VERCEL_ENV === "production" &&
-    (!override || override === developmentSiteUrl)
+    stage === "production" && (!override || override === developmentSiteUrl)
       ? productionSiteUrl
-      : override;
+      : override || developmentSiteUrl;
   if (!value) return null;
   try {
     const url = new URL(value);
+    if (stage === "development" && url.origin === productionSiteUrl)
+      return null;
     if (
       url.protocol !== "https:" ||
       !url.hostname.endsWith(".convex.site") ||
@@ -71,7 +74,7 @@ export async function handleEnquiryIntake(
       { error: "Sending is unavailable. Please use the copy option." },
       503,
     );
-  const headerError = enquiryHeaders(request, origin());
+  const headerError = enquiryHeaders(request, new URL(request.url).origin);
   if (headerError) return headerError;
   const reference =
     request.headers.get("Idempotency-Key") ?? crypto.randomUUID();
