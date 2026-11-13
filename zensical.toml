@@ -1,7 +1,7 @@
 [project]
 site_name = "BuildMyX Learn"
 site_url = "https://build-my-x.vercel.app/learn/"
-site_description = "Practical system design lessons. Learn to ask better questions, explain trade-offs and design systems that work."
+site_description = "Free Python and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
 site_author = "BuildMyX"
 docs_dir = "learning/content"
 site_dir = "public/learn"
@@ -9,18 +9,40 @@ copyright = 'Build something useful. <a href="/privacy/">Privacy</a> · <a href=
 extra_css = ["stylesheets/learning.css"]
 extra_javascript = ["javascripts/learning.js"]
 nav = [
-  { "Learning path" = "index.md" },
-  { "01 · The foundations" = [
-    { "What is a system design interview?" = "fundamentals/what-is-system-design-interview.md" },
-    { "Start with requirements" = "fundamentals/requirements.md" },
-    { "Estimate the load" = "fundamentals/capacity-estimation.md" },
+  { "Library" = "index.md" },
+  { "Python" = [
+    { "The Python learning path" = "python/index.md" },
+    { "01 · Getting started" = "python/getting-started.md" },
+    { "02 · Values & strings" = "python/values-and-strings.md" },
+    { "03 · Collections" = "python/collections.md" },
+    { "04 · Control flow & functions" = "python/control-flow-and-functions.md" },
+    { "05 · Scope & closures" = "python/scope-and-closures.md" },
+    { "06 · Type hints" = "python/type-hints.md" },
+    { "07 · Lambdas & alternatives" = "python/lambdas.md" },
+    { "08 · Iterators & generators" = "python/iterators-and-generators.md" },
+    { "09 · Decorators" = "python/decorators.md" },
+    { "10 · Files & streams" = "python/files.md" },
+    { "11 · Classes & inheritance" = "python/classes.md" },
+    { "12 · The data model" = "python/data-model.md" },
+    { "13 · Exceptions" = "python/exceptions.md" },
+    { "14 · Modules & packages" = "python/modules-and-packages.md" },
+    { "15 · Useful built-ins" = "python/builtins.md" },
+    { "Full topic coverage" = "python/coverage.md" },
   ] },
-  { "02 · Make design decisions" = [
-    { "Design an API" = "fundamentals/api-design.md" },
-    { "Data, caching & scaling" = "fundamentals/data-and-scaling.md" },
-  ] },
-  { "03 · Put it into practice" = [
-    { "Design a link shortener" = "practice/design-a-link-shortener.md" },
+  { "System design" = [
+    { "The system design learning path" = "system-design/index.md" },
+    { "01 · The foundations" = [
+      { "What is a system design interview?" = "fundamentals/what-is-system-design-interview.md" },
+      { "Start with requirements" = "fundamentals/requirements.md" },
+      { "Estimate the load" = "fundamentals/capacity-estimation.md" },
+    ] },
+    { "02 · Make design decisions" = [
+      { "Design an API" = "fundamentals/api-design.md" },
+      { "Data, caching & scaling" = "fundamentals/data-and-scaling.md" },
+    ] },
+    { "03 · Put it into practice" = [
+      { "Design a link shortener" = "practice/design-a-link-shortener.md" },
+    ] },
   ] },
 ]
 
@@ -31,7 +53,7 @@ language = "en"
 font = false
 favicon = "assets/mark.svg"
 logo = "assets/mark.svg"
-features = ["navigation.sections", "navigation.expand", "navigation.path", "navigation.footer", "navigation.top", "toc.follow", "search.highlight", "content.code.copy"]
+features = ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.footer", "navigation.top", "toc.follow", "search.highlight", "content.code.copy"]
 
 [project.theme.palette]
 scheme = "default"

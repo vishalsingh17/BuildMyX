@@ -21,6 +21,7 @@ async function main() {
     process.platform === "win32" ? "Scripts/python.exe" : "bin/python",
   );
   const temporaryConfig = resolve(root, ".zensical-build.toml");
+  run(python, ["scripts/check-python-content.py"]);
   const canIndex = canIndexSite(
     siteConfig.canonicalUrl,
     siteConfig.launchApproved,
@@ -57,6 +58,7 @@ async function main() {
   } finally {
     rmSync(temporaryConfig, { force: true });
   }
+  run(python, ["scripts/check-python-content.py", "--html"]);
 }
 main().catch((error) => {
   console.error(error);

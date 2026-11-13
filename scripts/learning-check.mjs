@@ -24,7 +24,11 @@ export async function checkLearning(
   ).origin;
   const internalLinks = new Set();
   for (const path of learningPaths) {
-    for (const width of [320, 390, 768, 1440]) {
+    const widths =
+      path.startsWith("/learn/python/") && path !== "/learn/python/"
+        ? [320, 1440]
+        : [320, 390, 768, 1440];
+    for (const width of widths) {
       await page.setViewportSize({ width, height: 1000 });
       const response = await page.goto(`${url}${path}`);
       assert.equal(response.status(), 200, path);
@@ -67,7 +71,7 @@ export async function checkLearning(
       }
     }
     record(
-      `PASS ${path}: Zensical HTML, canonical/indexing policy, readable contrast and no overflow at 320/390/768/1440px.`,
+      `PASS ${path}: Zensical HTML, canonical/indexing policy, readable contrast and no overflow at ${widths.join("/")}px.`,
     );
   }
   for (const href of internalLinks) {
@@ -160,6 +164,24 @@ export async function checkLearning(
       /\/learn\/fundamentals\/api-design\/(?:\?[^#]*)?(#.*)?$/,
     );
     await expect(page.locator("main h1")).toHaveText(/^Design an API¶?$/);
+    await page
+      .locator(width === 390 ? "[data-learning-search]" : ".md-search__button")
+      .click();
+    await page
+      .getByRole("combobox", { name: "Search", exact: true })
+      .fill("nonlocal");
+    await page
+      .getByRole("option", {
+        name: "Rebind enclosing state with nonlocal",
+        exact: true,
+      })
+      .click();
+    await expect(page).toHaveURL(
+      /\/learn\/python\/scope-and-closures\/(?:\?[^#]*)?(#.*)?$/,
+    );
+    await expect(page.locator("main h1")).toHaveText(
+      /^Scope, nested functions and closures¶?$/,
+    );
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(article);

@@ -34,6 +34,11 @@
   --md-code-hl-number-color: #8c3a29;
   --md-code-hl-name-color: #28553d;
   --md-code-hl-keyword-color: #624784;
+  --md-code-hl-function-color: #624784;
+  --md-code-hl-constant-color: #8c3a29;
+  --md-code-hl-comment-color: #515e54;
+  --md-code-hl-operator-color: #515e54;
+  --md-code-hl-punctuation-color: #515e54;
   --md-footer-bg-color: #e9ede2;
   --md-footer-bg-color--dark: #e9ede2;
   --md-footer-fg-color: #18211c;
@@ -121,6 +126,20 @@ label:focus-visible {
 .md-main__inner {
   margin-top: 2rem;
 }
+.md-tabs {
+  background: #faf8f3;
+  color: #18211c;
+  border-bottom: 1px solid #d9ded2;
+}
+.md-tabs__link {
+  color: #515e54;
+  opacity: 1;
+  font-size: 0.65rem;
+}
+.md-tabs__item--active .md-tabs__link {
+  color: #28553d;
+  font-weight: 700;
+}
 .md-sidebar--primary {
   width: 14rem;
   padding-right: 1.2rem;
@@ -193,8 +212,8 @@ label:focus-visible {
 .md-typeset a:not(.md-button) {
   text-underline-offset: 0.2em;
 }
-.md-typeset p a,
-.md-typeset li a {
+.md-typeset p a:not(.md-button),
+.md-typeset li a:not(.md-button) {
   text-decoration: underline;
 }
 .md-path {
@@ -287,6 +306,7 @@ label:focus-visible {
   line-height: 1.8;
 }
 .md-typeset .md-button {
+  margin: 0.2rem 0.25rem 0.2rem 0;
   border-radius: 0.2rem;
   font-size: 0.65rem;
   padding: 0.65em 1.1em;

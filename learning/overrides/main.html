@@ -7,14 +7,19 @@
 
 {% block content %}
   {% if page.meta.lesson %}
-    <div class="lesson-eyebrow">SYSTEM DESIGN · {{ page.meta.lesson }}</div>
+    <div class="lesson-eyebrow">{{ page.meta.course | d("System design", true) | upper }} · {{ page.meta.lesson }}</div>
   {% endif %}
   {{ super() }}
   {% if page.meta.lesson %}
     <aside class="learning-cta" aria-label="Learning support">
       <span class="learning-cta__eyebrow">BUILD YOUR UNDERSTANDING</span>
-      <h2>Bring a design. Find your next step.</h2>
-      <p>Tell us what you’re learning and where you’re stuck. We’ll clarify whether project feedback or guided learning could help.</p>
+      {% if page.meta.course == "Python" %}
+        <h2>Make the next concept click.</h2>
+        <p>Bring a small piece of code or the idea you’re stuck on. We’ll discuss whether guided learning or project feedback could help.</p>
+      {% else %}
+        <h2>Bring a design. Find your next step.</h2>
+        <p>Tell us what you’re learning and where you’re stuck. We’ll clarify whether project feedback or guided learning could help.</p>
+      {% endif %}
       <a href="/?interest=learning#enquire" class="md-button md-button--primary">Discuss learning support <span aria-hidden="true">↗</span></a>
     </aside>
   {% endif %}

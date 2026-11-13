@@ -18,7 +18,7 @@ function run(command, args) {
   const result = spawnSync(command, args, { cwd: root, stdio: "inherit" });
   if (result.error || result.status !== 0) {
     throw new Error(
-      `Learning setup failed: ${command}. Install Python 3.11+ with venv/pip support, then run npm run setup:learn.`,
+      `Learning setup failed: ${command}. Install Python 3.12+ with venv/pip support, then run npm run setup:learn.`,
       { cause: result.error },
     );
   }

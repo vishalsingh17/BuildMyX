@@ -82,4 +82,4 @@ Try the exercise before expanding this discussion. Many other designs can be rea
 
 Change one constraint and revise your drawing: require two regions, allow destination updates or insist on immediate revocation. Explain which part changes first and which cost increases.
 
-[Revisit the learning path →](../index.md){ .md-button }
+[Revisit the learning path →](../system-design/index.md){ .md-button }

@@ -11,30 +11,42 @@ export function LearningLibrary() {
       <div className="home-learning-intro">
         <p className="eyebrow">BUILDMYX LEARN / FREE LEARNING</p>
         <h2 id="home-learning-heading">
-          Learn to design systems.
+          Learn the foundations.
           <br />
-          <em>One decision at a time.</em>
+          <em>Build with understanding.</em>
         </h2>
         <p className="home-learning-description">
-          Turn an open question into a design you can explain. Work through
-          requirements, APIs, data and scaling, then put it together in a guided
-          design exercise.
+          Build your Python skills or sharpen your system design thinking.
+          Follow clear explanations, work through practical examples and check
+          your understanding as you go.
         </p>
         <ul className="home-learning-meta" aria-label="About the lessons">
-          <li>6 free lessons</li>
+          <li>2 free learning paths</li>
           <li>Self-paced</li>
           <li>No sign-up</li>
         </ul>
-        <a
-          href="/learn/"
-          className="button"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Explore free lessons
-          <span className="sr-only"> (opens in a new tab)</span>
-          <Arrow diagonal />
-        </a>
+        <div className="home-learning-actions">
+          <a
+            href="/learn/"
+            className="button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Explore free lessons
+            <span className="sr-only"> (opens in a new tab)</span>
+            <Arrow diagonal />
+          </a>
+          <a
+            href="/learn/python/"
+            className="text-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Start learning Python
+            <span className="sr-only"> (opens in a new tab)</span>
+            <Arrow diagonal />
+          </a>
+        </div>
         <p className="home-learning-tab-note">Lessons open in a new tab.</p>
       </div>
       <article

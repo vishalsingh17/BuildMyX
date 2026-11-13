@@ -24,7 +24,7 @@ export function Footer() {
             </Link>
             <Link href="/resources/hiring-brief/">Employer brief</Link>
             <a href="/learn/" target="_blank" rel="noopener noreferrer">
-              System design lessons ↗
+              Free learning library ↗
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
             <Link href="/developers/">For developers</Link>

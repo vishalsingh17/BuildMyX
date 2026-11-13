@@ -37,6 +37,12 @@
   color: var(--muted);
   font-size: 11px;
 }
+.home-learning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
 .home-learning-feature {
   padding: 28px;
   background: var(--paper);
