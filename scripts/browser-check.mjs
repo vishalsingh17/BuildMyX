@@ -6,6 +6,7 @@ import { resolve } from "node:path";
 import { spawn } from "node:child_process";
 import { checkStateMachines } from "./state-machine-check.mjs";
 import { checkLearning } from "./learning-check.mjs";
+import { checkReferences } from "./references-check.mjs";
 
 // Exercise the actual production Next.js server, including server endpoints.
 const artifacts = resolve(process.env.QA_OUTPUT ?? "work/browser-qa");
@@ -983,6 +984,7 @@ try {
     artifacts,
     record,
   });
+  await checkReferences(browser, url, { checkContrast, artifacts, record });
   console.log("Checking delayed responses, retries and state transitions...");
   await checkStateMachines(browser, url, { push: record });
   const notFoundPage = await browser.newPage();

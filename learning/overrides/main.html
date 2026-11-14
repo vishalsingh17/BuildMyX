@@ -10,6 +10,11 @@
     <div class="lesson-eyebrow">{{ page.meta.course | d("System design", true) | upper }} · {{ page.meta.lesson }}</div>
   {% endif %}
   {{ super() }}
+  {% if page.meta.course in ["Python", "Pandas", "PyTorch"] %}
+    <aside class="lesson-reference" aria-label="API reference">
+      <strong>Looking up an API?</strong> Explore the <a href="/learn/references/{{ page.meta.course | lower }}/">{{ page.meta.course }} documentation</a>. Check its version against the lesson before using an example.
+    </aside>
+  {% endif %}
   {% if page.meta.lesson %}
     <aside class="learning-cta" aria-label="Learning support">
       <span class="learning-cta__eyebrow">BUILD YOUR UNDERSTANDING</span>

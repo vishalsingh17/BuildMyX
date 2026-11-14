@@ -146,3 +146,7 @@ Fonts are self-hosted with licences in `public/fonts/`. The initial accessible h
 `lib/enquiry-machine.ts`, `lib/hero-machine.ts` and `lib/reporting-machine.ts` define typed transitions. Report Reset restores the sample and default explanation; stale outputs remain blocked from export and provenance. Hero run intent is separate from hover/focus suspension and motion preference. Explicit Resume can override reduced-motion stopping while CSS transitions remain disabled. FAQ and media controls retain their native browser behavior.
 
 Run `npm test` for Node and Convex tests, `npm run build` for the production build, and `npm run test:browser` for the full browser journeys and delayed-response/navigation regressions. The original inventory and remediation mapping are in `docs/implicit-state-machines.md`.
+
+## Documentation references
+
+The reference library at `/learn/references/` covers every DevDocs family, with the latest available stable collections, parallel editions and labelled newer previews. It provides topic search, an integrated reader, original source links and source notices. Run `npm run sync:references -- --verify-pages` on development to refresh and verify all collections. See [the reference library guide](docs/reference-library.md) for coverage, loading, licensing and release details.

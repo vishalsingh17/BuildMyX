@@ -27,6 +27,14 @@ export function Footer() {
               Free learning library ↗
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
+            <a
+              href="/learn/references/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Documentation library ↗
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
             <Link href="/developers/">For developers</Link>
             <Link href="/#approach">Our approach</Link>
             <Link href="/#enquire">Contact</Link>

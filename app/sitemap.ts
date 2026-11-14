@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/developers/",
     "/privacy/",
     ...learningPaths,
+    "/learn/references/",
   ].map((path) => ({
     url: new URL(path, siteConfig.canonicalUrl!).toString(),
   }));

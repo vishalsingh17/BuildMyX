@@ -1,3 +1,4 @@
+import { referenceFamilyCount } from "@/lib/references";
 import { Arrow } from "./icons";
 
 export function LearningLibrary() {
@@ -68,7 +69,25 @@ export function LearningLibrary() {
             <Arrow diagonal />
           </a>
         </div>
-        <p className="home-learning-tab-note">Lessons open in a new tab.</p>
+        <a
+          href="/learn/references/"
+          className="home-reference-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>
+            <strong>A reference for your next question.</strong>
+            <small>
+              Explore {referenceFamilyCount} documentation families, from Python
+              and AI to web development and databases.
+            </small>
+          </span>
+          <Arrow diagonal />
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        <p className="home-learning-tab-note">
+          Lessons and references open in a new tab.
+        </p>
       </div>
       <article
         className="home-learning-feature"

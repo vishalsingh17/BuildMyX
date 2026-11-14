@@ -739,3 +739,9 @@ button.text-link {
     gap: 20px;
   }
 }
+
+.home-reference-link { display: flex; gap: 20px; align-items: center; justify-content: space-between; margin-top: 25px; padding: 20px; max-width: 560px; border: 1px solid #aab7a0; background: #e6ebdf; color: var(--green-dark); }
+.home-reference-link strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.5; }
+.home-reference-link small { display: block; font-size: 12px; margin-top: 7px; line-height: 1.8; }
+.home-reference-link > svg { flex-shrink: 0; }
+.home-reference-link:hover strong { text-decoration: underline; text-underline-offset: 4px; }

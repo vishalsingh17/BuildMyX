@@ -10,6 +10,7 @@ extra_css = ["stylesheets/learning.css"]
 extra_javascript = ["javascripts/learning.js"]
 nav = [
   { "Library" = "index.md" },
+  { "References ↗" = "/learn/references/" },
   { "Python" = [
     { "The Python learning path" = "python/index.md" },
     { "01 · Getting started" = "python/getting-started.md" },

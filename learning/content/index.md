@@ -23,6 +23,10 @@ description: Free Python, pandas, PyTorch and system design learning paths. Work
 
 </div>
 
+## Find a technical reference
+
+Look up a function, explore a guide or check an API in the [documentation library →](/learn/references/). Browse every DevDocs family across programming languages, web development, data and AI, databases, infrastructure and tools. Each collection shows its exact available version and source update date, with original copyright notices preserved on its pages.
+
 ## Pick your starting point
 
 - **New to programming or refreshing Python?** Start with [Python setup and readable code](python/getting-started.md). The examples target Python 3.12+ and build from simple scripts to reusable modules.

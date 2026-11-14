@@ -517,3 +517,6 @@ label:focus-visible {
     animation-duration: 0s !important;
   }
 }
+
+.lesson-reference { margin: 28px 0; padding: 18px 20px; border: 1px solid var(--md-default-fg-color--lightest); background: #e6ebdf; color: #28553d; font-size: 13px; line-height: 1.8; }
+.lesson-reference a { text-decoration: underline; text-underline-offset: 3px; }
