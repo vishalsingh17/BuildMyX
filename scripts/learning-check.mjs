@@ -24,7 +24,7 @@ export async function checkLearning(
   ).origin;
   const internalLinks = new Set();
   for (const path of learningPaths) {
-    const widths = /^\/learn\/(python|pandas|pytorch)\/.+/.test(path)
+    const widths = /^\/learn\/(python|pandas|pytorch|generative-ai)\/.+/.test(path)
       ? [320, 1440]
       : [320, 390, 768, 1440];
     for (const width of widths) {

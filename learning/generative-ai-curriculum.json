@@ -1,0 +1,555 @@
+{
+  "title": "Generative AI",
+  "chapter_count": 32,
+  "supplied_link_count": 17,
+  "unique_source_count": 16,
+  "duplicate_source": "https://aman.ai/primers/loop-and-graph-engineering/",
+  "core_runtime": "Python 3.12+ standard library",
+  "sources": [
+    {
+      "id": "LLM",
+      "title": "Language models",
+      "url": "https://aman.ai/primers/LLM/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "31e6f05fed9074374fc3370909faf94e93e2fcb5037dafe592fe03a5a400b103"
+    },
+    {
+      "id": "transformers",
+      "title": "Transformers",
+      "url": "https://aman.ai/primers/transformers/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "704b627d0dbd288a4bad6e8e6d79fb68565044a5a23de370644a2a722b7b6975"
+    },
+    {
+      "id": "attention",
+      "title": "Attention",
+      "url": "https://aman.ai/primers/attention/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "fd2621f731dbcd17a87b318db53329bf05a7e3228a396024a6f67e422217c0af"
+    },
+    {
+      "id": "embeddings",
+      "title": "Embeddings",
+      "url": "https://aman.ai/primers/embeddings/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "cdc83aa00d0c7c1a6460a9385b494c5943b3bc86e6479a90cdaaee3c0d6e1470"
+    },
+    {
+      "id": "context-engineering",
+      "title": "Context engineering",
+      "url": "https://aman.ai/primers/context-engineering/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "6944e176c345320d238ddaee36498e0dfa630bf6f7626743aaa6fca58ba6202f"
+    },
+    {
+      "id": "RAG",
+      "title": "Retrieval-augmented generation",
+      "url": "https://aman.ai/primers/RAG/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "af0973c5f41c2958b5c9d426f83933dff4fd5f36ea14db85ea212c8c4a62e2ec"
+    },
+    {
+      "id": "LLM-as-a-judge",
+      "title": "LLM evaluation and judges",
+      "url": "https://aman.ai/primers/LLM-as-a-judge/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "b6d8615a723cba084fd3ad8520147e01cef21507d9851cc15d14c1288349ca5b"
+    },
+    {
+      "id": "parameter-efficient-fine-tuning",
+      "title": "Parameter-efficient tuning",
+      "url": "https://aman.ai/primers/parameter-efficient-fine-tuning/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "e66c572cc719477e07f80d32e011b6101175a03dcd0cfd5647773b310bfe7e4b"
+    },
+    {
+      "id": "knowledge-distillation",
+      "title": "Knowledge distillation",
+      "url": "https://aman.ai/primers/knowledge-distillation/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "fe01d83a2de5d574588c166143c86a7fa2d18580a4b710d71abc503f8cd9d0d8"
+    },
+    {
+      "id": "loop-and-graph-engineering",
+      "title": "Loop and graph engineering",
+      "url": "https://aman.ai/primers/loop-and-graph-engineering/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "aa183c44fd2ecea9d917d0f04a103a0be89d94bb2c86a62bc04525143e492d65"
+    },
+    {
+      "id": "diffusion-models",
+      "title": "Diffusion models",
+      "url": "https://aman.ai/primers/diffusion-models/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "de29e9f0d1f01b0372383e356624377c7e2506af67b04dd3b551de6699c222ef"
+    },
+    {
+      "id": "VLM",
+      "title": "Vision-language models",
+      "url": "https://aman.ai/primers/VLM/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "f2642fd058588a282c9382a0cb32c4e7f652a2a96c0d36bbf50be6239925171e"
+    },
+    {
+      "id": "state-space-models",
+      "title": "State-space models",
+      "url": "https://aman.ai/primers/state-space-models/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "9c759c1af09e3ba1a62dc713d2ae9e04910e078d3c68e27f7733036aac9d700e"
+    },
+    {
+      "id": "recursive-transformers",
+      "title": "Recursive transformers",
+      "url": "https://aman.ai/primers/recursive-transformers/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "d6d5bbbd68a67b6436bc299a1ea53109e14fb1c5d0be7fa2c2585504d4b54c21"
+    },
+    {
+      "id": "world-modeling",
+      "title": "World modeling",
+      "url": "https://aman.ai/primers/world-modeling/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "adc7969a5303d4aba82d22d4be8bda172afc621fb64e2977d3788a476d85f9b0"
+    },
+    {
+      "id": "physical-ai",
+      "title": "Physical AI",
+      "url": "https://aman.ai/primers/physical-ai/",
+      "retrieved_on": "2026-11-14",
+      "html_sha256": "68f60d52a002827d6e712fd518e4d74cc264efc1670d01cdd37bdcccdc5839e2"
+    }
+  ],
+  "chapters": [
+    {
+      "order": 1,
+      "slug": "getting-started",
+      "title": "Start learning Generative AI",
+      "phase": "Foundations",
+      "sources": [
+        "LLM"
+      ],
+      "outcome": "Explain a generative system, set up the small labs and choose a practical learning goal.",
+      "prerequisites": []
+    },
+    {
+      "order": 2,
+      "slug": "math-and-learning",
+      "title": "The math behind a prediction",
+      "phase": "Foundations",
+      "sources": [
+        "LLM",
+        "transformers"
+      ],
+      "outcome": "Use vectors, probability, loss and a small gradient update without skipping the notation.",
+      "prerequisites": [
+        "getting-started"
+      ]
+    },
+    {
+      "order": 3,
+      "slug": "tokens-and-language",
+      "title": "Tokens and language modeling",
+      "phase": "Foundations",
+      "sources": [
+        "LLM",
+        "transformers"
+      ],
+      "outcome": "Follow text through token IDs, causal prediction and a language-model objective.",
+      "prerequisites": [
+        "math-and-learning"
+      ]
+    },
+    {
+      "order": 4,
+      "slug": "embeddings",
+      "title": "Represent meaning with embeddings",
+      "phase": "Foundations",
+      "sources": [
+        "embeddings"
+      ],
+      "outcome": "Compare lexical and learned representations, compute similarity and choose a retrieval representation.",
+      "prerequisites": [
+        "tokens-and-language"
+      ]
+    },
+    {
+      "order": 5,
+      "slug": "attention",
+      "title": "Understand attention, one weighted sum at a time",
+      "phase": "Model foundations",
+      "sources": [
+        "attention"
+      ],
+      "outcome": "Calculate queries, keys, values and a causal attention result you can inspect.",
+      "prerequisites": [
+        "embeddings"
+      ]
+    },
+    {
+      "order": 6,
+      "slug": "attention-efficiency",
+      "title": "Multi-head attention and efficient inference",
+      "phase": "Model foundations",
+      "sources": [
+        "attention"
+      ],
+      "outcome": "Separate model structure, attention approximation and hardware-efficient implementation.",
+      "prerequisites": [
+        "attention"
+      ]
+    },
+    {
+      "order": 7,
+      "slug": "transformers",
+      "title": "Assemble a transformer",
+      "phase": "Model foundations",
+      "sources": [
+        "transformers",
+        "attention"
+      ],
+      "outcome": "Connect attention, residual paths, normalization, positions and feed-forward blocks.",
+      "prerequisites": [
+        "attention-efficiency"
+      ]
+    },
+    {
+      "order": 8,
+      "slug": "training-llms",
+      "title": "How language models are trained",
+      "phase": "Model foundations",
+      "sources": [
+        "LLM"
+      ],
+      "outcome": "Distinguish pretraining, instruction tuning and preference optimization, with sound data splits.",
+      "prerequisites": [
+        "transformers"
+      ]
+    },
+    {
+      "order": 9,
+      "slug": "decoding",
+      "title": "Generate the next token",
+      "phase": "Model foundations",
+      "sources": [
+        "LLM"
+      ],
+      "outcome": "Use temperature, top-k, nucleus sampling and stopping rules deliberately.",
+      "prerequisites": [
+        "training-llms"
+      ]
+    },
+    {
+      "order": 10,
+      "slug": "serving-and-context",
+      "title": "Serve a model and manage long context",
+      "phase": "Model foundations",
+      "sources": [
+        "LLM",
+        "attention"
+      ],
+      "outcome": "Reason about prefill, decoding, memory, context extension and latency budgets.",
+      "prerequisites": [
+        "decoding"
+      ]
+    },
+    {
+      "order": 11,
+      "slug": "prompting",
+      "title": "Write instructions and validate outputs",
+      "phase": "Grounded applications",
+      "sources": [
+        "LLM",
+        "context-engineering"
+      ],
+      "outcome": "Build a clear task contract, useful examples and a checked structured response.",
+      "prerequisites": [
+        "serving-and-context"
+      ]
+    },
+    {
+      "order": 12,
+      "slug": "context-engineering",
+      "title": "Engineer the context",
+      "phase": "Grounded applications",
+      "sources": [
+        "context-engineering"
+      ],
+      "outcome": "Select and budget instructions, evidence, state and memory while retaining provenance.",
+      "prerequisites": [
+        "prompting"
+      ]
+    },
+    {
+      "order": 13,
+      "slug": "rag",
+      "title": "Build a retrieval-augmented generation pipeline",
+      "phase": "Grounded applications",
+      "sources": [
+        "RAG",
+        "embeddings"
+      ],
+      "outcome": "Follow ingestion, retrieval, context assembly and cited generation end to end.",
+      "prerequisites": [
+        "context-engineering"
+      ]
+    },
+    {
+      "order": 14,
+      "slug": "retrieval-strategies",
+      "title": "Improve retrieval and choose a RAG design",
+      "phase": "Grounded applications",
+      "sources": [
+        "RAG",
+        "embeddings"
+      ],
+      "outcome": "Use hybrid retrieval, reranking, query transformations and multi-hop designs when evidence supports them.",
+      "prerequisites": [
+        "rag"
+      ]
+    },
+    {
+      "order": 15,
+      "slug": "grounded-assistant",
+      "title": "Project: a grounded workshop assistant",
+      "phase": "Grounded applications",
+      "sources": [
+        "RAG",
+        "context-engineering"
+      ],
+      "outcome": "Build a small inspectable retrieval-and-answer prototype with citations and an abstention path.",
+      "prerequisites": [
+        "retrieval-strategies"
+      ]
+    },
+    {
+      "order": 16,
+      "slug": "evaluation",
+      "title": "Measure quality before changing the system",
+      "phase": "Grounded applications",
+      "sources": [
+        "LLM",
+        "RAG"
+      ],
+      "outcome": "Evaluate retrieval and answers separately, using held-out cases and meaningful baselines.",
+      "prerequisites": [
+        "grounded-assistant"
+      ]
+    },
+    {
+      "order": 17,
+      "slug": "llm-judges",
+      "title": "Evaluate with a calibrated LLM judge",
+      "phase": "Grounded applications",
+      "sources": [
+        "LLM-as-a-judge"
+      ],
+      "outcome": "Design pointwise, pairwise and listwise judgments, then check bias and human agreement.",
+      "prerequisites": [
+        "evaluation"
+      ]
+    },
+    {
+      "order": 18,
+      "slug": "operations",
+      "title": "Operate and improve a GenAI application",
+      "phase": "Grounded applications",
+      "sources": [
+        "context-engineering",
+        "loop-and-graph-engineering"
+      ],
+      "outcome": "Trace failures, budget cost and latency, and release a versioned system through explicit checks.",
+      "prerequisites": [
+        "llm-judges"
+      ]
+    },
+    {
+      "order": 19,
+      "slug": "fine-tuning",
+      "title": "Adapt a model with parameter-efficient tuning",
+      "phase": "Adaptation and agents",
+      "sources": [
+        "parameter-efficient-fine-tuning"
+      ],
+      "outcome": "Choose a tuning method and understand what a LoRA or quantized-base update changes.",
+      "prerequisites": [
+        "operations"
+      ]
+    },
+    {
+      "order": 20,
+      "slug": "distillation",
+      "title": "Transfer behavior with knowledge distillation",
+      "phase": "Adaptation and agents",
+      "sources": [
+        "knowledge-distillation"
+      ],
+      "outcome": "Compare teacher-student objectives, data policies and the evidence needed to assess a smaller model.",
+      "prerequisites": [
+        "fine-tuning"
+      ]
+    },
+    {
+      "order": 21,
+      "slug": "agent-loops",
+      "title": "Design a bounded agent loop",
+      "phase": "Adaptation and agents",
+      "sources": [
+        "loop-and-graph-engineering",
+        "context-engineering"
+      ],
+      "outcome": "Define state, observations, tool contracts, progress checks and termination before adding autonomy.",
+      "prerequisites": [
+        "distillation"
+      ]
+    },
+    {
+      "order": 22,
+      "slug": "agent-graphs",
+      "title": "Connect work with a reliable graph",
+      "phase": "Adaptation and agents",
+      "sources": [
+        "loop-and-graph-engineering"
+      ],
+      "outcome": "Choose graph topologies, handle parallel results and define recovery at every boundary.",
+      "prerequisites": [
+        "agent-loops"
+      ]
+    },
+    {
+      "order": 23,
+      "slug": "workflow-project",
+      "title": "Project: an assistant workflow you can replay",
+      "phase": "Adaptation and agents",
+      "sources": [
+        "loop-and-graph-engineering",
+        "RAG"
+      ],
+      "outcome": "Connect retrieval, verification and a checkpointed controller with explicit failure states.",
+      "prerequisites": [
+        "agent-graphs"
+      ]
+    },
+    {
+      "order": 24,
+      "slug": "diffusion",
+      "title": "Learn to reverse a noising process",
+      "phase": "Other generative models",
+      "sources": [
+        "diffusion-models"
+      ],
+      "outcome": "Understand the forward process, learned denoising and what an inference sampler actually does.",
+      "prerequisites": [
+        "workflow-project"
+      ]
+    },
+    {
+      "order": 25,
+      "slug": "conditional-diffusion",
+      "title": "Condition image and video generation",
+      "phase": "Other generative models",
+      "sources": [
+        "diffusion-models"
+      ],
+      "outcome": "Compare latent models, U-Nets, DiTs, guidance and sampling or adaptation choices.",
+      "prerequisites": [
+        "diffusion"
+      ]
+    },
+    {
+      "order": 26,
+      "slug": "vision-language",
+      "title": "Connect images and language",
+      "phase": "Other generative models",
+      "sources": [
+        "VLM",
+        "embeddings"
+      ],
+      "outcome": "Distinguish aligned embeddings, multimodal fusion and generative vision-language models.",
+      "prerequisites": [
+        "conditional-diffusion"
+      ]
+    },
+    {
+      "order": 27,
+      "slug": "multimodal-systems",
+      "title": "Build and evaluate a multimodal system",
+      "phase": "Other generative models",
+      "sources": [
+        "VLM",
+        "RAG"
+      ],
+      "outcome": "Keep spatial and temporal evidence intact through multimodal retrieval, generation and evaluation.",
+      "prerequisites": [
+        "vision-language"
+      ]
+    },
+    {
+      "order": 28,
+      "slug": "state-space-models",
+      "title": "Model sequences with a state-space model",
+      "phase": "Advanced architectures",
+      "sources": [
+        "state-space-models"
+      ],
+      "outcome": "Trace recurrent state, structured and selective SSMs, and their memory trade-offs.",
+      "prerequisites": [
+        "multimodal-systems"
+      ]
+    },
+    {
+      "order": 29,
+      "slug": "recursive-transformers",
+      "title": "Understand recursive computation",
+      "phase": "Advanced architectures",
+      "sources": [
+        "recursive-transformers"
+      ],
+      "outcome": "Separate repeated model depth, latent reasoning and recursive program-controlled model calls.",
+      "prerequisites": [
+        "state-space-models"
+      ]
+    },
+    {
+      "order": 30,
+      "slug": "world-models",
+      "title": "Predict a world and plan within it",
+      "phase": "Advanced architectures",
+      "sources": [
+        "world-modeling"
+      ],
+      "outcome": "Distinguish rendering, simulation, latent prediction and planning with an imperfect learned model.",
+      "prerequisites": [
+        "recursive-transformers"
+      ]
+    },
+    {
+      "order": 31,
+      "slug": "physical-ai",
+      "title": "Connect perception, prediction and action",
+      "phase": "Advanced architectures",
+      "sources": [
+        "physical-ai",
+        "world-modeling"
+      ],
+      "outcome": "Understand VLA policies, data, simulation and the requirements of closed-loop embodied evaluation.",
+      "prerequisites": [
+        "world-models"
+      ]
+    },
+    {
+      "order": 32,
+      "slug": "capstone",
+      "title": "Capstone: explain, test and improve your assistant",
+      "phase": "Finish the path",
+      "sources": [
+        "RAG",
+        "LLM-as-a-judge",
+        "loop-and-graph-engineering"
+      ],
+      "outcome": "Produce a reproducible prototype, an evaluation report and a justified next experiment.",
+      "prerequisites": [
+        "physical-ai"
+      ]
+    }
+  ]
+}

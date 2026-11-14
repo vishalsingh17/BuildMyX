@@ -520,3 +520,16 @@ label:focus-visible {
 
 .lesson-reference { margin: 28px 0; padding: 18px 20px; border: 1px solid var(--md-default-fg-color--lightest); background: #e6ebdf; color: #28553d; font-size: 13px; line-height: 1.8; }
 .lesson-reference a { text-decoration: underline; text-underline-offset: 3px; }
+
+.genai-phase { display: inline-block; margin: 0 0 18px; padding: 6px 11px; border: 1px solid #aab7a0; background: #e6ebdf; color: #203f30; font-size: 11px; font-weight: 600; letter-spacing: .04em; }
+.genai-lab { margin: 30px 0; padding: 24px; border: 1px solid #aab7a0; background: #e6ebdf; color: #203f30; }
+.genai-lab > strong { display: block; margin-bottom: 18px; font-size: 18px; }
+.genai-lab label { display: block; margin: 14px 0 8px; font-size: 13px; font-weight: 600; }
+.genai-lab select { width: 100%; max-width: 350px; min-height: 44px; padding: 9px; background: #faf8f3; color: #18211c; border: 1px solid #7b8874; font: inherit; font-size: 13px; }
+.genai-lab input[type="range"] { width: 100%; max-width: 350px; min-height: 44px; accent-color: #28553d; }
+.genai-lab .genai-checkbox { display: flex; gap: 10px; align-items: center; min-height: 44px; }
+.genai-lab input[type="checkbox"] { width: 18px; height: 18px; accent-color: #28553d; }
+.genai-lab [data-attention-output] { padding: 12px; border-top: 1px solid #aab7a0; font-size: 13px; overflow-wrap: anywhere; }
+.genai-lab table { background: #faf8f3; color: #18211c; }
+.genai-lab :is(input,select):focus-visible { outline: 2px solid #a7412c; outline-offset: 4px; }
+@media (max-width: 480px) { .genai-lab { padding: 16px; } .genai-lab [data-attention-output] { padding-inline: 0; } }

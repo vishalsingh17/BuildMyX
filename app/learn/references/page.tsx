@@ -130,9 +130,10 @@ export default async function References({
         </div>
         <div>
           <p>
-            Follow our Python, pandas, PyTorch and system design learning paths
-            for explanations, exercises and projects. Use this library when you
-            need a function, a parameter or a deeper technical guide.
+            Follow our Python, pandas, PyTorch, Generative AI and system design
+            learning paths for explanations, exercises and projects. Use this
+            library when you need a function, a parameter or a deeper technical
+            guide.
           </p>
           <a href="/learn/" className="text-link">
             Explore the learning paths <Arrow />

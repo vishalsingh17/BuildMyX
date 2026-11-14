@@ -18,12 +18,12 @@ export function LearningLibrary() {
         </h2>
         <p className="home-learning-description">
           Build your Python skills, analyze data with pandas, train models with
-          PyTorch or sharpen your system design thinking. Follow clear
-          explanations, work through practical examples and check your
-          understanding as you go.
+          PyTorch, learn Generative AI or sharpen your system design thinking.
+          Follow clear explanations, work through practical examples and check
+          your understanding as you go.
         </p>
         <ul className="home-learning-meta" aria-label="About the lessons">
-          <li>4 free learning paths</li>
+          <li>5 free learning paths</li>
           <li>Self-paced</li>
           <li>No sign-up</li>
         </ul>
@@ -65,6 +65,16 @@ export function LearningLibrary() {
             rel="noopener noreferrer"
           >
             Build models with PyTorch
+            <span className="sr-only"> (opens in a new tab)</span>
+            <Arrow diagonal />
+          </a>
+          <a
+            href="/learn/generative-ai/"
+            className="text-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn Generative AI step by step
             <span className="sr-only"> (opens in a new tab)</span>
             <Arrow diagonal />
           </a>

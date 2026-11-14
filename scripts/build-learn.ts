@@ -24,6 +24,7 @@ async function main() {
   run(python, ["scripts/check-python-content.py"]);
   run(python, ["scripts/check-pandas-content.py"]);
   run(python, ["scripts/check-pytorch-content.py"]);
+  run(python, ["scripts/check-generative-ai.py"]);
   const canIndex = canIndexSite(
     siteConfig.canonicalUrl,
     siteConfig.launchApproved,
@@ -63,6 +64,7 @@ async function main() {
   run(python, ["scripts/check-python-content.py", "--html"]);
   run(python, ["scripts/check-pandas-content.py", "--html"]);
   run(python, ["scripts/check-pytorch-content.py", "--html"]);
+  run(python, ["scripts/check-generative-ai.py", "--html"]);
 }
 main().catch((error) => {
   console.error(error);
