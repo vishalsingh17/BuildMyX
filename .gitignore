@@ -6,3 +6,9 @@ out/
 !.env.example
 work/
 .convex/
+.venv/
+__pycache__/
+.cache/
+public/learn/
+.zensical-build.toml
+learning/content/assets/fonts/

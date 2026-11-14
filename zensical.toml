@@ -1,0 +1,155 @@
+[project]
+site_name = "BuildMyX Learn"
+site_url = "https://build-my-x.vercel.app/learn/"
+site_description = "Free Python, pandas, PyTorch, Generative AI and system design learning paths. Build understanding through original explanations, worked examples and practical exercises."
+site_author = "BuildMyX"
+docs_dir = "learning/content"
+site_dir = "public/learn"
+copyright = 'Build something useful. <a href="/privacy/">Privacy</a> · <a href="/">BuildMyX home</a>'
+extra_css = ["stylesheets/learning.css"]
+extra_javascript = ["javascripts/learning.js", "javascripts/generative-ai.js"]
+nav = [
+  { "Library" = "index.md" },
+  { "References ↗" = "/learn/references/" },
+  { "Python" = [
+    { "The Python learning path" = "python/index.md" },
+    { "01 · Getting started" = "python/getting-started.md" },
+    { "02 · Values & strings" = "python/values-and-strings.md" },
+    { "03 · Collections" = "python/collections.md" },
+    { "04 · Control flow & functions" = "python/control-flow-and-functions.md" },
+    { "05 · Scope & closures" = "python/scope-and-closures.md" },
+    { "06 · Type hints" = "python/type-hints.md" },
+    { "07 · Lambdas & alternatives" = "python/lambdas.md" },
+    { "08 · Iterators & generators" = "python/iterators-and-generators.md" },
+    { "09 · Decorators" = "python/decorators.md" },
+    { "10 · Files & streams" = "python/files.md" },
+    { "11 · Classes & inheritance" = "python/classes.md" },
+    { "12 · The data model" = "python/data-model.md" },
+    { "13 · Exceptions" = "python/exceptions.md" },
+    { "14 · Modules & packages" = "python/modules-and-packages.md" },
+    { "15 · Useful built-ins" = "python/builtins.md" },
+    { "Full topic coverage" = "python/coverage.md" },
+  ] },
+  { "Pandas" = [
+    { "The pandas learning path" = "pandas/index.md" },
+    { "01 · Getting started" = "pandas/getting-started.md" },
+    { "02 · Series & alignment" = "pandas/series.md" },
+    { "03 · DataFrames & NumPy" = "pandas/dataframes.md" },
+    { "04 · Select, index & sort" = "pandas/indexing.md" },
+    { "05 · Transform a table" = "pandas/transforming.md" },
+    { "06 · Missing values & exploration" = "pandas/missing-and-exploration.md" },
+    { "07 · Group & aggregate" = "pandas/groupby.md" },
+    { "08 · Reshape & MultiIndex" = "pandas/reshaping.md" },
+    { "09 · Combine tables" = "pandas/combining.md" },
+    { "10 · Time series" = "pandas/time-series.md" },
+    { "11 · Strings, categories & accessors" = "pandas/accessors.md" },
+    { "12 · Read & write data" = "pandas/input-output.md" },
+    { "13 · Plot an answer" = "pandas/plotting.md" },
+    { "14 · Write reliable pandas" = "pandas/reliable-workflows.md" },
+    { "15 · A complete analysis" = "pandas/project.md" },
+    { "Full topic coverage" = "pandas/coverage.md" },
+  ] },
+  { "PyTorch" = [
+    { "The PyTorch learning path" = "pytorch/index.md" },
+    { "01 · Getting started" = "pytorch/getting-started.md" },
+    { "02 · Create & initialize tensors" = "pytorch/tensors.md" },
+    { "03 · Shapes, axes & broadcasting" = "pytorch/shapes.md" },
+    { "04 · Autograd & modules" = "pytorch/autograd.md" },
+    { "05 · Datasets & data quality" = "pytorch/datasets.md" },
+    { "06 · Vision preprocessing" = "pytorch/vision-data.md" },
+    { "07 · Text preprocessing" = "pytorch/text-data.md" },
+    { "08 · Audio preprocessing" = "pytorch/audio-data.md" },
+    { "09 · CNNs, LSTMs & custom losses" = "pytorch/networks.md" },
+    { "10 · Train, validate & checkpoint" = "pytorch/training.md" },
+    { "11 · Fine-tuning & LoRA" = "pytorch/fine-tuning.md" },
+    { "12 · Run useful experiments" = "pytorch/experiments.md" },
+    { "13 · Evaluate & report" = "pytorch/evaluation.md" },
+    { "14 · Save & export" = "pytorch/exporting.md" },
+    { "15 · Serve predictions" = "pytorch/serving.md" },
+    { "16 · Optimize inference" = "pytorch/optimization.md" },
+    { "17 · Monitor & improve" = "pytorch/monitoring.md" },
+    { "18 · A complete vision workflow" = "pytorch/vision-project.md" },
+    { "19 · A complete text workflow" = "pytorch/text-project.md" },
+    { "20 · Orchestrate the workflow" = "pytorch/orchestration.md" },
+    { "Full topic coverage" = "pytorch/coverage.md" },
+  ] },
+  { "Generative AI" = [
+    { "The Generative AI learning path" = "generative-ai/index.md" },
+    { "01 · Start learning Generative AI" = "generative-ai/getting-started.md" },
+    { "02 · The math behind a prediction" = "generative-ai/math-and-learning.md" },
+    { "03 · Tokens and language modeling" = "generative-ai/tokens-and-language.md" },
+    { "04 · Represent meaning with embeddings" = "generative-ai/embeddings.md" },
+    { "05 · Understand attention, one weighted sum at a time" = "generative-ai/attention.md" },
+    { "06 · Multi-head attention and efficient inference" = "generative-ai/attention-efficiency.md" },
+    { "07 · Assemble a transformer" = "generative-ai/transformers.md" },
+    { "08 · How language models are trained" = "generative-ai/training-llms.md" },
+    { "09 · Generate the next token" = "generative-ai/decoding.md" },
+    { "10 · Serve a model and manage long context" = "generative-ai/serving-and-context.md" },
+    { "11 · Write instructions and validate outputs" = "generative-ai/prompting.md" },
+    { "12 · Engineer the context" = "generative-ai/context-engineering.md" },
+    { "13 · Build a retrieval-augmented generation pipeline" = "generative-ai/rag.md" },
+    { "14 · Improve retrieval and choose a RAG design" = "generative-ai/retrieval-strategies.md" },
+    { "15 · Project: a grounded workshop assistant" = "generative-ai/grounded-assistant.md" },
+    { "16 · Measure quality before changing the system" = "generative-ai/evaluation.md" },
+    { "17 · Evaluate with a calibrated LLM judge" = "generative-ai/llm-judges.md" },
+    { "18 · Operate and improve a GenAI application" = "generative-ai/operations.md" },
+    { "19 · Adapt a model with parameter-efficient tuning" = "generative-ai/fine-tuning.md" },
+    { "20 · Transfer behavior with knowledge distillation" = "generative-ai/distillation.md" },
+    { "21 · Design a bounded agent loop" = "generative-ai/agent-loops.md" },
+    { "22 · Connect work with a reliable graph" = "generative-ai/agent-graphs.md" },
+    { "23 · Project: an assistant workflow you can replay" = "generative-ai/workflow-project.md" },
+    { "24 · Learn to reverse a noising process" = "generative-ai/diffusion.md" },
+    { "25 · Condition image and video generation" = "generative-ai/conditional-diffusion.md" },
+    { "26 · Connect images and language" = "generative-ai/vision-language.md" },
+    { "27 · Build and evaluate a multimodal system" = "generative-ai/multimodal-systems.md" },
+    { "28 · Model sequences with a state-space model" = "generative-ai/state-space-models.md" },
+    { "29 · Understand recursive computation" = "generative-ai/recursive-transformers.md" },
+    { "30 · Predict a world and plan within it" = "generative-ai/world-models.md" },
+    { "31 · Connect perception, prediction and action" = "generative-ai/physical-ai.md" },
+    { "32 · Capstone: explain, test and improve your assistant" = "generative-ai/capstone.md" },
+    { "Glossary" = "generative-ai/glossary.md" },
+    { "Sources & further reading" = "generative-ai/sources.md" },
+  ] },
+  { "System design" = [
+    { "The system design learning path" = "system-design/index.md" },
+    { "01 · The foundations" = [
+      { "What is a system design interview?" = "fundamentals/what-is-system-design-interview.md" },
+      { "Start with requirements" = "fundamentals/requirements.md" },
+      { "Estimate the load" = "fundamentals/capacity-estimation.md" },
+    ] },
+    { "02 · Make design decisions" = [
+      { "Design an API" = "fundamentals/api-design.md" },
+      { "Data, caching & scaling" = "fundamentals/data-and-scaling.md" },
+    ] },
+    { "03 · Put it into practice" = [
+      { "Design a link shortener" = "practice/design-a-link-shortener.md" },
+    ] },
+  ] },
+]
+
+[project.theme]
+variant = "classic"
+custom_dir = "learning/overrides"
+language = "en"
+font = false
+favicon = "assets/mark.svg"
+logo = "assets/mark.svg"
+features = ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.footer", "navigation.top", "toc.follow", "search.highlight", "content.code.copy"]
+
+[project.theme.palette]
+scheme = "default"
+primary = "custom"
+accent = "custom"
+
+[project.extra]
+indexing_allowed = false
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.details = {}
+pymdownx.superfences = {}
+pymdownx.highlight.pygments_lang_class = true

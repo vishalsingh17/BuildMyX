@@ -1,0 +1,944 @@
+{
+  "source_url": "https://aman.ai/primers/python/",
+  "retrieved_on": "2026-11-13",
+  "source_html_sha256": "c648dae44e794a32dcc18564776f2b32ea020ed60050f7aecb4265735017f732",
+  "headings": [
+    {
+      "level": 2,
+      "id": "python",
+      "title": "Python"
+    },
+    {
+      "level": 2,
+      "id": "python-versions",
+      "title": "Python versions"
+    },
+    {
+      "level": 2,
+      "id": "python-style-guide",
+      "title": "Python style guide"
+    },
+    {
+      "level": 2,
+      "id": "python-notebooks-jupyter-and-colab",
+      "title": "Python notebooks: Jupyter and Colab"
+    },
+    {
+      "level": 2,
+      "id": "the-zen-of-python",
+      "title": "The Zen of Python"
+    },
+    {
+      "level": 2,
+      "id": "indentation",
+      "title": "Indentation"
+    },
+    {
+      "level": 2,
+      "id": "code-comments",
+      "title": "Code comments"
+    },
+    {
+      "level": 2,
+      "id": "variables",
+      "title": "Variables"
+    },
+    {
+      "level": 2,
+      "id": "print-function",
+      "title": "Print function"
+    },
+    {
+      "level": 2,
+      "id": "input-function",
+      "title": "Input function"
+    },
+    {
+      "level": 2,
+      "id": "order-of-operations",
+      "title": "Order of operations"
+    },
+    {
+      "level": 2,
+      "id": "basic-data-types",
+      "title": "Basic data types"
+    },
+    {
+      "level": 3,
+      "id": "numbers",
+      "title": "Numbers"
+    },
+    {
+      "level": 4,
+      "id": "use-underscores-to-format-large-numbers",
+      "title": "Use Underscores to Format Large Numbers"
+    },
+    {
+      "level": 3,
+      "id": "booleans",
+      "title": "Booleans"
+    },
+    {
+      "level": 3,
+      "id": "strings",
+      "title": "Strings"
+    },
+    {
+      "level": 4,
+      "id": "string-formatting",
+      "title": "String formatting"
+    },
+    {
+      "level": 5,
+      "id": "old-stylepre-python-26",
+      "title": "Old style/pre-Python 2.6"
+    },
+    {
+      "level": 5,
+      "id": "new-stylepython-26",
+      "title": "New style/Python 2.6"
+    },
+    {
+      "level": 5,
+      "id": "f-strings",
+      "title": "f-strings"
+    },
+    {
+      "level": 4,
+      "id": "padding-and-aligning-strings",
+      "title": "Padding and aligning strings"
+    },
+    {
+      "level": 4,
+      "id": "truncating-long-strings",
+      "title": "Truncating long strings"
+    },
+    {
+      "level": 4,
+      "id": "combining-truncating-and-padding",
+      "title": "Combining truncating and padding"
+    },
+    {
+      "level": 4,
+      "id": "numbers-1",
+      "title": "Numbers"
+    },
+    {
+      "level": 4,
+      "id": "padding-numbers",
+      "title": "Padding numbers"
+    },
+    {
+      "level": 4,
+      "id": "index-of-a-substring-in-a-python-string",
+      "title": "Index of a Substring in a Python String"
+    },
+    {
+      "level": 4,
+      "id": "replace-one-string-with-another-string-using-regular-expressions",
+      "title": "Replace One String with Another String Using Regular Expressions"
+    },
+    {
+      "level": 2,
+      "id": "containers",
+      "title": "Containers"
+    },
+    {
+      "level": 3,
+      "id": "lists",
+      "title": "Lists"
+    },
+    {
+      "level": 4,
+      "id": "iterate-over-a-list",
+      "title": "Iterate over a list"
+    },
+    {
+      "level": 4,
+      "id": "list-comprehensions",
+      "title": "List comprehensions"
+    },
+    {
+      "level": 5,
+      "id": "from-loops-to-comprehensions",
+      "title": "From loops to comprehensions"
+    },
+    {
+      "level": 5,
+      "id": "nested-loops",
+      "title": "Nested Loops"
+    },
+    {
+      "level": 4,
+      "id": "slicing",
+      "title": "Slicing"
+    },
+    {
+      "level": 4,
+      "id": "list-functions",
+      "title": "List functions"
+    },
+    {
+      "level": 3,
+      "id": "dictionaries",
+      "title": "Dictionaries"
+    },
+    {
+      "level": 4,
+      "id": "accessing-a-non-existent-key",
+      "title": "Accessing a non-existent key"
+    },
+    {
+      "level": 4,
+      "id": "dictget",
+      "title": "<dict>.get()"
+    },
+    {
+      "level": 4,
+      "id": "defaultdict",
+      "title": "defaultdict"
+    },
+    {
+      "level": 4,
+      "id": "key-membership-check",
+      "title": "Key membership check"
+    },
+    {
+      "level": 4,
+      "id": "iterating-over-keys",
+      "title": "Iterating over keys"
+    },
+    {
+      "level": 4,
+      "id": "del",
+      "title": "del"
+    },
+    {
+      "level": 4,
+      "id": "key-datatypes",
+      "title": "Key datatypes"
+    },
+    {
+      "level": 4,
+      "id": "iterate-over-a-dictionary",
+      "title": "Iterate over a dictionary"
+    },
+    {
+      "level": 4,
+      "id": "dictionary-comprehensions",
+      "title": "Dictionary comprehensions"
+    },
+    {
+      "level": 3,
+      "id": "sets",
+      "title": "Sets"
+    },
+    {
+      "level": 4,
+      "id": "set-operations",
+      "title": "Set operations"
+    },
+    {
+      "level": 4,
+      "id": "iterating-over-a-set",
+      "title": "Iterating over a set"
+    },
+    {
+      "level": 4,
+      "id": "set-comprehensions",
+      "title": "Set comprehensions"
+    },
+    {
+      "level": 3,
+      "id": "tuples",
+      "title": "Tuples"
+    },
+    {
+      "level": 2,
+      "id": "functions",
+      "title": "Functions"
+    },
+    {
+      "level": 2,
+      "id": "nested-functions",
+      "title": "Nested functions"
+    },
+    {
+      "level": 3,
+      "id": "defining-a-nonlocal-variable-in-a-nested-function-using-nonlocal",
+      "title": "Defining a nonlocal variable in a nested function using nonlocal"
+    },
+    {
+      "level": 3,
+      "id": "closure",
+      "title": "Closure"
+    },
+    {
+      "level": 3,
+      "id": "defining-a-global-variable-using-global",
+      "title": "Defining a global variable using global"
+    },
+    {
+      "level": 2,
+      "id": "type-hinting",
+      "title": "Type hinting"
+    },
+    {
+      "level": 3,
+      "id": "container-types-legacy-vs-modern-syntax",
+      "title": "Container types: legacy vs modern syntax"
+    },
+    {
+      "level": 3,
+      "id": "basic-function-annotations",
+      "title": "Basic function annotations"
+    },
+    {
+      "level": 3,
+      "id": "type-aliases",
+      "title": "Type aliases"
+    },
+    {
+      "level": 3,
+      "id": "complex-aliases",
+      "title": "Complex aliases"
+    },
+    {
+      "level": 3,
+      "id": "multiple-types-union-optional-and-",
+      "title": "Multiple types (Union, Optional, and |)"
+    },
+    {
+      "level": 3,
+      "id": "any",
+      "title": "Any"
+    },
+    {
+      "level": 3,
+      "id": "tuple",
+      "title": "Tuple"
+    },
+    {
+      "level": 3,
+      "id": "list",
+      "title": "List"
+    },
+    {
+      "level": 3,
+      "id": "union",
+      "title": "Union"
+    },
+    {
+      "level": 3,
+      "id": "optional",
+      "title": "Optional"
+    },
+    {
+      "level": 2,
+      "id": "control-flow",
+      "title": "Control flow"
+    },
+    {
+      "level": 3,
+      "id": "if-statement",
+      "title": "if statement"
+    },
+    {
+      "level": 4,
+      "id": "conditional-expression",
+      "title": "Conditional expression"
+    },
+    {
+      "level": 3,
+      "id": "for-loop",
+      "title": "for loop"
+    },
+    {
+      "level": 4,
+      "id": "else-clause",
+      "title": "else clause"
+    },
+    {
+      "level": 3,
+      "id": "while-loop",
+      "title": "while loop"
+    },
+    {
+      "level": 2,
+      "id": "lambda-functions",
+      "title": "Lambda functions"
+    },
+    {
+      "level": 3,
+      "id": "lambda-function-use-cases",
+      "title": "Lambda function use-cases"
+    },
+    {
+      "level": 3,
+      "id": "the-pros-and-cons-of-lambda-functions",
+      "title": "The pros and cons of lambda functions"
+    },
+    {
+      "level": 3,
+      "id": "misuse-and-overuse-scenarios",
+      "title": "Misuse and overuse scenarios"
+    },
+    {
+      "level": 4,
+      "id": "misuse-naming-lambda-expressions",
+      "title": "Misuse: naming lambda expressions"
+    },
+    {
+      "level": 4,
+      "id": "misuse-needless-function-calls",
+      "title": "Misuse: needless function calls"
+    },
+    {
+      "level": 4,
+      "id": "overuse-simple-but-non-trivial-functions",
+      "title": "Overuse: simple, but non-trivial functions"
+    },
+    {
+      "level": 4,
+      "id": "overuse-when-multiple-lines-would-help",
+      "title": "Overuse: when multiple lines would help"
+    },
+    {
+      "level": 4,
+      "id": "overuse-lambda-with-map-and-filter",
+      "title": "Overuse: lambda with map and filter"
+    },
+    {
+      "level": 4,
+      "id": "misuse-sometimes-you-dont-even-need-to-pass-a-function",
+      "title": "Misuse: sometimes you don’t even need to pass a function"
+    },
+    {
+      "level": 4,
+      "id": "overuse-using-lambda-for-very-simple-operations",
+      "title": "Overuse: using lambda for very simple operations"
+    },
+    {
+      "level": 4,
+      "id": "overuse-when-higher-order-functions-add-confusion",
+      "title": "Overuse: when higher order functions add confusion"
+    },
+    {
+      "level": 2,
+      "id": "the-iterator-protocol-how-for-loops-work-in-python",
+      "title": "The Iterator Protocol: How for loops work in Python"
+    },
+    {
+      "level": 3,
+      "id": "looping-with-indexes",
+      "title": "Looping with indexes"
+    },
+    {
+      "level": 3,
+      "id": "iterables",
+      "title": "Iterables"
+    },
+    {
+      "level": 3,
+      "id": "iterators",
+      "title": "Iterators"
+    },
+    {
+      "level": 3,
+      "id": "iterators-are-also-iterables",
+      "title": "Iterators are also iterables"
+    },
+    {
+      "level": 3,
+      "id": "the-iterator-protocol",
+      "title": "The Iterator Protocol"
+    },
+    {
+      "level": 3,
+      "id": "looping-with-iterators",
+      "title": "Looping with iterators"
+    },
+    {
+      "level": 3,
+      "id": "putting-it-all-together",
+      "title": "Putting it all together"
+    },
+    {
+      "level": 3,
+      "id": "creating-a-custom-iterator",
+      "title": "Creating a custom iterator"
+    },
+    {
+      "level": 4,
+      "id": "why-make-an-iterator",
+      "title": "Why make an iterator?"
+    },
+    {
+      "level": 4,
+      "id": "making-an-iterator-the-object-oriented-way",
+      "title": "Making an iterator: the object-oriented way"
+    },
+    {
+      "level": 2,
+      "id": "generators",
+      "title": "Generators"
+    },
+    {
+      "level": 3,
+      "id": "generator-functions",
+      "title": "Generator functions"
+    },
+    {
+      "level": 3,
+      "id": "generator-expressions",
+      "title": "Generator expressions"
+    },
+    {
+      "level": 3,
+      "id": "generator-expressions-vs-generator-functions",
+      "title": "Generator expressions vs. generator functions"
+    },
+    {
+      "level": 2,
+      "id": "decorators",
+      "title": "Decorators"
+    },
+    {
+      "level": 2,
+      "id": "file-io",
+      "title": "File I/O"
+    },
+    {
+      "level": 3,
+      "id": "files",
+      "title": "Files"
+    },
+    {
+      "level": 3,
+      "id": "opening-files-in-python",
+      "title": "Opening Files in Python"
+    },
+    {
+      "level": 3,
+      "id": "closing-files-in-python",
+      "title": "Closing Files in Python"
+    },
+    {
+      "level": 3,
+      "id": "writing-to-files-in-python",
+      "title": "Writing to Files in Python"
+    },
+    {
+      "level": 3,
+      "id": "reading-files-in-python",
+      "title": "Reading Files in Python"
+    },
+    {
+      "level": 4,
+      "id": "read",
+      "title": "read()"
+    },
+    {
+      "level": 4,
+      "id": "for-loop-1",
+      "title": "for loop"
+    },
+    {
+      "level": 4,
+      "id": "readline",
+      "title": "readline()"
+    },
+    {
+      "level": 4,
+      "id": "readlines",
+      "title": "readlines()"
+    },
+    {
+      "level": 3,
+      "id": "python-file-methods",
+      "title": "Python File Methods"
+    },
+    {
+      "level": 2,
+      "id": "magic-methods",
+      "title": "Magic methods"
+    },
+    {
+      "level": 3,
+      "id": "common-magic-methods",
+      "title": "Common magic methods"
+    },
+    {
+      "level": 4,
+      "id": "construction-and-initialization",
+      "title": "Construction and initialization"
+    },
+    {
+      "level": 4,
+      "id": "comparison-magic-methods",
+      "title": "Comparison magic methods"
+    },
+    {
+      "level": 4,
+      "id": "numeric-magic-methods",
+      "title": "Numeric magic methods"
+    },
+    {
+      "level": 5,
+      "id": "unary-operators-and-functions",
+      "title": "Unary operators and functions"
+    },
+    {
+      "level": 5,
+      "id": "normal-arithmetic-operators",
+      "title": "Normal arithmetic operators"
+    },
+    {
+      "level": 3,
+      "id": "creating-custom-sequences",
+      "title": "Creating custom sequences"
+    },
+    {
+      "level": 4,
+      "id": "requirements",
+      "title": "Requirements"
+    },
+    {
+      "level": 4,
+      "id": "the-magic-behind-containers",
+      "title": "The magic behind containers"
+    },
+    {
+      "level": 4,
+      "id": "example",
+      "title": "Example"
+    },
+    {
+      "level": 3,
+      "id": "making-operators-work-on-custom-classes",
+      "title": "Making operators work on custom classes"
+    },
+    {
+      "level": 3,
+      "id": "common-magic-methods-scenarios",
+      "title": "Common magic methods scenarios"
+    },
+    {
+      "level": 2,
+      "id": "exceptions",
+      "title": "Exceptions"
+    },
+    {
+      "level": 3,
+      "id": "exception-handling",
+      "title": "Exception handling"
+    },
+    {
+      "level": 3,
+      "id": "multiple-except-clauses",
+      "title": "Multiple except clauses"
+    },
+    {
+      "level": 3,
+      "id": "custom-exceptions",
+      "title": "Custom exceptions"
+    },
+    {
+      "level": 3,
+      "id": "clean-up-actions-try-ldots-finally",
+      "title": "Clean-up actions (try \\(\\ldots\\) finally)"
+    },
+    {
+      "level": 3,
+      "id": "combining-try-except-and-finally",
+      "title": "Combining try, except and finally"
+    },
+    {
+      "level": 3,
+      "id": "handle-exceptions-with-a-tryexcept-block",
+      "title": "Handle exceptions with a try/except block"
+    },
+    {
+      "level": 3,
+      "id": "else-clause-1",
+      "title": "else clause"
+    },
+    {
+      "level": 3,
+      "id": "with-statement",
+      "title": "with statement"
+    },
+    {
+      "level": 3,
+      "id": "handling-nested-exceptions",
+      "title": "Handling nested exceptions"
+    },
+    {
+      "level": 3,
+      "id": "built-in-exceptions",
+      "title": "Built-in exceptions"
+    },
+    {
+      "level": 2,
+      "id": "modules",
+      "title": "Modules"
+    },
+    {
+      "level": 3,
+      "id": "modules-vs-packages",
+      "title": "Modules vs. Packages"
+    },
+    {
+      "level": 2,
+      "id": "classes",
+      "title": "Classes"
+    },
+    {
+      "level": 3,
+      "id": "inheritance",
+      "title": "Inheritance"
+    },
+    {
+      "level": 4,
+      "id": "multiple-inheritance",
+      "title": "Multiple inheritance"
+    },
+    {
+      "level": 4,
+      "id": "abstract-base-classes-and-abstractmethod",
+      "title": "Abstract Base Classes and abstractmethod"
+    },
+    {
+      "level": 3,
+      "id": "dataclass",
+      "title": "dataclass"
+    },
+    {
+      "level": 2,
+      "id": "selected-built-ins",
+      "title": "Selected built-ins"
+    },
+    {
+      "level": 3,
+      "id": "anyall",
+      "title": "any/all"
+    },
+    {
+      "level": 3,
+      "id": "dir",
+      "title": "dir"
+    },
+    {
+      "level": 3,
+      "id": "eval",
+      "title": "eval"
+    },
+    {
+      "level": 3,
+      "id": "filter",
+      "title": "filter"
+    },
+    {
+      "level": 3,
+      "id": "isinstance",
+      "title": "isinstance"
+    },
+    {
+      "level": 3,
+      "id": "issubclass",
+      "title": "issubclass"
+    },
+    {
+      "level": 3,
+      "id": "iter",
+      "title": "iter"
+    },
+    {
+      "level": 3,
+      "id": "len",
+      "title": "len"
+    },
+    {
+      "level": 3,
+      "id": "range",
+      "title": "range"
+    },
+    {
+      "level": 3,
+      "id": "reversed",
+      "title": "reversed"
+    },
+    {
+      "level": 3,
+      "id": "sort",
+      "title": "sort"
+    },
+    {
+      "level": 4,
+      "id": "basics",
+      "title": "Basics"
+    },
+    {
+      "level": 4,
+      "id": "sort-key",
+      "title": "Sort key"
+    },
+    {
+      "level": 3,
+      "id": "zip",
+      "title": "zip"
+    },
+    {
+      "level": 2,
+      "id": "references",
+      "title": "References"
+    },
+    {
+      "level": 2,
+      "id": "further-reading",
+      "title": "Further Reading"
+    },
+    {
+      "level": 2,
+      "id": "citation",
+      "title": "Citation"
+    }
+  ],
+  "supplemental_terms": {
+    "files.md": [
+      "detach",
+      "fileno",
+      "flush",
+      "isatty",
+      "readable",
+      "seekable",
+      "truncate",
+      "writable",
+      "writelines",
+      "SEEK_SET",
+      "SEEK_CUR",
+      "SEEK_END"
+    ],
+    "data-model.md": [
+      "__new__",
+      "__init__",
+      "__del__",
+      "__eq__",
+      "__ne__",
+      "__lt__",
+      "__gt__",
+      "__le__",
+      "__ge__",
+      "__cmp__",
+      "__pos__",
+      "__neg__",
+      "__abs__",
+      "__invert__",
+      "__add__",
+      "__sub__",
+      "__mul__",
+      "__floordiv__",
+      "__div__",
+      "__truediv__",
+      "__index__",
+      "__nonzero__",
+      "__bool__",
+      "__getattr__",
+      "__setattr__",
+      "__delattr__",
+      "__getattribute__",
+      "__len__",
+      "__getitem__",
+      "__setitem__",
+      "__delitem__",
+      "__iter__",
+      "__contains__",
+      "__call__",
+      "__enter__",
+      "__exit__",
+      "__getstate__",
+      "__setstate__"
+    ],
+    "classes.md": [
+      "classmethod",
+      "staticmethod",
+      "property",
+      "setter",
+      "deleter",
+      "super",
+      "__mro__",
+      "abstractmethod",
+      "default_factory",
+      "frozen=True",
+      "order=True",
+      "init=False"
+    ],
+    "exceptions.md": [
+      "AssertionError",
+      "AttributeError",
+      "EOFError",
+      "FloatingPointError",
+      "GeneratorExit",
+      "ImportError",
+      "IndexError",
+      "KeyError",
+      "KeyboardInterrupt",
+      "MemoryError",
+      "NameError",
+      "NotImplementedError",
+      "OSError",
+      "OverflowError",
+      "ReferenceError",
+      "RuntimeError",
+      "StopIteration",
+      "SyntaxError",
+      "IndentationError",
+      "TabError",
+      "SystemError",
+      "SystemExit",
+      "TypeError",
+      "UnboundLocalError",
+      "UnicodeDecodeError",
+      "ValueError",
+      "ZeroDivisionError",
+      "exc_info",
+      "with_traceback"
+    ],
+    "type-hints.md": [
+      "TypeAlias",
+      "Sequence",
+      "Mapping",
+      "Union",
+      "Optional",
+      "Any",
+      "tuple[()]",
+      "tuple[int, ...]",
+      "tuple[Any, ...]"
+    ],
+    "lambdas.md": [
+      "reduce",
+      "itemgetter",
+      "attrgetter",
+      "methodcaller",
+      "map",
+      "filter",
+      "sum"
+    ],
+    "values-and-strings.md": [
+      "capitalize",
+      "rjust",
+      "center",
+      "casefold",
+      "re.sub",
+      "re.escape",
+      "%Y-%m-%d"
+    ],
+    "iterators-and-generators.md": [
+      "getsizeof",
+      "repeat",
+      "count",
+      "__next__",
+      "yield"
+    ]
+  }
+}

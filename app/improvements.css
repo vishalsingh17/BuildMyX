@@ -1,4 +1,112 @@
 /* Conversion content and the inspectable reporting workflow. */
+.home-learning {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 64px;
+  align-items: center;
+  padding: 44px;
+  margin-top: 12px;
+  background: #e9ede2;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  scroll-margin-top: 30px;
+}
+.home-learning h2 {
+  margin-block: 16px 20px;
+  font-size: clamp(30px, 3.1vw, 43px);
+}
+.home-learning-description {
+  max-width: 50ch;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.85;
+}
+.home-learning-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  list-style: none;
+  padding: 0;
+  margin: 22px 0;
+  color: var(--green-dark);
+  font-size: 12px;
+  font-weight: 600;
+}
+.home-learning-tab-note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.home-learning-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+.home-learning-feature {
+  padding: 28px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--green);
+  border-radius: 3px;
+}
+.home-learning-feature-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.home-learning-feature h3 {
+  margin-block: 20px 12px;
+  font-size: 27px;
+  line-height: 1.35;
+  letter-spacing: -0.045em;
+}
+.home-learning-feature > p {
+  color: var(--muted);
+  font-size: 13px;
+}
+.home-learning-feature ul {
+  margin: 20px 0 8px;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+}
+.home-learning-feature li {
+  padding-block: 10px;
+  border-top: 1px solid var(--rule);
+}
+.home-learning-feature .text-link {
+  color: var(--green);
+}
+@media (max-width: 900px) {
+  .home-learning {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px;
+  }
+  .home-learning-description {
+    max-width: 60ch;
+  }
+}
+@media (max-width: 480px) {
+  .home-learning {
+    padding: 22px 18px;
+  }
+  .home-learning-feature {
+    padding: 22px 18px;
+  }
+  .home-learning-feature h3 {
+    font-size: 24px;
+  }
+  .home-learning-meta {
+    gap: 8px 14px;
+  }
+}
+
 .hero-wordmark {
   font-size: clamp(44px, 12.5vw, 180px);
   padding-block: 22px 18px;
@@ -631,3 +739,9 @@ button.text-link {
     gap: 20px;
   }
 }
+
+.home-reference-link { display: flex; gap: 20px; align-items: center; justify-content: space-between; margin-top: 25px; padding: 20px; max-width: 560px; border: 1px solid #aab7a0; background: #e6ebdf; color: var(--green-dark); }
+.home-reference-link strong { display: block; font-size: 14px; font-weight: 600; line-height: 1.5; }
+.home-reference-link small { display: block; font-size: 12px; margin-top: 7px; line-height: 1.8; }
+.home-reference-link > svg { flex-shrink: 0; }
+.home-reference-link:hover strong { text-decoration: underline; text-underline-offset: 4px; }

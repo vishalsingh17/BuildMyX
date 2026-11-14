@@ -1,6 +1,7 @@
 import { canIndexSite } from "@/lib/launch";
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site-config";
+import { learningPaths } from "@/lib/learning";
 export default function sitemap(): MetadataRoute.Sitemap {
   if (
     !canIndexSite(
@@ -21,6 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources/hiring-brief/",
     "/developers/",
     "/privacy/",
+    ...learningPaths,
+    "/learn/references/",
   ].map((path) => ({
     url: new URL(path, siteConfig.canonicalUrl!).toString(),
   }));

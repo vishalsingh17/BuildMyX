@@ -26,11 +26,12 @@ export function Header() {
   const pageInterest =
     pageInterests[pathname.endsWith("/") ? pathname : `${pathname}/`] ??
     interest;
-  const links = [
+  const links: { name: string; href: string; newTab?: boolean }[] = [
     { name: serviceNames.AI, href: servicePaths.AI },
     { name: serviceNames.Career, href: servicePaths.Career },
     { name: serviceNames.Team, href: servicePaths.Team },
     { name: "Examples", href: "/projects/" },
+    { name: "Learn ↗", href: "/learn/", newTab: true },
     { name: "Contact", href: `/?interest=${pageInterest}#enquire` },
   ];
   const [open, setOpen] = useState(false);
@@ -92,11 +93,15 @@ export function Header() {
           <Brand />
         </Link>
         <nav aria-label="Main navigation" className="desktop-nav">
-          {links.map(({ name, href }) => (
+          {links.map(({ name, href, newTab }) => (
             <Link
               href={href}
               key={name}
               aria-current={selected(href)}
+              target={newTab ? "_blank" : undefined}
+              rel={newTab ? "noopener noreferrer" : undefined}
+              prefetch={newTab ? false : undefined}
+              aria-label={newTab ? "Learn (opens in a new tab)" : undefined}
               onClick={() => navigate(href)}
             >
               {name}
@@ -134,11 +139,15 @@ export function Header() {
             setOpen(false);
         }}
       >
-        {links.map(({ name, href }) => (
+        {links.map(({ name, href, newTab }) => (
           <Link
             href={href}
             key={name}
             aria-current={selected(href)}
+            target={newTab ? "_blank" : undefined}
+            rel={newTab ? "noopener noreferrer" : undefined}
+            prefetch={newTab ? false : undefined}
+            aria-label={newTab ? "Learn (opens in a new tab)" : undefined}
             onClick={() => navigate(href)}
           >
             {name}

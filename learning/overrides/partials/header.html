@@ -1,0 +1,14 @@
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Learning header">
+    <a href="/" class="learning-brand" aria-label="BuildMyX home">BuildMy<span>X</span><span class="learning-brand__divider">/</span><span class="learning-brand__label">Learn</span></a>
+    <button type="button" class="md-header__button md-icon learning-menu" data-learning-drawer aria-controls="lesson-navigation" aria-expanded="false" aria-label="Open lesson navigation">
+      {% include ".icons/material/menu.svg" %}
+    </button>
+    <div class="md-header__title" data-md-component="header-title"><span class="md-header__ellipsis">Practical learning. One concept at a time.</span></div>
+    <button type="button" class="md-header__button md-icon learning-search" data-learning-search aria-haspopup="dialog" aria-label="Search lessons">
+      {% include ".icons/material/magnify.svg" %}
+    </button>
+    {% include "partials/search.html" %}
+    <a href="/?interest=learning#enquire" class="learning-header-cta">Get guidance <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+  </nav>
+</header>

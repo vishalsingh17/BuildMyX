@@ -30,9 +30,13 @@ jobs:
         with:
           node-version: "24"
           cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - run: npm run test:pytorch
       - run: npx playwright install --with-deps chrome
       - run: npm run build
       - run: npm run test:browser
