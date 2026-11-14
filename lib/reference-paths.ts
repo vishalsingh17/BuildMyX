@@ -33,13 +33,18 @@ export function validReferencePath(value: string): boolean {
   });
 }
 
-/** Catch-all route parameters retain URL escapes in Next. Decode exactly once. */
+/** Next and hosting adapters can decode URI escapes at different layers.
+ * Literal source percent/tilde characters use reversible URL-safe escapes. */
 export function referencePathFromRoute(
   segments?: string[],
 ): string | null | undefined {
   if (!segments?.length) return null;
   try {
-    const decoded = segments.map((segment) => decodeURIComponent(segment));
+    const decoded = segments.map((segment) =>
+      decodeURIComponent(segment).replace(/~(25|7E)/g, (_, code) =>
+        code === "25" ? "%" : "~",
+      ),
+    );
     if (decoded.some((segment) => !segment || /[\\/]/.test(segment)))
       return undefined;
     const path = decoded.join("/");
@@ -119,7 +124,9 @@ export function entryHref(doc: ReferenceCollection, path: string): string {
   const [page, ...fragments] = path.split("#");
   const encoded = page
     .split("/")
-    .map((part) => encodeURIComponent(part))
+    .map((part) =>
+      encodeURIComponent(part.replaceAll("~", "~7E").replaceAll("%", "~25")),
+    )
     .join("/");
   let fragment = fragments.join("#");
   try {

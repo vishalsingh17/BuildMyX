@@ -137,7 +137,7 @@ test("local reader URLs preserve literal encoded filenames and safe section anch
   assert.equal(collectionHref(doc), "/learn/references/godot/");
   assert.equal(
     entryHref(doc, "classes/class_%40gdscript#annotation"),
-    "/learn/references/godot/classes/class_%2540gdscript/#ref-annotation",
+    "/learn/references/godot/classes/class_~2540gdscript/#ref-annotation",
   );
   assert.equal(
     entryHref(doc, "index#hello%20world"),
@@ -241,4 +241,32 @@ test("catch-all parameters decode one URL layer without losing literal source es
     ["bad%xx"],
   ])
     assert.equal(referencePathFromRoute(segments), undefined);
+});
+
+test("source filenames survive both local and hosting-adapter URL decoding", () => {
+  const doc = selectLatestFamilies([make("godot~4.7", "4.7")])[0]
+    .collections[0];
+  for (const file of [
+    "class_%40gdscript",
+    "literal%25name",
+    "has~25text",
+    "café",
+    "$builder",
+    "plain.file",
+  ]) {
+    const source = `classes/${file}`;
+    const url = new URL(entryHref(doc, source), "https://buildmyx.example");
+    const segments = url.pathname
+      .slice(collectionHref(doc).length)
+      .replace(/\/$/, "")
+      .split("/");
+    assert.equal(referencePathFromRoute(segments), source, `local ${file}`);
+    assert.equal(
+      referencePathFromRoute(
+        segments.map((segment) => decodeURIComponent(segment)),
+      ),
+      source,
+      `hosted ${file}`,
+    );
+  }
 });

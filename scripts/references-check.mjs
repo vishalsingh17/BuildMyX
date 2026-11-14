@@ -245,7 +245,7 @@ export async function checkReferences(
     await page.getByLabel("Search pandas topics").fill("Encoded reference");
     await page.locator(".reference-topic-list a").click();
     await expect(page.locator(".reference-content")).toBeVisible();
-    await page.goto(`${root}pandas/classes/class_%2540gdscript/`);
+    await page.goto(`${root}pandas/classes/class_~2540gdscript/`);
     await expect(page.locator(".reference-content")).toBeVisible();
     await page.goto(`${root}pandas/retry-source/`);
     await expect(

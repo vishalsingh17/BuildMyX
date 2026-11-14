@@ -404,10 +404,23 @@ export async function loadReferenceDocument(
       throw error;
     if (path !== "index") {
       const index = await loadReferenceIndex(doc);
-      const known = index.entries.some(
-        (entry) => entry.path.split("#")[0] === path,
-      );
-      if (!known) throw error;
+      const paths = index.entries.map((entry) => entry.path.split("#")[0]);
+      const known = paths.includes(path);
+      if (!known) {
+        // Older reader links may have had a literal filename escape decoded by
+        // the host. Recover only an exact alias published in this source index.
+        const original = paths.find((candidate) => {
+          if (!validReferencePath(candidate)) return false;
+          try {
+            return decodeURIComponent(candidate) === path;
+          } catch {
+            return false;
+          }
+        });
+        if (original && original !== path)
+          return loadReferenceDocument(doc, original, lookup);
+        throw error;
+      }
     }
     const database = JSON.parse(
       await fetchReferenceAsset(doc, "db.json", 64 * 1024 * 1024),

@@ -187,3 +187,30 @@ test("unknown paths cannot trigger a large offline-database download", async (co
   assert.equal(urls.length, 2);
   assert.ok(!urls.some((url) => url.includes("/db.json?")));
 });
+
+test("legacy decoded filenames recover only through an exact published source alias", async (context) => {
+  const urls: string[] = [];
+  context.mock.method(globalThis, "fetch", async (url: string) => {
+    urls.push(url);
+    if (url.includes("/index.json?"))
+      return Response.json({
+        entries: [
+          {
+            name: "GDScript",
+            path: "classes/class_%40gdscript",
+            type: "General",
+          },
+        ],
+        types: [],
+      });
+    if (url.includes("class_%2540gdscript"))
+      return new Response(
+        "<h1>GDScript</h1><p>Recovered encoded filename.</p>",
+      );
+    return new Response("Missing", { status: 403 });
+  });
+  const result = await loadReferenceDocument(doc, "classes/class_@gdscript");
+  assert.equal(result.title, "GDScript");
+  assert.equal(urls.length, 3);
+  assert.ok(!urls.some((url) => url.includes("/db.json?")));
+});
