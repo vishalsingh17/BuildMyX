@@ -243,6 +243,7 @@ export async function checkReferences(
     }
     await page.goto(`${root}pandas/`);
     await page.getByLabel("Search pandas topics").fill("Encoded reference");
+    await expect(page.locator(".reference-topic-list li")).toHaveCount(1);
     await page.locator(".reference-topic-list a").click();
     await expect(page.locator(".reference-content")).toBeVisible();
     await page.goto(`${root}pandas/classes/class_~2540gdscript/`);
@@ -271,6 +272,7 @@ export async function checkReferences(
     ).toBeVisible();
     await page.goto(`${root}pandas/slow-source/`);
     await page.getByLabel("Search pandas topics").fill("sum");
+    await expect(page.locator(".reference-topic-list li")).toHaveCount(1);
     await page.locator(".reference-topic-list a").click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
       "DataFrame.sum",
